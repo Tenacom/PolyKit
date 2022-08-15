@@ -34,6 +34,7 @@ public class PolyfillGenerator : IIncrementalGenerator
         + "#nullable enable\r\n"
         + "\r\n"
         + "#pragma warning disable RS0016 // Add public types and members to the declared API\r\n"
+        + "#pragma warning disable RS0041 // Public members should not use oblivious types\r\n"
         + "\r\n";
 
     /// <inheritdoc/>
