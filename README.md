@@ -76,7 +76,7 @@ A minimum of Visual Studio / Build Tools 2022 or .NET SDK 6.0 is required to com
 
 C# language version 10.0 or greater is required to compile the polyfills provided by `PolyKit.Embedded`.
 
-It is recommended to set the `LangVersion` proprty to `latest` in projects that reference `PolyKit.Embedded`.
+It is recommended to set the `LangVersion` property to `latest` in projects that reference `PolyKit.Embedded`.
 
 #### Analyzers
 
@@ -105,7 +105,7 @@ PolyKit provides support for the following features across all [compatible targe
 - [ValidatedNotNull](https://docs.microsoft.com/en-us/dotnet/api/microsoft.validatednotnullattribute) (see note #3);
 - [StackTraceHidden](https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.stacktracehiddenattribute) (see note #4).
 
-**Note #1:** This feature depends on `System.ValueTuple`, which is not present in .NET Framework versions prior to 4.7. If you reference the `PolyKit.Embedded` package in a project targeting .NET Framework 4.6.2, you must also add a package reference to [`System.ValueTuple`](https://www.nuget.org/packages/System.ValueTuple); otherwise, compilation will not fail, but features dependent on ValueTuple will not be present in the compiled assembly.
+**Note #1:** This feature depends on `System.ValueTuple`, which is not present in .NET Framework versions prior to 4.7. If you reference the `PolyKit.Embedded` package in a project targeting .NET Framework 4.6.2 or 4.6.3, you must also add a package reference to [`System.ValueTuple`](https://www.nuget.org/packages/System.ValueTuple); otherwise, compilation will not fail, but features dependent on ValueTuple will not be present in the compiled assembly.
 
 **Note #2:** In projects referencing `PolyKit.Embedded` and targeting .NET Framework or .NET Standard 2.0, method `HashCode.AddBytes(ReadOnlySpan<byte>)` will only be compiled if package [`System.Memory`](https://www.nuget.org/packages/System.Memory) is also referenced.
 
@@ -152,4 +152,4 @@ _**TODO**_
 You can find proper attributions to projects I "stole" code from in the [third-party notice file](./THIRD-PARTY-NOTICES). Here I want to mention projects that have provided, and keep providing, experience and inspiration.
 
 - [EmbedIO](https://github.com/unosquare/embedio) has been my first experience as a collaborator to an open-source project; working on it has taught me a lot. Special thanks to @geoperez for dealing with me while I moved my first steps.
-- [.NET Community Toolkit](https://github.com/CommunityToolkit/dotnet) is not just an invaluable tool, but a great source of inspiration too. The idea for the `Fail` class came from their own [ThrowHelper](https://docs.microsoft.com/en-us/windows/communitytoolkit/developer-tools/throwhelper), although the implementation approach is different.
+- [.NET Community Toolkit](https://github.com/CommunityToolkit/dotnet) is not just an invaluable tool, but a great source of inspiration too.
