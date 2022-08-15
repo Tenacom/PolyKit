@@ -45,7 +45,7 @@ Throughout this document, I'll assume that you know what follows:
 - the meaning of `PrivateAssets="all"` in a `PackageReference`;
 - how to make minor modifications to a project file, for example adding a property or an item.
 
-If you're yawning, great, read on. If you're panicking, either do your ~~googling~~ due diligence and come back. I'll wait, no problem.
+If you're yawning, great, read on. If you're panicking, do your ~~googling~~ due diligence and come back. I'll wait, no problem.
 
 ## What is PolyKit
 
