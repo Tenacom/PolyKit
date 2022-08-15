@@ -1,12 +1,7 @@
 ﻿<Project>
 
-  <!--
-    The condition will be false when importing this file in a project of the PolyKit solution.
-    It will always be true when referencing PolyKit.Embedded as a package.
-  -->
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Polyfills\*.cs"
-             Condition="Exists('$(MSBuildThisFileDirectory)Polyfills\*.cs')"
              Visible="false" />
   </ItemGroup>
 
