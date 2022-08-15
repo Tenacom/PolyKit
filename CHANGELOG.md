@@ -15,6 +15,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Known problems introduced by this release
 
+## [1.0.0-preview.2](https://github.com/Buildvana/PolyKit/releases/tag/1.0.0-preview.2) (2022-08-15)
+
+### Bugs fixed in this release
+
+- `PolyKit.Embedded` did not correctly add polyfill sources to compilation.
+
 ## [1.0.0-preview.1](https://github.com/Buildvana/PolyKit/releases/tag/1.0.0-preview.1) (2022-08-15)
 
 Initial release.
