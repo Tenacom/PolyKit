@@ -1,0 +1,8 @@
+*.pdf   -text
+*.doc   -text
+*.docx  -text
+*.sh     eol=lf
+*.md     eol=lf
+*.cs     eol=crlf
+*.vb     eol=crlf
+*        text=auto

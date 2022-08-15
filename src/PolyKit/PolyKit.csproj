@@ -1,0 +1,61 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Provides a set of polyfills that can be shared among projects.</Description>
+    <TargetFrameworks>netstandard2.0;netstandard2.1;net462;net47;netcoreapp3.1;net6.0</TargetFrameworks>
+    <RootNamespace />
+  </PropertyGroup>
+
+  <!--Configure PolyKit -->
+  <PropertyGroup>
+    <PolyKit_GeneratePublicTypes>true</PolyKit_GeneratePublicTypes>
+    <PolyKit_MessageImportance>high</PolyKit_MessageImportance>
+  </PropertyGroup>
+
+  <!--
+    Reference System.Memory to enable polyfills requiring System.Span;
+    do it only where necessary, to avoid useless transitive dependencies.
+  -->
+  <PropertyGroup>
+    <TargetFrameworksRequiringSystemMemory>netstandard2.0;net462;net47</TargetFrameworksRequiringSystemMemory>
+  </PropertyGroup>
+  <ItemGroup Condition="$(TargetFrameworksRequiringSystemMemory.Contains('$(TargetFramework)'))">
+    <PackageReference Include="System.Memory" />
+  </ItemGroup>
+
+  <!--
+    Reference System.ValueTuple to enable polyfills requiring System.ValueTuple;
+    do it only where necessary, to avoid useless transitive dependencies.
+  -->
+  <PropertyGroup>
+    <TargetFrameworksRequiringSystemValueTuple>net462</TargetFrameworksRequiringSystemValueTuple>
+  </PropertyGroup>
+  <ItemGroup Condition="$(TargetFrameworksRequiringSystemValueTuple.Contains('$(TargetFramework)'))">
+    <PackageReference Include="System.ValueTuple" />
+  </ItemGroup>
+
+  <!--
+    Use PolyKit.Generator to generate polyfill source files.
+  -->
+  <ItemGroup>
+    <ProjectReference Include="..\PolyKit.Generator\PolyKit.Generator.csproj"
+                      OutputItemType="Analyzer"
+                      ReferenceOutputAssembly="false" />
+  </ItemGroup>
+
+
+  <!--Use SourceLink for source debugging support. -->
+  <PropertyGroup>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="all" />
+  </ItemGroup>
+
+  <!-- Import PolyKit configuration target -->
+  <Import Project="..\PolyKit.Embedded\build\PolyKit.Embedded.targets" />
+
+</Project>

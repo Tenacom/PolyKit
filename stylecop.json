@@ -1,0 +1,60 @@
+// See https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/Configuration.md
+// for a reference guide to the contents of this file.
+{
+  "$schema": "https://raw.githubusercontent.com/DotNetAnalyzers/StyleCopAnalyzers/master/StyleCop.Analyzers/StyleCop.Analyzers/Settings/stylecop.schema.json",
+
+  "settings": {
+
+    "spacingRules": {
+    },
+
+    "readabilityRules": {
+      "allowBuiltInTypeAliases": true
+    },
+
+    "orderingRules": {
+      "elementOrder": [ "kind", "accessibility", "constant", "static", "readonly" ],
+      "systemUsingDirectivesFirst": true,
+      "usingDirectivesPlacement": "outsideNamespace",
+      "blankLinesBetweenUsingGroups": "omit"
+    },
+
+    "namingRules": {
+      "allowCommonHungarianPrefixes": true,
+      "allowedHungarianPrefixes": [],
+      "allowedNamespaceComponents": [],
+      "includeInferredTupleElementNames": false,
+      "tupleElementNameCasing": "PascalCase"
+    },
+
+    "maintainabilityRules": {
+      "topLevelTypes": [ "class", "interface", "struct", "enum", "delegate" ]
+    },
+
+    "layoutRules": {
+      "newlineAtEndOfFile": "require",
+      "allowConsecutiveUsings": true,
+      "allowDoWhileOnClosingBrace":  true 
+    },
+
+    "documentationRules": {
+      "companyName": "Riccardo De Agostini",
+      "copyrightText": "{decoration}\nCopyright (C) {companyName} and contributors.\nLicensed under the {licenseName} license.\nSee the {licenseFile} file in the project root for full license information.\n\nPart of this file may be third-party code, distributed under a compatible license.\nSee the {thirdPartyNoticeFile} file in the project root for third-party copyright notices.\n{decoration}",
+      "variables": {
+        "decoration": "---------------------------------------------------------------------------------------",
+        "licenseName": "MIT",
+        "licenseFile": "LICENSE",
+        "thirdPartyNoticeFile": "THIRD-PARTY-NOTICES"
+      },
+      "xmlHeader": false,
+      "documentInterfaces": true,
+      "documentExposedElements": true,
+      "documentInternalElements": false,
+      "documentPrivateElements": false,
+      "documentPrivateFields": false,
+      "documentationCulture": "en-US",
+      "fileNamingConvention": "metadata",
+      "excludeFromPunctuationCheck": [ "exception", "seealso" ]
+    }
+  }
+}

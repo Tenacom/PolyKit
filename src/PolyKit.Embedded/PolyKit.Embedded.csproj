@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Embeds polyfills in your project, creating either internal or public types.</Description>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <DevelopmentDependency>true</DevelopmentDependency>
+    <RootNamespace />
+    <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
+  </PropertyGroup>
+
+  <!--
+    Use PolyKit.Generator to generate polyfill source files,
+    then include them in the package instead of the build output.
+  -->
+  <PropertyGroup>
+    <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+    <CompilerGeneratedFilesOutputPath>$(BaseIntermediateOutputPath)\Generated</CompilerGeneratedFilesOutputPath>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PolyKit.Generator\PolyKit.Generator.csproj"
+                      OutputItemType="Analyzer"
+                      ReferenceOutputAssembly="false" />
+    <None Include="$(CompilerGeneratedFilesOutputPath)\PolyKit.Generator\PolyfillGenerator\*"
+          Pack="true"
+          PackagePath="build\Polyfills"
+          Visible="false" />
+  </ItemGroup>
+
+  <!--Include .props and .targets files in package. -->
+  <ItemGroup>
+    <None Update="build\**\*" Pack="true" PackagePath="/" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="all" />
+  </ItemGroup>
+
+</Project>

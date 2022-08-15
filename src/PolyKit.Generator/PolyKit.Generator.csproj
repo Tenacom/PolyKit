@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <IsRoslynComponent>true</IsRoslynComponent>
+    <IsPackable>false</IsPackable>
+    <RootNamespace />
+    <CLSCompliant>false</CLSCompliant>
+    <GenerateThisAssemblyClass>true</GenerateThisAssemblyClass>
+  </PropertyGroup>
+
+  <!-- Embed polyfill source files. -->
+  <ItemGroup>
+    <EmbeddedResource Include="..\Polykit.Polyfills\**\*.cs" Visible="false" />
+    <EmbeddedResource Remove="..\Polykit.Polyfills\obj\**\*.cs" />
+  </ItemGroup>
+
+  <!-- Reference the Polyfills project to ensure polyfill sources build properly. -->
+  <ItemGroup>
+    <ProjectReference Include="..\PolyKit.Polyfills\PolyKit.Polyfills.csproj" ReferenceOutputAssembly="false" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" PrivateAssets="all" />
+  </ItemGroup>
+
+</Project>

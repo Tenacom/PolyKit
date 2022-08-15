@@ -1,0 +1,39 @@
+<Project>
+
+  <!-- Branding, ownership, licensing, project information -->
+  <PropertyGroup>
+    <Product>PolyKit</Product>
+    <Authors>Riccardo De Agostini and contributors</Authors>
+    <Owners>Buildvana,rdeago</Owners>
+    <Company>Buildvana</Company>
+    <Copyright>Copyright (C) Riccardo De Agostini and contributors.</Copyright>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageProjectUrl>https://github.com/Buildvana/PolyKit</PackageProjectUrl>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <RepositoryUrl>https://github.com/Buildvana/PolyKit.git</RepositoryUrl>
+  </PropertyGroup>
+
+  <!-- Common build options -->
+  <PropertyGroup>
+    <Deterministic>true</Deterministic>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <AnalysisMode>All</AnalysisMode>
+    <CodeAnalysisTreatWarningsAsErrors>true</CodeAnalysisTreatWarningsAsErrors>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <CLSCompliant>true</CLSCompliant>
+    <ComVisible>false</ComVisible>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+
+  <!-- Solution-wide build options -->
+  <PropertyGroup>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <UsePublicApiAnalyzers>false</UsePublicApiAnalyzers>
+  </PropertyGroup>
+
+</Project>

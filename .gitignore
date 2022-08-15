@@ -1,0 +1,22 @@
+# Build artifacts
+artifacts/
+
+# Local build logs
+logs/
+
+# Folders created by CI
+.coverage/
+
+# Visual Studio
+**/bin/
+**/obj/
+**/.vs/
+*.csproj.user
+*.pubxml.user
+
+# ReSharper
+*.DotSettings.user
+_ReSharper.*/
+
+# Windows thumbnails
+Thumbs.db

@@ -1,0 +1,75 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32526.322
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "- Configuration", "- Configuration", "{ED7AE9DE-0190-495E-BAB8-91D7916DE79B}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		.globalconfig = .globalconfig
+		build-config.cmd = build-config.cmd
+		Common.props = Common.props
+		Directory.Packages.props = Directory.Packages.props
+		global.json = global.json
+		NuGet.config = NuGet.config
+		stylecop.json = stylecop.json
+		VERSION = VERSION
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "- Documentation", "- Documentation", "{0661C764-ED18-47F2-8A94-8193D0652E8A}"
+	ProjectSection(SolutionItems) = preProject
+		CHANGELOG.md = CHANGELOG.md
+		LICENSE = LICENSE
+		NuGet-README.md = NuGet-README.md
+		README.md = README.md
+		THIRD-PARTY-NOTICES = THIRD-PARTY-NOTICES
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{04BEFF7A-9805-4109-983D-F1832FC44532}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PolyKit", "src\PolyKit\PolyKit.csproj", "{9A8C068C-0751-4E2B-ABEB-D3E3C9DD1FB4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PolyKit.Embedded", "src\PolyKit.Embedded\PolyKit.Embedded.csproj", "{CAB8EAA2-8652-4993-ACA5-6693CE4D4A26}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PolyKit.Polyfills", "src\PolyKit.Polyfills\PolyKit.Polyfills.csproj", "{A977FFFD-8B8C-4AAC-9176-8976960DE5C4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PolyKit.Generator", "src\PolyKit.Generator\PolyKit.Generator.csproj", "{9CE09A81-98CF-4CC2-B5FE-8159AA933F36}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9A8C068C-0751-4E2B-ABEB-D3E3C9DD1FB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A8C068C-0751-4E2B-ABEB-D3E3C9DD1FB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A8C068C-0751-4E2B-ABEB-D3E3C9DD1FB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A8C068C-0751-4E2B-ABEB-D3E3C9DD1FB4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CAB8EAA2-8652-4993-ACA5-6693CE4D4A26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAB8EAA2-8652-4993-ACA5-6693CE4D4A26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CAB8EAA2-8652-4993-ACA5-6693CE4D4A26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CAB8EAA2-8652-4993-ACA5-6693CE4D4A26}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A977FFFD-8B8C-4AAC-9176-8976960DE5C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A977FFFD-8B8C-4AAC-9176-8976960DE5C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A977FFFD-8B8C-4AAC-9176-8976960DE5C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A977FFFD-8B8C-4AAC-9176-8976960DE5C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CE09A81-98CF-4CC2-B5FE-8159AA933F36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CE09A81-98CF-4CC2-B5FE-8159AA933F36}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CE09A81-98CF-4CC2-B5FE-8159AA933F36}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CE09A81-98CF-4CC2-B5FE-8159AA933F36}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9A8C068C-0751-4E2B-ABEB-D3E3C9DD1FB4} = {04BEFF7A-9805-4109-983D-F1832FC44532}
+		{CAB8EAA2-8652-4993-ACA5-6693CE4D4A26} = {04BEFF7A-9805-4109-983D-F1832FC44532}
+		{A977FFFD-8B8C-4AAC-9176-8976960DE5C4} = {04BEFF7A-9805-4109-983D-F1832FC44532}
+		{9CE09A81-98CF-4CC2-B5FE-8159AA933F36} = {04BEFF7A-9805-4109-983D-F1832FC44532}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C9053E59-317D-43DC-A16B-6E45E036C77E}
+	EndGlobalSection
+EndGlobal

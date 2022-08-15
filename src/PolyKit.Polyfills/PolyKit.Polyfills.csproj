@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- 
+    This project's only purpose is to ensure that polyfill sources build correctly.
+    Target frameworks are included based on their support status at the time of writing
+    (excluding extended support) according to relevant documentation:
+    https://docs.microsoft.com/en-us/lifecycle/products/microsoft-net-framework
+    https://docs.microsoft.com/en-us/lifecycle/products/microsoft-net-and-net-core
+
+    Both .NET Framework 4.6.2 and 4.7 are present because v4.7 does not require a dependency on System.ValueTuple.
+  -->
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;netstandard2.1;net462;net47;netcoreapp3.1;net6.0</TargetFrameworks>
+    <RootNamespace />
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <!-- Suppress some Code Analysis warnings, due to the peculiarity of this project -->
+  <PropertyGroup>
+    <NoWarn>$(NoWarn);CA1812</NoWarn> <!-- Avoid uninstantiated internal classes - This project's whole point is to build internal polyfills -->
+    <NoWarn>$(NoWarn);SA1133</NoWarn> <!-- Each attribute should be placed in its own set of square brackets
+                                           - ExcludeFromCodeCoverage and DebuggerNonUserCode are easier to add to each polyfill type if they are on a single line -->
+    <NoWarn>$(NoWarn);SA1633</NoWarn> <!-- File should have header - File headers will be added by PolyKit.Generator -->
+  </PropertyGroup>
+
+  <!-- Reference all necessary packages to enable all polyfill features -->
+  <ItemGroup>
+    <PackageReference Include="System.Memory" />
+    <PackageReference Include="System.ValueTuple" />
+  </ItemGroup>
+
+  <!-- Import PolyKit configuration target -->
+  <Import Project="..\PolyKit.Embedded\build\PolyKit.Embedded.targets" />
+
+</Project>
