@@ -1,7 +1,14 @@
-This project uses third-party material as listed below.
-The attached notices are provided for informational purposes only.
+This project uses and/or incorporates third-party libraries or other resources
+that may be distributed under licenses different than this project.
 
---------------------------------------------------------------------------------
+In the event that we accidentally failed to list a required notice, please
+bring it to our attention. Either post an issue, or email us:
+
+           team@buildvana.net
+
+The attached notices are provided for information only.
+
+================================================================================
 .NET Runtime - https://github.com/dotnet/runtime
 --------------------------------------------------------------------------------
 The MIT License (MIT)
