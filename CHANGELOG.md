@@ -15,6 +15,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Known problems introduced by this release
 
+## [1.0.0-preview.5](https://github.com/Buildvana/PolyKit/releases/tag/1.0.0-preview.5) (2022-08-23)
+
+### New features
+
+- Added support for writing [custom string interpolation handlers](https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/tutorials/interpolated-string-handler) by polyfilling related attributes.
+
 ## [1.0.0-preview.4](https://github.com/Buildvana/PolyKit/releases/tag/1.0.0-preview.4) (2022-08-15)
 
 ### Bugs fixed in this release
