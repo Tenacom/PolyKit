@@ -103,7 +103,8 @@ PolyKit provides support for the following features across all [compatible targe
 - [System.HashCode](https://docs.microsoft.com/en-us/dotnet/api/system.hashcode) (see note #2);
 - [SkipLocalsInit](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/attributes/general#skiplocalsinit-attribute);
 - [ValidatedNotNull](https://docs.microsoft.com/en-us/dotnet/api/microsoft.validatednotnullattribute) (see note #3);
-- [StackTraceHidden](https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.stacktracehiddenattribute) (see note #4).
+- [StackTraceHidden](https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.stacktracehiddenattribute) (see note #4);
+- support for writing [custom string interpolation handlers](https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/tutorials/interpolated-string-handler).
 
 **Note #1:** This feature depends on `System.ValueTuple`, which is not present in .NET Framework versions prior to 4.7. If you reference the `PolyKit.Embedded` package in a project targeting .NET Framework 4.6.2 or 4.6.3, you must also add a package reference to [`System.ValueTuple`](https://www.nuget.org/packages/System.ValueTuple); otherwise, compilation will not fail, but features dependent on ValueTuple will not be present in the compiled assembly.
 
