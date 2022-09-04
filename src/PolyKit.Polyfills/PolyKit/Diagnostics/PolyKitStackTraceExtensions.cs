@@ -2,7 +2,6 @@
 
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
 
 namespace PolyKit.Diagnostics;
 
@@ -23,7 +22,6 @@ static class PolyKitStackTraceExtensions
     /// </summary>
     /// <param name="this">The <see cref="StackTrace"/> on which this method is called.</param>
     /// <returns>A readable representation of the stack trace.</returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static string ToStringHidingFrames(this StackTrace @this) => @this.ToString();
 }
 
@@ -74,7 +72,6 @@ static class PolyKitStackTraceExtensions
     /// </list>
     /// </remarks>
     // Include a trailing newline for backwards compatibility
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static string ToStringHidingFrames(this StackTrace @this) => @this.ToStringHidingFrames(TraceFormat.TrailingNewLine);
 
     // https://github.com/dotnet/runtime/blob/v6.0.4/src/libraries/System.Private.CoreLib/src/System/Diagnostics/StackTrace.cs#L198

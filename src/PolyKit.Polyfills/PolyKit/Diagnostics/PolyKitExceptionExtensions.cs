@@ -3,7 +3,6 @@
 using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
 
 namespace PolyKit.Diagnostics;
 
@@ -24,7 +23,6 @@ static class PolyKitExceptionExtensions
     /// </summary>
     /// <param name="this">The <see cref="Exception"/> on which this method is called.</param>
     /// <returns>A string that describes the immediate frames of the call stack.</returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static string? GetStackTraceHidingFrames(this Exception @this) => @this.StackTrace;
 }
 
@@ -35,7 +33,6 @@ static class PolyKitExceptionExtensions
 using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
 using PolyKit.Diagnostics.Internal;
 
 namespace PolyKit.Diagnostics;
@@ -70,7 +67,6 @@ static class PolyKitExceptionExtensions
      * https://github.com/dotnet/runtime/blob/v6.0.4/src/libraries/System.Private.CoreLib/src/System/Exception.cs#L223
      */
     // Do not include a trailing newline for backwards compatibility
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static string GetStackTraceHidingFrames(this Exception @this)
         => new StackTrace(@this, fNeedFileInfo: true)
            .ToStringHidingFrames(TraceFormat.Normal);
