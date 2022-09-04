@@ -21,6 +21,8 @@ namespace System;
 #pragma warning disable SA1623 // Property summary documentation should match accessors - Copied from dotnet/runtime.
 #pragma warning disable SA1642 // Constructor summary documentation should begin with standard text - Copied from dotnet/runtime.
 
+// https://github.com/dotnet/runtime/blob/v6.0.4/src/libraries/System.Private.CoreLib/src/System/Range.cs
+
 /// <summary>
 /// Represent a range that has start and end indexes.
 /// </summary>
