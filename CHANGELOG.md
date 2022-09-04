@@ -15,6 +15,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Known problems introduced by this release
 
+## [1.0.0-preview.6](https://github.com/Buildvana/PolyKit/releases/tag/1.0.0-preview.6) (2022-09-04)
+
+### Changes to existing features
+
+- Members in generated code are not marked for [aggressive inlining](https://docs.microsoft.com/en-us/dotnet/api/system.runtime.compilerservices.methodimploptions) any longer, unless they already were in the .NET runtime source.
+
 ## [1.0.0-preview.5](https://github.com/Buildvana/PolyKit/releases/tag/1.0.0-preview.5) (2022-08-23)
 
 ### New features
