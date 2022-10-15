@@ -62,7 +62,7 @@
      inkscape:window-y="-8"
      inkscape:window-x="-8"
      inkscape:cy="80.115108"
-     inkscape:cx="232"
+     inkscape:cx="206.72559"
      inkscape:zoom="4.1939655"
      inkscape:snap-page="true"
      inkscape:bbox-nodes="true"
@@ -100,16 +100,16 @@
      id="text851"
      y="86.376984"
      x="125.27251"
-     style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:95.8681px;line-height:1.25;font-family:Repo;-inkscape-font-specification:'Repo, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;letter-spacing:0px;word-spacing:0px;fill:#66cc33;fill-opacity:1;stroke:#eeffee;stroke-width:7.19962;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke markers fill"
+     style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:95.8681px;line-height:1.25;font-family:Repo;-inkscape-font-specification:'Repo, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;letter-spacing:0px;word-spacing:0px;fill:#339900;fill-opacity:1;stroke:#eeffee;stroke-width:7.19962;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke markers fill"
      xml:space="preserve"><tspan
        sodipodi:role="line"
        id="tspan434"
        x="125.27251"
        y="86.376984"
-       style="stroke-width:7.19962;stroke:#eeffee;stroke-opacity:1;fill:#66cc33;fill-opacity:1">PolyKit</tspan></text>
+       style="stroke-width:7.19962;stroke:#eeffee;stroke-opacity:1;fill:#339900;fill-opacity:1">PolyKit</tspan></text>
   <text
      xml:space="preserve"
-     style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-size:33.8545px;line-height:1.25;font-family:Repo;-inkscape-font-specification:'Repo, Semi-Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;letter-spacing:0px;word-spacing:0px;fill:#669966;fill-opacity:1;stroke:#eeffee;stroke-width:2.57958;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
+     style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-size:33.8545px;line-height:1.25;font-family:Repo;-inkscape-font-specification:'Repo, Semi-Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;letter-spacing:0px;word-spacing:0px;fill:#336600;fill-opacity:1;stroke:#eeffee;stroke-width:2.57958;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
      x="134.01497"
      y="134.72412"
      id="text839"
@@ -118,7 +118,7 @@
        id="tspan442"
        x="134.01497"
        y="134.72412"
-       style="stroke-width:2.57958;stroke:#eeffee;stroke-opacity:1;fill:#669966;fill-opacity:1">C# polyfills, your way</tspan></text>
+       style="stroke-width:2.57958;stroke:#eeffee;stroke-opacity:1;fill:#336600;fill-opacity:1">C# polyfills, your way</tspan></text>
   <path
      style="fill:none;fill-opacity:1;stroke:#eeffee;stroke-width:2.52652;stroke-dasharray:none;stroke-opacity:1"
      d="M 115.40684,40.683422 62.741704,10.277196 C 59.105307,8.1777183 54.457266,9.4231572 52.357787,13.059556 l -12.66926,21.943806 c -7.79268,13.497323 -6.364759,29.790231 2.326651,41.579458 l -1.58141,2.739089 c -1.008441,1.746673 -1.281526,3.821408 -0.758291,5.767992 0.127113,0.474379 0.29878,0.932676 0.511781,1.369135 -12.468986,14.411794 -26.097662,33.424554 -28.553324,37.677894 -4.8941042,8.47683 -1.9846487,19.33504 6.492174,24.22914 8.47683,4.8941 19.335047,1.98465 24.229149,-6.49218 2.455232,-4.25258 12.108063,-25.56214 18.35334,-43.566847 0.484488,-0.03374 0.96722,-0.11425 1.441602,-0.241359 1.947443,-0.52002 3.607608,-1.793963 4.616081,-3.540693 l 1.581413,-2.739089 C 82.902591,93.419286 97.726914,86.508938 105.51989,73.01112 L 118.1892,51.067342 c 2.09947,-3.636398 0.85403,-8.284441 -2.78236,-10.38392 z"
