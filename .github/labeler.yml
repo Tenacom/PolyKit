@@ -1,0 +1,39 @@
+'area:code':
+  - '*.sln'
+  - 'src/**/*'
+
+'area:style':
+  - '**/.editorconfig'
+  - '**/.globalconfig'
+  - '**/stylecop.json'
+  - '**/*.DotSettings'
+
+'area:build':
+  - '**/*.cake'
+  - 'build/**/*'
+
+'area:repo':
+  - '.github/*.yml'
+  - '.github/**/*.md'
+  - CODEOWNERS
+  - '.github/CODEOWNERS'
+
+'area:ci':
+  - '.github/workflows/**/*'
+  - 'lgtm.yml'
+
+'area:deps':
+  - '**/Directory.Packages.props'
+  - Directory.Build.props
+  - Directory.Build.targets
+  - global.json
+  - .config/dotnet-tools.json
+
+'area:docs':
+  - 'docs/**/*'
+  - '.all-contributorsrc'
+  - '**/CHANGELOG.md'
+  - '**/LICENSE'
+  - '**/NuGet-README.md'
+  - '**/README.md'
+  - '**/THIRD-PARTY-NOTICES'

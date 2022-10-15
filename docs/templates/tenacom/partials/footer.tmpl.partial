@@ -1,0 +1,7 @@
+<div class="footer">
+    <span>
+        Copyright © <a href="https://github.com/{{repoOwner}}">{{repoOwner}}</a> and <a href="{{repoUrl}}/#contributors">contributors</a>.
+        <br>
+        Licensed under <a href="{{repoUrl}}/blob/main/LICENSE">MIT license</a>.
+    </span>
+</div>

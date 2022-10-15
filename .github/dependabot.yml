@@ -1,0 +1,12 @@
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule: {  interval: "daily" }
+    labels: [ "area:deps", "area:ci" ]
+    reviewers: [ "rdeago" ]
+  - package-ecosystem: "nuget"
+    directory: "/"
+    schedule: {  interval: "daily" }
+    labels: [ "area:deps" ]
+    reviewers: [ "rdeago" ]

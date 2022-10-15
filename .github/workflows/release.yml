@@ -1,0 +1,83 @@
+name: Publish a release
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  workflow_dispatch:
+    inputs:
+      versionAdvance:
+        description: 'Version advance'
+        required: true
+        type: choice
+        default: 'None'
+        options:
+        - None
+        - Unstable
+        - Stable
+        - Minor
+        - Major
+      checkPublicApi:
+        description: 'Check public API'
+        required: false
+        default: true
+        type: boolean
+      checkChangelog:
+        description: 'Check changelog'
+        required: false
+        default: true
+        type: boolean
+      cakeVerbosity:
+        description: 'Cake verbosity'
+        required: true
+        type: choice
+        default: 'Normal'
+        options:
+        - Normal
+        - Verbose
+        - Diagnostic
+jobs:
+  release:
+    runs-on: windows-latest
+    env:
+      DOTNET_NOLOGO: 'true'
+      DOTNET_CLI_TELEMETRY_OPTOUT: 'true'
+      DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 'true'
+      DOTNET_CLI_UI_LANGUAGE: 'en-US'
+      GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+      PRERELEASE_NUGET_SOURCE: 'https://www.myget.org/F/tenacom-preview/api/v3/index.json'
+      PRERELEASE_NUGET_KEY: ${{ secrets.MYGET_DEPLOYMENT_KEY }}
+      RELEASE_NUGET_SOURCE: 'https://api.nuget.org/v3/index.json'
+      RELEASE_NUGET_KEY: ${{ secrets.NUGET_DEPLOYMENT_KEY }}
+      VERSION_ADVANCE: ${{ inputs.versionAdvance }}
+      CHECK_PUBLIC_API: ${{ inputs.checkPublicApi }}
+      CHECK_CHANGELOG: ${{ inputs.checkChangelog }}
+      CAKE_VERBOSITY: ${{ inputs.cakeVerbosity }}
+    steps:
+    - name: Log workflow inputs
+      shell: cmd
+      run: |
+        echo Version advance  : %VERSION_ADVANCE%
+        echo Check public API : %CHECK_PUBLIC_API%
+        echo Check changelog  : %CHECK_CHANGELOG%
+        echo Cake verbosity   : %CAKE_VERBOSITY%
+    - name: Checkout repository with full history
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0 # Checkout with full history so nbgv can compute Git height correctly.
+        token: ${{ secrets.RELEASE_TOKEN }}
+        persist-credentials: true # We need auth set up in the Cake script
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v3
+      with:
+        global-json-file: global.json
+    - name: Restore .NET tools
+      shell: cmd
+      run: dotnet tool restore
+    - name: Run build script
+      shell: cmd
+      run: |
+        if [%CAKE_VERBOSITY%]==[] set CAKE_VERBOSITY=Normal
+        if [%RUNNER_DEBUG%]==[1] set CAKE_VERBOSITY=Diagnostic
+        dotnet cake --target Release --verbosity %CAKE_VERBOSITY%

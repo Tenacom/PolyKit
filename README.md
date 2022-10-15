@@ -1,38 +1,44 @@
 # ![PolyKit - C# polyfills, your way](graphics/Readme.png)
 
-[![License](https://img.shields.io/github/license/Buildvana/PolyKit.svg)](https://github.com/Buildvana/PolyKit/blob/main/LICENSE)
-[![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/Buildvana/PolyKit?include_prereleases)](https://github.com/Buildvana/PolyKit/releases)
-[![Changelog](https://img.shields.io/badge/changelog-Keep%20a%20Changelog%20v1.0.0-%23E05735)](https://github.com/Buildvana/PolyKit/blob/main/CHANGELOG.md)
+[![License](https://img.shields.io/github/license/Tenacom/PolyKit.svg)](https://github.com/Tenacom/PolyKit/blob/main/LICENSE)
+[![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/Tenacom/PolyKit?include_prereleases)](https://github.com/Tenacom/PolyKit/releases)
+[![Last package on NuGet](https://img.shields.io/nuget/v/PolyKit)](https://nuget.org/packages/PolyKit)
+[![Changelog](https://img.shields.io/badge/changelog-Keep%20a%20Changelog%20v1.0.0-%23E05735)](https://github.com/Tenacom/PolyKit/blob/main/CHANGELOG.md)
 
-[![CodeFactor](https://www.codefactor.io/repository/github/Buildvana/PolyKit/badge)](https://www.codefactor.io/repository/github/Buildvana/PolyKit)
-[![Last commit](https://img.shields.io/github/last-commit/Buildvana/PolyKit.svg)](https://github.com/Buildvana/PolyKit/commits/main)
-[![Open issues](https://img.shields.io/github/issues-raw/Buildvana/PolyKit.svg?label=open+issues)](https://github.com/Buildvana/PolyKit/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc)
-[![Closed issues](https://img.shields.io/github/issues-closed-raw/Buildvana/PolyKit.svg?label=closed+issues)](https://github.com/Buildvana/PolyKit/issues?q=is%3Aissue+is%3Aclosed+sort%3Aupdated-desc)
+[![Build, test, and pack](https://github.com/Tenacom/PolyKit/actions/workflows/build-test-pack.yml/badge.svg)](https://github.com/Tenacom/PolyKit/actions/workflows/build-test-pack.yml)
+[![CodeQL](https://github.com/Tenacom/PolyKit/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/Tenacom/PolyKit/actions/workflows/codeql-analysis.yml)
+[![CodeFactor](https://www.codefactor.io/repository/github/Tenacom/PolyKit/badge)](https://www.codefactor.io/repository/github/Tenacom/PolyKit)
+
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
+[![Last commit](https://img.shields.io/github/last-commit/Tenacom/PolyKit.svg)](https://github.com/Tenacom/PolyKit/commits/main)
+[![Open issues](https://img.shields.io/github/issues-raw/Tenacom/PolyKit.svg?label=open+issues)](https://github.com/Tenacom/PolyKit/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc)
+[![Closed issues](https://img.shields.io/github/issues-closed-raw/Tenacom/PolyKit.svg?label=closed+issues)](https://github.com/Tenacom/PolyKit/issues?q=is%3Aissue+is%3Aclosed+sort%3Aupdated-desc)
 
 ---
 
-<!--TOC-->
-  - [Read this first](#read-this-first)
-  - [What is PolyKit](#what-is-polykit)
-    - [Compatibility](#compatibility)
-      - [Target frameworks](#target-frameworks)
-      - [Build toolchain](#build-toolchain)
-      - [Compiler](#compiler)
-      - [Analyzers](#analyzers)
-      - [Code coverage tools](#code-coverage-tools)
-    - [Features](#features)
-  - [Quick start](#quick-start)
-    - [How to use shared polyfills across multiple projects](#how-to-use-shared-polyfills-across-multiple-projects)
-    - [How to add polyfills to a stand-alone project (simple application, source generator)](#how-to-add-polyfills-to-a-stand-alone-project-simple-application-source-generator)
-    - [How to create your own shared polyfill library](#how-to-create-your-own-shared-polyfill-library)
-  - [Contributing](#contributing)
-  - [Acknowledgements](#acknowledgements)
-    - [Third-party projects](#third-party-projects)
-<!--/TOC-->
+- [Read this first](#read-this-first)
+- [What is PolyKit](#what-is-polykit)
+  - [Compatibility](#compatibility)
+    - [Target frameworks](#target-frameworks)
+    - [Build toolchain](#build-toolchain)
+    - [Compiler](#compiler)
+    - [Analyzers](#analyzers)
+    - [Code coverage tools](#code-coverage-tools)
+  - [Features](#features)
+- [Quick start](#quick-start)
+  - [How to use shared polyfills across multiple projects](#how-to-use-shared-polyfills-across-multiple-projects)
+  - [How to add polyfills to a stand-alone project (simple application, source generator)](#how-to-add-polyfills-to-a-stand-alone-project-simple-application-source-generator)
+  - [How to create your own shared polyfill library](#how-to-create-your-own-shared-polyfill-library)
+- [Contributing](#contributing)
+- [Contributors](#contributors)
 
 ---
 
 ## Read this first
+
+Hi there! I'm Riccardo a.k.a. @rdeago, founder of Tenacom and author of PolyKit.
 
 I won't insult your intelligence by explaining what a polyfill, a package reference, or a MSBuild property is. We both know you have a browser and aren't afraid to use it. :wink:
 
@@ -144,13 +150,15 @@ Remember to set `PrivateAssets="all"` if you add the package reference manually.
 
 ## Contributing
 
-_**TODO**_
+_Of course_ we accept contributions! :smiley: Just take a look at our [Code of Conduct](https://github.com/Tenacom/.github/blob/main/CODE_OF_CONDUCT.md) and [Contributors guide](https://github.com/Tenacom/.github/blob/main/CONTRIBUTING.md), create your fork, and let's party! :tada:
 
-## Acknowledgements
+## Contributors
 
-### Third-party projects
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
 
-You can find proper attributions to projects I "stole" code from in the [third-party notice file](./THIRD-PARTY-NOTICES). Here I want to mention projects that have provided, and keep providing, experience and inspiration.
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
 
-- [EmbedIO](https://github.com/unosquare/embedio) has been my first experience as a collaborator to an open-source project; working on it has taught me a lot. Special thanks to @geoperez for dealing with me while I moved my first steps.
-- [.NET Community Toolkit](https://github.com/CommunityToolkit/dotnet) is not just an invaluable tool, but a great source of inspiration too.
+<!-- ALL-CONTRIBUTORS-LIST:END -->

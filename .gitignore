@@ -4,6 +4,9 @@ artifacts/
 # Local build logs
 logs/
 
+# Cake build
+tools/
+
 # Folders created by CI
 .coverage/
 
@@ -20,3 +23,10 @@ _ReSharper.*/
 
 # Windows thumbnails
 Thumbs.db
+
+# DocFx
+docs/globalMetadata.json
+docs/api/.manifest
+docs/api/*.yml
+docs/obj/
+docs/_site/

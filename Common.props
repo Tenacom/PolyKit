@@ -3,36 +3,44 @@
   <!-- Branding, ownership, licensing, project information -->
   <PropertyGroup>
     <Product>PolyKit</Product>
-    <Authors>Riccardo De Agostini and contributors</Authors>
-    <Owners>Buildvana,rdeago</Owners>
-    <Company>Buildvana</Company>
-    <Copyright>Copyright (C) Riccardo De Agostini and contributors.</Copyright>
+    <Authors>Tenacom and contributors</Authors>
+    <Owners>Tenacom</Owners>
+    <Company>Tenacom</Company>
+    <Copyright>Copyright (c) $(Authors)</Copyright>
+    <Trademark />
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageProjectUrl>https://github.com/Buildvana/PolyKit</PackageProjectUrl>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <RepositoryUrl>https://github.com/Buildvana/PolyKit.git</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/Tenacom/PolyKit</PackageProjectUrl>
+    <PackageReleaseNotes>See $(PackageProjectUrl)/blob/main/CHANGELOG.md</PackageReleaseNotes>
+    <RepositoryUrl>https://github.com/Tenacom/PolyKit</RepositoryUrl>
+    <IconInPackage>true</IconInPackage>
+    <ReadmeFileInPackage>true</ReadmeFileInPackage>
+    <LicenseFileInPackage>true</LicenseFileInPackage>
+    <ThirdPartyNoticeInPackage>true</ThirdPartyNoticeInPackage>
+    <UseVersionFile>false</UseVersionFile>
   </PropertyGroup>
 
   <!-- Common build options -->
   <PropertyGroup>
-    <Deterministic>true</Deterministic>
     <LangVersion>latest</LangVersion>
+    <ImplicitUsings>false</ImplicitUsings>
+    <Deterministic>true</Deterministic>
     <Nullable>enable</Nullable>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <AnalysisLevel>latest</AnalysisLevel>
-    <AnalysisMode>All</AnalysisMode>
-    <CodeAnalysisTreatWarningsAsErrors>true</CodeAnalysisTreatWarningsAsErrors>
-    <EnableNETAnalyzers>true</EnableNETAnalyzers>
-    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <CodeAnalysisTreatWarningsAsErrors>false</CodeAnalysisTreatWarningsAsErrors>
     <CLSCompliant>true</CLSCompliant>
     <ComVisible>false</ComVisible>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
+
+  <!-- Automatic versioning -->
+  <ItemGroup>
+    <PackageReference Include="Nerdbank.GitVersioning" PrivateAssets="all" />
+  </ItemGroup>
 
   <!-- Solution-wide build options -->
   <PropertyGroup>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <UsePublicApiAnalyzers>false</UsePublicApiAnalyzers>
   </PropertyGroup>
 

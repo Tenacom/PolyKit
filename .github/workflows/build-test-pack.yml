@@ -1,0 +1,34 @@
+name: Build, test, and pack
+
+on:
+  push:
+    branches: [ main, 'v[0-9]+.[0-9]+' ]
+  pull_request:
+    branches: [ main, 'v[0-9]+.[0-9]+' ]
+
+jobs:
+  build_test_pack:
+    runs-on: windows-latest
+    env:
+      DOTNET_NOLOGO: 'true'
+      DOTNET_CLI_TELEMETRY_OPTOUT: 'true'
+      DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 'true'
+      DOTNET_CLI_UI_LANGUAGE: 'en-US'
+    steps:
+    - name: Checkout repository with full history
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0 # Checkout with full history so nbgv can compute Git height correctly.
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v3
+      with:
+        global-json-file: global.json
+    - name: Restore .NET tools
+      shell: cmd
+      run: dotnet tool restore
+    - name: Run build script
+      shell: cmd
+      run: |
+        if [%CAKE_VERBOSITY%]==[] set CAKE_VERBOSITY=Normal
+        if [%RUNNER_DEBUG%]==[1] set CAKE_VERBOSITY=Diagnostic
+        dotnet cake --target Pack --verbosity %CAKE_VERBOSITY%

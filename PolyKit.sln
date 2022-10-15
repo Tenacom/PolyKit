@@ -6,16 +6,12 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "- Configuration", "- Configuration", "{ED7AE9DE-0190-495E-BAB8-91D7916DE79B}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
-		.gitattributes = .gitattributes
-		.gitignore = .gitignore
 		.globalconfig = .globalconfig
-		build-config.cmd = build-config.cmd
+		build.cake = build.cake
 		Common.props = Common.props
-		Directory.Packages.props = Directory.Packages.props
-		global.json = global.json
 		NuGet.config = NuGet.config
 		stylecop.json = stylecop.json
-		VERSION = VERSION
+		version.json = version.json
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "- Documentation", "- Documentation", "{0661C764-ED18-47F2-8A94-8193D0652E8A}"
@@ -36,6 +32,13 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PolyKit.Polyfills", "src\PolyKit.Polyfills\PolyKit.Polyfills.csproj", "{A977FFFD-8B8C-4AAC-9176-8976960DE5C4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PolyKit.Generator", "src\PolyKit.Generator\PolyKit.Generator.csproj", "{9CE09A81-98CF-4CC2-B5FE-8159AA933F36}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "- Dependencies", "- Dependencies", "{8474FA20-638B-49BB-BF75-AAFC78B60750}"
+	ProjectSection(SolutionItems) = preProject
+		Directory.Packages.props = Directory.Packages.props
+		.config\dotnet-tools.json = .config\dotnet-tools.json
+		global.json = global.json
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

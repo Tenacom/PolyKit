@@ -1,0 +1,26 @@
+# This file specifies users whose review is automatically requested when a PR modifies certain files.
+# For more ionformation see:
+# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# GitHub and apps configuration files
+/.github/ @rdeago
+/.all-contributorsrc @rdeago
+
+# Git configuration files
+/.git* @rdeago
+
+# Build scripts
+*.cake @rdeago
+
+# Licensing
+LICENSE @rdeago
+THIRD-PARTY-NOTICES @rdeago
+
+# Solution infrastructure files
+Directory.Build.* @rdeago
+.editorconfig @rdeago
+.globalconfig @rdeago
+stylecop.json @rdeago
+*.DotSettings @rdeago
+NuGet.config @rdeago
+version.json @rdeago

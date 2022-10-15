@@ -1,0 +1,45 @@
+{
+  "metadata": [
+    {
+      "src": [
+        { "src": "../src", "files": [ "**.csproj" ], "exclude": [ "**/bin/**", "**/obj/**" ] }
+      ],
+      "dest": "api",
+      "disableGitFeatures": false,
+      "disableDefaultFilter": false
+    }
+  ],
+  "build": {
+    "content": [
+      { "files": [ "api/**.yml", "api/index.md" ] },
+      { "files": [ "articles/**.md", "articles/**/toc.yml", "toc.yml", "*.md" ] }
+    ],
+    "resource": [
+      { "src": "../graphics/docs", "files": [ "*" ] }
+    ],
+    "overwrite": [
+      { "files": [ "apidoc/**.md" ], "exclude": [ "obj/**", "_site/**" ] }
+    ],
+    "dest": "_site",
+    "globalMetadata": {
+      "_appName": "PolyKit",
+      "_appTitle": "PolyKit documentation",
+      "_gitContribute": { "branch": "main" },
+      "_enableSearch": true,
+      "_disableSideFilter": false,
+      "_enableNewTab": true,
+      "_disableContribution": false,
+      "_disableBreadcrumb": false
+    },
+    "globalMetadataFiles": [ "globalMetadata.json" ],
+    "fileMetadataFiles": [],
+    "template": [ "default", "templates/singulinkfx", "templates/tenacom", "plugins/memberpage.2.59.4/content" ],
+    "postProcessors": [],
+    "markdownEngineName": "markdig",
+    "noLangKeyword": false,
+    "keepFileLink": false,
+    "cleanupCacheHistory": false,
+    "disableGitFeatures": false,
+    "xrefService": [ "https://xref.docs.microsoft.com/query?uid={uid}" ]
+  }
+}

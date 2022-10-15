@@ -1,0 +1,63 @@
+name: Deploy documentation to GitHub Pages
+
+on:
+  workflow_dispatch:
+    inputs:
+      cakeVerbosity:
+        description: 'Cake verbosity'
+        required: false
+        type: choice
+        default: 'Normal'
+        options:
+        - Normal
+        - Verbose
+        - Diagnostic
+
+# Allow one concurrent deployment
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  deploy-pages:
+    runs-on: windows-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    env:
+      DOTNET_NOLOGO: 'true'
+      DOTNET_CLI_TELEMETRY_OPTOUT: 'true'
+      DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 'true'
+      DOTNET_CLI_UI_LANGUAGE: 'en-US'
+      CAKE_VERBOSITY: ${{ inputs.cakeVerbosity }}
+    steps:
+    - name: Checkout repository with full history
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0 # Checkout with full history so nbgv can compute Git height correctly.
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v3
+      with:
+        global-json-file: global.json
+    - name: Restore .NET tools
+      shell: cmd
+      run: dotnet tool restore
+    - name: Run Cake script to build documentation
+      shell: cmd
+      run: |
+        if [%CAKE_VERBOSITY%]==[] set CAKE_VERBOSITY=Normal
+        if [%RUNNER_DEBUG%]==[1] set CAKE_VERBOSITY=Diagnostic
+        dotnet cake docs.cake --target All --verbosity %CAKE_VERBOSITY%
+    - name: Setup GitHub Pages
+      uses: actions/configure-pages@v2
+    - name: Upload documentation artifact
+      uses: actions/upload-pages-artifact@v1
+      with:
+        path: docs/_site/
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v1
