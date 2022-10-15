@@ -15,7 +15,7 @@ Related files:
 - `PackageIcon.png` (512x512px)
 ![PackageIcon.png](https://raw.githubusercontent.com/Tenacom/PolyKit/main/graphics/PackageIcon.png)
 
-- `docs/logo.svg` (64x64px, optimized, with viewBox="0 0 64 64", width="50", height="50")
+- `docs/logo.svg` (optimized)
 ![docs/logo.svg](https://raw.githubusercontent.com/Tenacom/PolyKit/main/graphics/docs/logo.png)
 
 - `docs/favicon.ico` (16x16px,32bpp; 32x32px,32bpp; 48x48px,32bpp; 64x64px,32bpp; 128x128px,32bpp)
