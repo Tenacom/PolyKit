@@ -2,8 +2,13 @@
 
 [![License](https://img.shields.io/github/license/Tenacom/PolyKit.svg)](https://github.com/Tenacom/PolyKit/blob/main/LICENSE)
 [![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/Tenacom/PolyKit?include_prereleases)](https://github.com/Tenacom/PolyKit/releases)
-[![Last package on NuGet](https://img.shields.io/nuget/v/PolyKit)](https://nuget.org/packages/PolyKit)
 [![Changelog](https://img.shields.io/badge/changelog-Keep%20a%20Changelog%20v1.0.0-%23E05735)](https://github.com/Tenacom/PolyKit/blob/main/CHANGELOG.md)
+
+
+[![Last release package on NuGet](https://img.shields.io/nuget/v/PolyKit?label=PolyKit@nuget)](https://nuget.org/packages/PolyKit)
+[![Last prerelease package on MyGet](https://img.shields.io/myget/tenacom-preview/vpre/PolyKit?label=PolyKit@myget)](https://www.myget.org/feed/tenacom-preview/package/nuget/PolyKit)
+[![Last release package on NuGet](https://img.shields.io/nuget/v/PolyKit.Embedded?label=PolyKit.Embedded@nuget)](https://nuget.org/packages/PolyKit.Embedded)
+[![Last prerelease package on MyGet](https://img.shields.io/myget/tenacom-preview/vpre/PolyKit.Embedded?label=PolyKit.Embedded@myget)](https://www.myget.org/feed/tenacom-preview/package/nuget/PolyKit.Embedded)
 
 [![Build, test, and pack](https://github.com/Tenacom/PolyKit/actions/workflows/build-test-pack.yml/badge.svg)](https://github.com/Tenacom/PolyKit/actions/workflows/build-test-pack.yml)
 [![CodeQL](https://github.com/Tenacom/PolyKit/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/Tenacom/PolyKit/actions/workflows/codeql-analysis.yml)
@@ -38,9 +43,9 @@
 
 ## Read this first
 
-Hi there! I'm Riccardo a.k.a. @rdeago, founder of Tenacom and author of PolyKit.
+Hi there! I'm Riccardo a.k.a. [@rdeago](https://github.com/rdeago), founder of [Tenacom](https://github.com/Tenacom) and author of PolyKit.
 
-I won't insult your intelligence by explaining what a polyfill, a package reference, or a MSBuild property is. We both know you have a browser and aren't afraid to use it. :wink:
+I won't insult your intelligence by explaining what a polyfill, a package reference, or a MSBuild property is. If these are new concepts to you, well... we both know you have a browser and aren't afraid to use it. :wink:
 
 Throughout this document, I'll assume that you know what follows:
 
@@ -86,9 +91,11 @@ It is recommended to set the `LangVersion` property to `latest` in projects that
 
 #### Analyzers
 
-Hell is other people's code, right? By referencing `PolyKit.Embedded` you are inviting our code into your project, that may well have very different code style settings. Are you thus condemned to see dozens of warnings pollute your Error List window and/or your build log forever?
+Hell is other people's code, right?
 
-Of course not! All code provided by `PolyKit.Embedded` is marked as being "auto-generated", so that analyzers won't even glance in its direction.
+By referencing `PolyKit.Embedded` you are inviting our code into your project, that may well have very different code style settings. Are you thus condemned to see dozens of warnings pollute your Error List window and/or your build log forever?
+
+Of course not! All code provided by `PolyKit.Embedded` is marked as being "auto-generated", so that code style analyzers will happily skip it.
 
 #### Code coverage tools
 
