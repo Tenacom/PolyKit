@@ -23,6 +23,9 @@
 using System;
 using System.Text;
 
+using SysFile = System.IO.File;
+using SysPath = System.IO.Path;
+
 // =============================================================================================
 // TASKS
 // =============================================================================================
@@ -191,7 +194,13 @@ Task("Release")
 
             // If this is not a prerelease and we are releasing from the main branch,
             // dispatch a separate workflow to publish documentation.
-            if (data.IsPrerelease)
+            // Unless, of course, there is no documentation workflow.
+            FilePath pagesDeploymentWorkflow = ".github/workflows/deploy-pages.yml";
+            if (!SysFile.Exists(pagesDeploymentWorkflow.FullPath))
+            {
+                context.Information($"Documentation update skipped: there is no documentation workflow.");
+            }
+            else if (data.IsPrerelease)
             {
                 context.Information("Documentation update skipped: not needed on prerelease.");
             }
@@ -201,7 +210,7 @@ Task("Release")
             }
             else
             {
-                await context.DispatchWorkflow(data, "deploy-pages.yml", "main");
+                await context.DispatchWorkflow(data, SysPath.GetFileName(pagesDeploymentWorkflow), "main");
             }
 
             // Last but not least, publish the release.
