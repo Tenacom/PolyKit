@@ -7,8 +7,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased changes
 
-Initial release.
-
 ### New features
 
 ### Changes to existing features
@@ -16,3 +14,7 @@ Initial release.
 ### Bugs fixed in this release
 
 ### Known problems introduced by this release
+
+## [1.0.16](https://github.com/Tenacom/PolyKit/releases/tag/1.0.16) (2022-11-01)
+
+Initial release.
