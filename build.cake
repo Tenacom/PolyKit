@@ -210,7 +210,7 @@ Task("Release")
             }
             else
             {
-                await context.DispatchWorkflow(data, SysPath.GetFileName(pagesDeploymentWorkflow), "main");
+                await context.DispatchWorkflow(data, SysPath.GetFileName(pagesDeploymentWorkflow.FullPath), "main");
             }
 
             // Last but not least, publish the release.
