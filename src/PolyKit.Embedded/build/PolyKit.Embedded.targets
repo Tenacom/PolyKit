@@ -57,7 +57,7 @@
     </PropertyGroup>
 
     <!--
-      Set PolyKit_GeneratePublicTypes to true if you are compiling a polyfill library.
+      Set PolyKit_GeneratePublicTypes to true if compiling a polyfill library.
       The default value is false, meaning that all polyfill types will have internal access.
     -->
     <PropertyGroup>
