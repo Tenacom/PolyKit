@@ -242,9 +242,20 @@ Task("Release")
                 arguments = arguments.Append("--amend");
             }
 
-            arguments = arguments.Append("-m").AppendQuoted($"Prepare release {data.Version} [skip ci]");
+            arguments = arguments.Append("-m").AppendQuoted("Prepare release [skip ci]");
             _ = context.Exec("git", arguments);
+
+            // The commit changed the Git height, so update build data
+            // and amend the commit adding the right version.
             data.Update(context);
+            _ = context.Exec(
+                "git",
+                new ProcessArgumentBuilder()
+                    .Append("commit")
+                    .Append("--amend")
+                    .Append("-m")
+                    .AppendQuoted($"Prepare release {data.Version} [skip ci]"));
+
             committed = true;
         }
     });
