@@ -116,7 +116,8 @@ PolyKit provides support for the following features across all [compatible targe
 - [SkipLocalsInit](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/attributes/general#skiplocalsinit-attribute);
 - [ValidatedNotNull](https://docs.microsoft.com/en-us/dotnet/api/microsoft.validatednotnullattribute) (see note #3);
 - [StackTraceHidden](https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.stacktracehiddenattribute) (see note #4);
-- support for writing [custom string interpolation handlers](https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/tutorials/interpolated-string-handler).
+- support for writing [custom string interpolation handlers](https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/tutorials/interpolated-string-handler);
+- [TryGetNonEnumeratedCount](https://learn.microsoft.com/en-us/dotnet/api/system.linq.enumerable.trygetnonenumeratedcount) (see note #5).
 
 **Note #1:** This feature depends on `System.ValueTuple`, which is not present in .NET Framework versions prior to 4.7. If you reference the `PolyKit.Embedded` package in a project targeting .NET Framework 4.6.2 or 4.6.3, you must also add a package reference to [`System.ValueTuple`](https://www.nuget.org/packages/System.ValueTuple); otherwise, compilation will not fail, but features dependent on ValueTuple will not be present in the compiled assembly.
 
@@ -127,6 +128,8 @@ PolyKit provides support for the following features across all [compatible targe
 **Note #4:** Polyfilling `StackTraceHiddenAttribute` would be worthless without providing actual support for it.
 PolyKit cannot replace relevant code (`Exception.StackTrace` getter and `StackTrace.ToString()` method) in frameworks prior to .NET 6.0, but it provides the two extension methods `Exception.GetStackTraceHidingFrames()` and `StackTrace.ToStringHidingFrames()` that retrofit the behavior of `Exception.StackTrace` and `StackTrace.ToString()` respectively to frameworks prior to .NET 6, where `StackTraceHiddenAttribute` was first introduced, while being simply facades for the "real" code in .NET 6.0+.
 Be aware, though, of the following limitations: the output of the "retrofitted" extension methods is always in US English, regardless of any locale setting; external exception stack trace boundaries ("End of stack trace from previous location" lines) are missing from returned strings.
+
+**Note #5:** Obviously PolyKit cannot extend `System.Linq.Enumerable`, so we'll have to meet halfway on it. Add `PolyKit.Linq` to your `using` clauses and use the `TryGetCountWithoutEnumerating<TSource>` method: it will just call `TryGetNonEnumeratedCount<TSource>`on .NET 6.0+ and replicate most of its functionality (except where it requires access to runtime internal types) on older frameworks.
 
 ## Quick start
 
