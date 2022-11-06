@@ -1,19 +1,13 @@
 ﻿#if NET6_0_OR_GREATER
 
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 
 namespace PolyKit.Diagnostics;
 
 /// <summary>
 /// Provides extension methods for instances of <see cref="StackTrace"/> to support polyfilled features.
 /// </summary>
-[ExcludeFromCodeCoverage, DebuggerNonUserCode]
-#if POLYKIT_PUBLIC
-public
-#else
-internal
-#endif
+public // polyfill!
 static class PolyKitStackTraceExtensions
 {
     /// <summary>
@@ -32,7 +26,6 @@ static class PolyKitStackTraceExtensions
 using System;
 using System.Collections;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -45,12 +38,7 @@ namespace PolyKit.Diagnostics;
 /// <summary>
 /// Provides extension methods for instances of <see cref="StackTrace"/> to support polyfilled features.
 /// </summary>
-[ExcludeFromCodeCoverage, DebuggerNonUserCode]
-#if POLYKIT_PUBLIC
-public
-#else
-internal
-#endif
+public // polyfill!
 static class PolyKitStackTraceExtensions
 {
     private const string StackTraceHiddenFullName = "System.Diagnostics.StackTraceHiddenAttribute";

@@ -17,12 +17,7 @@ namespace System.Diagnostics.CodeAnalysis;
 /// have not-null values when returning with the specified return value condition.
 /// </summary>
 [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property, Inherited = false, AllowMultiple = true)]
-[ExcludeFromCodeCoverage, DebuggerNonUserCode]
-#if POLYKIT_PUBLIC
-public
-#else
-internal
-#endif
+public // polyfill!
 sealed class MemberNotNullWhenAttribute : Attribute
 {
     /// <summary>

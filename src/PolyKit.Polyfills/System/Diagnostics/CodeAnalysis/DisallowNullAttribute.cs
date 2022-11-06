@@ -16,12 +16,7 @@ namespace System.Diagnostics.CodeAnalysis;
 /// Specifies that null is disallowed as an input even if the corresponding type allows it.
 /// </summary>
 [AttributeUsage(AttributeTargets.Field | AttributeTargets.Parameter | AttributeTargets.Property, Inherited = false)]
-[ExcludeFromCodeCoverage, DebuggerNonUserCode]
-#if POLYKIT_PUBLIC
-public
-#else
-internal
-#endif
+public // polyfill!
 sealed class DisallowNullAttribute : Attribute
 {
 }

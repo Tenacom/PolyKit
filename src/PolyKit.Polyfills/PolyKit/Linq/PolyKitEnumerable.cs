@@ -3,8 +3,6 @@ using System;
 #endif
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 #if NET6_0_OR_GREATER
 using System.Linq;
 #endif
@@ -21,12 +19,7 @@ namespace PolyKit.Linq;
 /// <summary>
 /// Combines the hash code for multiple values into a single hash code.
 /// </summary>
-[ExcludeFromCodeCoverage, DebuggerNonUserCode]
-#if POLYKIT_PUBLIC
-public
-#else
-internal
-#endif
+public // polyfill!
 static class PolyKitEnumerable
 {
     // Conditional compilation inside XML doc blocks is not supported.

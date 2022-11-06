@@ -1,20 +1,13 @@
 ﻿#if NET6_0_OR_GREATER
 
 using System;
-using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 
 namespace PolyKit.Diagnostics;
 
 /// <summary>
 /// Provides extension methods for exceptions to support polyfilled features.
 /// </summary>
-[ExcludeFromCodeCoverage, DebuggerNonUserCode]
-#if POLYKIT_PUBLIC
-public
-#else
-internal
-#endif
+public // polyfill!
 static class PolyKitExceptionExtensions
 {
     /// <summary>
@@ -32,7 +25,6 @@ static class PolyKitExceptionExtensions
 // The .NET Foundation licenses this file to you under the MIT license.
 using System;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using PolyKit.Diagnostics.Internal;
 
 namespace PolyKit.Diagnostics;
@@ -40,12 +32,7 @@ namespace PolyKit.Diagnostics;
 /// <summary>
 /// Provides extension methods for exceptions to support polyfilled features.
 /// </summary>
-[ExcludeFromCodeCoverage, DebuggerNonUserCode]
-#if POLYKIT_PUBLIC
-public
-#else
-internal
-#endif
+public // polyfill!
 static class PolyKitExceptionExtensions
 {
     /// <summary>

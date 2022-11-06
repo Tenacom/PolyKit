@@ -16,12 +16,7 @@ namespace System.Diagnostics.CodeAnalysis;
 /// Specifies that an output may be null even if the corresponding type disallows it.
 /// </summary>
 [AttributeUsage(AttributeTargets.Field | AttributeTargets.Parameter | AttributeTargets.Property | AttributeTargets.ReturnValue, Inherited = false)]
-[ExcludeFromCodeCoverage, DebuggerNonUserCode]
-#if POLYKIT_PUBLIC
-public
-#else
-internal
-#endif
+public // polyfill!
 sealed class MaybeNullAttribute : Attribute
 {
 }

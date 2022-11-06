@@ -16,12 +16,7 @@ namespace System.Diagnostics.CodeAnalysis;
 /// Applied to a method that will never return under any circumstance.
 /// </summary>
 [AttributeUsage(AttributeTargets.Parameter, Inherited = false)]
-[ExcludeFromCodeCoverage, DebuggerNonUserCode]
-#if POLYKIT_PUBLIC
-public
-#else
-internal
-#endif
+public // polyfill!
 sealed class DoesNotReturnIfAttribute : Attribute
 {
     /// <summary>

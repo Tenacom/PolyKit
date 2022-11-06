@@ -16,12 +16,7 @@ namespace System.Diagnostics.CodeAnalysis;
 /// Specifies that when a method returns <see cref="ReturnValue"/>, the parameter will not be null even if the corresponding type allows it.
 /// </summary>
 [AttributeUsage(AttributeTargets.Parameter, Inherited = false)]
-[ExcludeFromCodeCoverage, DebuggerNonUserCode]
-#if POLYKIT_PUBLIC
-public
-#else
-internal
-#endif
+public // polyfill!
 sealed class NotNullWhenAttribute : Attribute
 {
     /// <summary>

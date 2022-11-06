@@ -8,9 +8,6 @@
 
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
-using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
-
 namespace System.Runtime.CompilerServices;
 
 // https://github.com/dotnet/runtime/blob/v6.0.4/src/libraries/System.Private.CoreLib/src/System/Runtime/CompilerServices/SkipLocalsInitAttribute.cs
@@ -39,12 +36,7 @@ namespace System.Runtime.CompilerServices;
   | AttributeTargets.Property
   | AttributeTargets.Event,
     Inherited = false)]
-[ExcludeFromCodeCoverage, DebuggerNonUserCode]
-#if POLYKIT_PUBLIC
-public
-#else
-internal
-#endif
+public // polyfill!
 sealed class SkipLocalsInitAttribute : Attribute
 {
     /// <summary>

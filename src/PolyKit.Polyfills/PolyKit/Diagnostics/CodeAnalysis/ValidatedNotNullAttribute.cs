@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 
 namespace PolyKit.Diagnostics.CodeAnalysis;
 
@@ -9,12 +7,7 @@ namespace PolyKit.Diagnostics.CodeAnalysis;
 /// so that if / when the method returns the parameter is known to be non-null.
 /// </summary>
 [AttributeUsage(AttributeTargets.Parameter)]
-[ExcludeFromCodeCoverage, DebuggerNonUserCode]
-#if POLYKIT_PUBLIC
-public
-#else
-internal
-#endif
+public // polyfill!
 sealed class ValidatedNotNullAttribute : Attribute
 {
 }

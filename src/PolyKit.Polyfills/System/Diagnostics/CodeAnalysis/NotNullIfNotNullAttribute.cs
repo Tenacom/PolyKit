@@ -16,12 +16,7 @@ namespace System.Diagnostics.CodeAnalysis;
 /// Specifies that the output will be non-null if the named parameter is non-null.
 /// </summary>
 [AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Property | AttributeTargets.ReturnValue, AllowMultiple = true, Inherited = false)]
-[ExcludeFromCodeCoverage, DebuggerNonUserCode]
-#if POLYKIT_PUBLIC
-public
-#else
-internal
-#endif
+public // polyfill!
 sealed class NotNullIfNotNullAttribute : Attribute
 {
     /// <summary>

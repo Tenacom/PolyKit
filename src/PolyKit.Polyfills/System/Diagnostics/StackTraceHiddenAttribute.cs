@@ -20,12 +20,7 @@ namespace System.Diagnostics;
 /// <see cref="PolyKitStackTraceExtensions.ToStringHidingFrames(StackTrace)"/>.
 /// </summary>
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Constructor | AttributeTargets.Struct, Inherited = false)]
-[ExcludeFromCodeCoverage, DebuggerNonUserCode]
-#if POLYKIT_PUBLIC
-public
-#else
-internal
-#endif
+public // polyfill!
 sealed class StackTraceHiddenAttribute : Attribute
 {
     /// <summary>

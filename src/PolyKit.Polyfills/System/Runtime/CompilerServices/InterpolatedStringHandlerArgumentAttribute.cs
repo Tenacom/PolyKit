@@ -8,9 +8,6 @@
 
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
-using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
-
 namespace System.Runtime.CompilerServices;
 
 // https://github.com/dotnet/runtime/blob/v6.0.8/src/libraries/System.Private.CoreLib/src/System/Runtime/CompilerServices/InterpolatedStringHandlerArgumentAttribute.cs
@@ -19,12 +16,7 @@ namespace System.Runtime.CompilerServices;
 /// Indicates which arguments to a method involving an interpolated string handler should be passed to that handler.
 /// </summary>
 [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false, Inherited = false)]
-[ExcludeFromCodeCoverage, DebuggerNonUserCode]
-#if POLYKIT_PUBLIC
-public
-#else
-internal
-#endif
+public // polyfill!
 sealed class InterpolatedStringHandlerArgumentAttribute : Attribute
 {
     /// <summary>
