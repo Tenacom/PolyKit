@@ -19,7 +19,7 @@ namespace System.Diagnostics.CodeAnalysis;
 /// bitwise combination of its member values.
 /// </summary>
 [Flags]
-public // polyfill!
+public // polyfill!-
 enum DynamicallyAccessedMemberTypes
 {
     /// <summary>

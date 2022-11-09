@@ -54,15 +54,18 @@ public class PolyfillGenerator : IIncrementalGenerator
     };
 
     private static readonly Regex PolyfillRegex = new(
-        @"^(\s*)public(?:\s*)//(?:\s*)polyfill!(?:\s|$)",
+        @"^(\s*)public(?:\s*)//(?:\s*)polyfill!((?:\+|-)?)(?:\s|$)",
         RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.Singleline);
 
     // For the rationale behind the added attributes, see this article:
     // https://riccar.do/posts/2022/2022-05-30-well-behaved-guest-code.html
-    private static readonly IReadOnlyCollection<string> PolyfillLines = new[]
+    private static readonly IReadOnlyCollection<string> AdditionalPolyfillLines = new[]
     {
         "[System.Diagnostics.DebuggerNonUserCode]",
         "[System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]",
+    };
+    private static readonly IReadOnlyCollection<string> PolyfillLines = new[]
+    {
         "[System.CodeDom.Compiler.GeneratedCode(\"PolyKit.Embedded\", \"" + ThisAssembly.AssemblyInformationalVersion + "\")]",
         "#if POLYKIT_PUBLIC",
         "public",
@@ -108,7 +111,14 @@ public class PolyfillGenerator : IIncrementalGenerator
                         }
 
                         var indentation = match.Groups[1].Captures[0].Value;
-                        foreach (var replacementLine in PolyfillLines)
+                        var modifier = match.Groups[2].Captures[0].Value;
+
+                        // Additional polyfill lines contain attributes that are not valid on enums
+                        var replacementLines = modifier == "-"
+                            ? PolyfillLines
+                            : AdditionalPolyfillLines.Concat(PolyfillLines);
+
+                        foreach (var replacementLine in replacementLines)
                         {
                             // Only indent non-empty lines; never indent preprocessor directives
                             if (replacementLine.Length > 0 && replacementLine[0] != '#')
