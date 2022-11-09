@@ -6,6 +6,7 @@
 
 #else
 
+#pragma warning disable CS0649 // Field is never assigned to
 #pragma warning disable SA1401 // Fields should be private
 
 // Licensed to the .NET Foundation under one or more agreements.
