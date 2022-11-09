@@ -1,4 +1,5 @@
-﻿#if NET7_0_OR_GREATER
+﻿#if POLYKIT_NETSDK7_0_OR_GREATER
+#if NET7_0_OR_GREATER
 
 #if POLYKIT_PUBLIC
 [assembly: System.Runtime.CompilerServices.TypeForwardedTo(typeof(System.Diagnostics.CodeAnalysis.StringSyntaxAttribute))]
@@ -79,4 +80,5 @@ sealed class StringSyntaxAttribute : Attribute
     public object?[] Arguments { get; }
 }
 
+#endif
 #endif

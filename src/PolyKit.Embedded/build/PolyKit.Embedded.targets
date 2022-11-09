@@ -150,6 +150,15 @@
              Condition="!$(PolyKit_Silent) And !$(PolyKit_UseValueTuple)"
              Text="Polyfills requiring System.ValueTuple will NOT be generated for target '$(TargetFramework)'." />
 
+    <!--
+      Add #define constants to avoid polyfilling features from .NET versions that the .NET SDK in use cannot target.
+      There is no sense, for example, in polyfilling UnscopedRefAttribute when compiling with a .NET SDK prior to 7.0:
+      worse yet, it would give the false impression that it is actually supported.
+    -->
+    <PropertyGroup>
+      <DefineConstants Condition="$([MSBuild]::VersionGreaterThanOrEquals('$(NETCoreSdkVersion)', '7.0'))">$(DefineConstants);POLYKIT_NETSDK7_0_OR_GREATER</DefineConstants>
+    </PropertyGroup>
+
   </Target>
 
 </Project>

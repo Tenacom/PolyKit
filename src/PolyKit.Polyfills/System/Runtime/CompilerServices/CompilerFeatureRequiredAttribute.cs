@@ -1,4 +1,5 @@
-﻿#if NET7_0_OR_GREATER
+﻿#if POLYKIT_NETSDK7_0_OR_GREATER
+#if NET7_0_OR_GREATER
 
 #if POLYKIT_PUBLIC
 [assembly: System.Runtime.CompilerServices.TypeForwardedTo(typeof(System.Runtime.CompilerServices.CompilerFeatureRequiredAttribute))]
@@ -48,4 +49,5 @@ sealed class CompilerFeatureRequiredAttribute : Attribute
     public bool IsOptional { get; init; }
 }
 
+#endif
 #endif
