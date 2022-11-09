@@ -8,12 +8,7 @@
 [![CodeQL](https://github.com/Tenacom/PolyKit/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/Tenacom/PolyKit/actions/workflows/codeql-analysis.yml)
 [![CodeFactor](https://www.codefactor.io/repository/github/Tenacom/PolyKit/badge)](https://www.codefactor.io/repository/github/Tenacom/PolyKit)
 
-<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors)
-<!-- ALL-CONTRIBUTORS-BADGE:END -->
-[![Last commit](https://img.shields.io/github/last-commit/Tenacom/PolyKit.svg)](https://github.com/Tenacom/PolyKit/commits/main)
-[![Open issues](https://img.shields.io/github/issues-raw/Tenacom/PolyKit.svg?label=open+issues)](https://github.com/Tenacom/PolyKit/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc)
-[![Closed issues](https://img.shields.io/github/issues-closed-raw/Tenacom/PolyKit.svg?label=closed+issues)](https://github.com/Tenacom/PolyKit/issues?q=is%3Aissue+is%3Aclosed+sort%3Aupdated-desc)
+![Repobeats analytics image](https://repobeats.axiom.co/api/embed/cd9c861045a0253b9f3eaaa32dc5b247ad56e562.svg "Repobeats analytics image")
 
 | Latest packages | NuGet | MyGet |
 |-----------------|-------|-------|
@@ -24,12 +19,13 @@
 
 - [Read this first](#read-this-first)
 - [What is PolyKit](#what-is-polykit)
+  - [How it works](#how-it-works)
   - [Compatibility](#compatibility)
+    - [.NET SDK](#net-sdk)
     - [Target frameworks](#target-frameworks)
     - [Build toolchain](#build-toolchain)
-    - [Compiler](#compiler)
-    - [Analyzers](#analyzers)
-    - [Code coverage tools](#code-coverage-tools)
+    - [Language version](#language-version)
+    - [Analyzers, code coverage, and other tools](#analyzers-code-coverage-and-other-tools)
   - [Features](#features)
 - [Quick start](#quick-start)
   - [How to use shared polyfills across multiple projects](#how-to-use-shared-polyfills-across-multiple-projects)
@@ -64,45 +60,62 @@ PolyKit is both a run-time library (provided via the [`PolyKit`](https://nuget.o
 How you use PolyKit depends on your project:
 
 - for a single-project application or library, such as a simple console program or a source generator DLL, `internal` polyfills provided by the `PolyKit.Embedded` package will suit just fine;
+- for a library whose public-facing APIs may require polyfills, for example if some `public` method accepts or returns `Span`s, `public` polyfills provided by the `PolyKit` package will polyfill dependent applications where necessary, and get out of the way on platforms that do not require them;
 - for a multi-project solution, with some application and several shared libraries, you may want to avoid code duplication by using the `public` polyfills provided by the `PolyKit` package;
 - if your solution contains a "core" library, referenced by all other projects, you may even spare an additional dependency by incorporating `public` polyfills _in your own library_.
 
+### How it works
+
+PolyKit employs the same technique used by the .NET Standard library to expose `public` types on older frameworks without creating conflicts on newer ones: types that need no polyfilling (for example the `StringSyntax` attribute on .NET 5+) are [forwarded](https://learn.microsoft.com/en-us/dotnet/standard/assembly/type-forwarding) to their .NET runtime implementation.
+
+This way you can safely reference `PolyKit` and use, even expose, polyfilled types in a .NET Standard 2.0 library, because the actual type used will depend upon the target framework of each application.
+
+The same goes for `public` polyfills created by `PolyKit.Embedded`. In this case, however, to ensure that no type conflicts happen at runtime, you should multi-target according to the application target frameworks you want to support. For example, if your library targets .NET Standard 2.0 _only_, a .NET 6.0 application will "see" two identical `StringSyntax` types: one in the .NET runtime and the other in `PolyKit.dll`.
+
+The solution is simple: when using `PolyKit.Embedded` to add `public` polyfills to a library, set your `TargetFrameworks` property so that you generate all possible sets of polyfills.
+
+The optimal set of target frameworks for `public` polyfills is equal to the target frameworks of the `PolyKit` package. At the time of writing it is `net462;net47;netstandard2.0;netstandard2.1;net6.0;net7.0`, but you may refer to [this NuGet page](https://www.nuget.org/packages/PolyKit#supportedframeworks-body-tab) at any time to find out which frameworks are targeted by the latest version of `PolyKit`.
+
 ### Compatibility
+
+#### .NET SDK
+
+`PolyKit` and `PolyKit.Embedded` require that you build dependent projects with .NET SDK version 6.0 or later.
+
+When using .NET SDK 6.0 with `PolyKit.Embedded`, types that were introduced with .NET 7 are not polyfilled, as they would not be supported anyway.
 
 #### Target frameworks
 
 Polyfills provided by `PolyKit` and `PolyKit.Embedded` are compatible with all flavors of .NET supported by Microsoft at the time of publishing, as well as all corresponding versions of .NET Standard:
 
 - .NET Framework 4.6.2 or greater;
-- .NET Core 3.1;
 - .NET 6 or greater;
 - .NET Standard 2.0 or greater.
 
 #### Build toolchain
 
-A minimum of Visual Studio / Build Tools 2022 or .NET SDK 6.0 is required to compile the polyfills provided by `PolyKit.Embedded`.
+A minimum of Visual Studio / Build Tools 2022 and/or .NET SDK 6.0 is required to compile the polyfills provided by `PolyKit.Embedded`.
 
-#### Compiler
+#### Language version
 
 C# language version 10.0 or greater is required to compile the polyfills provided by `PolyKit.Embedded`.
 
-It is recommended to set the `LangVersion` property to `latest` in projects that reference `PolyKit.Embedded`.
+It is recommended to set the `LangVersion` property to `latest` in projects that reference `PolyKit` or `PolyKit.Embedded`, in order to take advantage of all the polyfilled features (besides, of course, all other features introduced with new versions of the language).
 
-#### Analyzers
+#### Analyzers, code coverage, and other tools
 
 Hell is other people's code, right?
 
 By referencing `PolyKit.Embedded` you are inviting our code into your project, that may well have very different code style settings. Are you thus condemned to see dozens of warnings pollute your Error List window and/or your build log forever?
 
-Of course not! All code provided by `PolyKit.Embedded` is marked as being "auto-generated", so that code style analyzers will happily skip it.
+Of course not! All code provided by `PolyKit.Embedded` is [well-behaved guest code](https://riccar.do/posts/2022/2022-05-30-well-behaved-guest-code.html):
 
-#### Code coverage tools
+- all source files bear the "auto-generated" mark, so that code style analyzers will happily skip them;
+- every source file name ends in `.g` (e.g. `Index.g.cs`) so that it can be automatically excluded from code coverage;
+- all added types are marked with a [`GeneratedCode`](https://learn.microsoft.com/en-us/dotnet/api/system.codedom.compiler.generatedcodeattribute) attribute;
+- all added classes and structs are marked with [`ExcludeFromCodeCoverage`](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.codeanalysis.excludefromcodecoverageattribute) and [`DebuggerNonUserCode`](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.debuggernonusercodeattribute) attributes.
 
-Besides bearing the "auto-generated" mark, every source file added to your project by `PolyKit.Embedded` has a name ending in `.g` (e.g. `Index.g.cs`) so that it can be automatically excluded from code coverage.
-
-Furthermore, all classes and structs provided by `PolyKit.Embedded` have an `ExcludeFromCodeCoverage` attribute.
-
-All this ensures that using `PolyKit.Embedded` will have zero impact on your coverage measurements.
+All this ensures that using `PolyKit.Embedded` will have zero impact on your coverage measurements, code metrics, analyzer diagnostic output, and debugging experience.
 
 ### Features
 
@@ -112,12 +125,23 @@ PolyKit provides support for the following features across all [compatible targe
 - [indices and ranges](https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-8#indices-and-ranges) (see note #1);
 - [`init` accessor on properties and indexers](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/init);
 - [caller argument expressions](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/attributes/caller-information#argument-expressions);
-- [System.HashCode](https://docs.microsoft.com/en-us/dotnet/api/system.hashcode) (see note #2);
-- [SkipLocalsInit](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/attributes/general#skiplocalsinit-attribute);
-- [ValidatedNotNull](https://docs.microsoft.com/en-us/dotnet/api/microsoft.validatednotnullattribute) (see note #3);
-- [StackTraceHidden](https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.stacktracehiddenattribute) (see note #4);
+- [required members](https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-11#required-members);
+- [`scoped` modifier](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/proposals/csharp-11.0/low-level-struct-improvements) (including the `UnscopedRef` attribute);
+- [`AsyncMethodBuilder` attribute](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/attributes/general#asyncmethodbuilder-attribute);
+- [`ModuleInitializer` attribute](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/attributes/general#moduleinitializer-attribute);
+- [`SkipLocalsInit` attribute](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/proposals/csharp-9.0/skip-localsinit);
+- [trimming incompatibility attributes](https://learn.microsoft.com/en-us/dotnet/core/deploying/trimming/prepare-libraries-for-trimming#resolve-trim-warnings);
+- [`UnconditionalSuppressMessage` attribute](https://learn.microsoft.com/en-us/dotnet/core/deploying/trimming/prepare-libraries-for-trimming#unconditionalsuppressmessage);
+- [`CompilerFeatureRequired` attribute](https://github.com/dotnet/runtime/issues/66167);
+- [`RequiresPreviewFeatures` attribute](https://github.com/dotnet/designs/blob/main/accepted/2021/preview-features/preview-features.md);
+- [`UnmanagedCallersOnly` attribute](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/proposals/csharp-9.0/function-pointers#systemruntimeinteropservicesunmanagedcallersonlyattribute);
+- [`ConstantExpected` attribute](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.codeanalysis.constantexpectedattribute);
+- [`StringSyntax` attribute](https://github.com/dotnet/runtime/issues/62505);
+- [`System.HashCode` struct](https://docs.microsoft.com/en-us/dotnet/api/system.hashcode) (see note #2);
+- [`ValidatedNotNull` attribute](https://docs.microsoft.com/en-us/dotnet/api/microsoft.validatednotnullattribute) (see note #3);
+- [`StackTraceHidden` attribute](https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.stacktracehiddenattribute) (see note #4);
 - support for writing [custom string interpolation handlers](https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/tutorials/interpolated-string-handler);
-- [TryGetNonEnumeratedCount](https://learn.microsoft.com/en-us/dotnet/api/system.linq.enumerable.trygetnonenumeratedcount) (see note #5).
+- [`Enumerable.TryGetNonEnumeratedCount<TSource>` method](https://learn.microsoft.com/en-us/dotnet/api/system.linq.enumerable.trygetnonenumeratedcount) (see note #5).
 
 **Note #1:** This feature depends on `System.ValueTuple`, which is not present in .NET Framework versions prior to 4.7. If you reference the `PolyKit.Embedded` package in a project targeting .NET Framework 4.6.2 or 4.6.3, you must also add a package reference to [`System.ValueTuple`](https://www.nuget.org/packages/System.ValueTuple); otherwise, compilation will not fail, but features dependent on ValueTuple will not be present in the compiled assembly.
 
