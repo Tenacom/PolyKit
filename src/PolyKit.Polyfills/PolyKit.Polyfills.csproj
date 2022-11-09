@@ -10,7 +10,8 @@
     Both .NET Framework 4.6.2 and 4.7 are present because v4.7 does not require a dependency on System.ValueTuple.
   -->
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netstandard2.1;net462;net47;netcoreapp3.1;net6.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;netstandard2.1;net462;net47;net6.0;net7.0</TargetFrameworks>
+    <LangVersion>11</LangVersion>
     <RootNamespace />
     <IsPackable>false</IsPackable>
   </PropertyGroup>
