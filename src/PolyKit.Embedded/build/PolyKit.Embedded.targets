@@ -33,6 +33,16 @@
            Text="Language version '$(LangVersion)' is not suitable to compile polyfills. Set LangVersion to 'latest', 'latestMajor', 'preview', or at least 10.0 in your project file."
            File="$(MSBuildProjectFullPath)" />
 
+    <!-- Check for a supported version of .NET SDK (6.0 or later) -->
+    <PropertyGroup>
+      <_PolyKit_NetSdkSupported>false</_PolyKit_NetSdkSupported>
+      <_PolyKit_NetSdkSupported Condition="$([MSBuild]::VersionGreaterThanOrEquals('$(NETCoreSdkVersion)', '6.0'))">true</_PolyKit_NetSdkSupported>
+    </PropertyGroup>
+    <Error Condition="!$(_PolyKit_NetSdkSupported)"
+           Code="POLYKIT0003"
+           Text="PolyKit.Embedded requires .NET SDK 6.0 or a later version."
+           File="$(MSBuildProjectFullPath)" />
+
   </Target>
 
   <!--
