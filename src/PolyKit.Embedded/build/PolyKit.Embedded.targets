@@ -43,6 +43,28 @@
            Text="PolyKit.Embedded requires .NET SDK 6.0 or a later version."
            File="$(MSBuildProjectFullPath)" />
 
+    <!--
+      Obtain a target framework version without the initial 'v'.
+      .NET SDK defines a _TargetFrameworkVersionWithoutV property,
+      but the initial underscore suggests that it is an internal implementation detail
+      and could be pulled from under our feet at any time.
+    -->
+    <PropertyGroup>
+      <_PolyKit_TargetFrameworkVersion>$(TargetFrameworkVersion.TrimStart('vV'))</_PolyKit_TargetFrameworkVersion>
+    </PropertyGroup>
+
+    <!-- Check for a supported target framework -->
+    <PropertyGroup>
+      <_PolyKit_TargetFrameworkSupported>false</_PolyKit_TargetFrameworkSupported>
+      <_PolyKit_TargetFrameworkSupported Condition="'$(TargetFrameworkIdentifier)' == '.NETCoreApp' And $([MSBuild]::VersionGreaterThanOrEquals('$(_PolyKit_TargetFrameworkVersion)', '6.0'))">true</_PolyKit_TargetFrameworkSupported>
+      <_PolyKit_TargetFrameworkSupported Condition="'$(TargetFrameworkIdentifier)' == '.NETStandard' And $([MSBuild]::VersionGreaterThanOrEquals('$(_PolyKit_TargetFrameworkVersion)', '2.0'))">true</_PolyKit_TargetFrameworkSupported>
+      <_PolyKit_TargetFrameworkSupported Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework' And $([MSBuild]::VersionGreaterThanOrEquals('$(_PolyKit_TargetFrameworkVersion)', '4.6.2'))">true</_PolyKit_TargetFrameworkSupported>
+    </PropertyGroup>
+    <Error Condition="!$(_PolyKit_TargetFrameworkSupported)"
+           Code="POLYKIT0004"
+           Text="PolyKit.Embedded is not compatible with $(TargetFramework). Compatible target frameworks include net462, netstandard2.0, net6.0, and later versions."
+           File="$(MSBuildProjectFullPath)" />
+
   </Target>
 
   <!--
