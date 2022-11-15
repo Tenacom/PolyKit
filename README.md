@@ -6,7 +6,6 @@
 
 [![Build, test, and pack](https://github.com/Tenacom/PolyKit/actions/workflows/build-test-pack.yml/badge.svg)](https://github.com/Tenacom/PolyKit/actions/workflows/build-test-pack.yml)
 [![CodeQL](https://github.com/Tenacom/PolyKit/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/Tenacom/PolyKit/actions/workflows/codeql-analysis.yml)
-[![CodeFactor](https://www.codefactor.io/repository/github/Tenacom/PolyKit/badge)](https://www.codefactor.io/repository/github/Tenacom/PolyKit)
 
 ![Repobeats analytics image](https://repobeats.axiom.co/api/embed/cd9c861045a0253b9f3eaaa32dc5b247ad56e562.svg "Repobeats analytics image")
 
