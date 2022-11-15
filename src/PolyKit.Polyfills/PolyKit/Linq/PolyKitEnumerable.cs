@@ -66,7 +66,8 @@ static class PolyKitEnumerable
     public static bool TryGetCountWithoutEnumerating<TSource>(this IEnumerable<TSource> source, out int count)
     {
 #if NET6_0_OR_GREATER
-        return Enumerable.TryGetNonEnumeratedCount(source, out count);
+        // System.Linq will throw ArgumentNullException if necessary
+        return Enumerable.TryGetNonEnumeratedCount(source!, out count);
 #else
         switch (source)
         {
