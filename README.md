@@ -26,7 +26,7 @@
     - [Build toolchain](#build-toolchain)
     - [Language version](#language-version)
     - [Analyzers, code coverage, and other tools](#analyzers-code-coverage-and-other-tools)
-  - [Features](#features)
+- [Features](#features)
 - [Quick start](#quick-start)
   - [How to use shared polyfills across multiple projects](#how-to-use-shared-polyfills-across-multiple-projects)
   - [How to add polyfills to a stand-alone project (simple application, source generator)](#how-to-add-polyfills-to-a-stand-alone-project-simple-application-source-generator)
@@ -117,7 +117,7 @@ Of course not! All code provided by `PolyKit.Embedded` is [well-behaved guest co
 
 All this ensures that using `PolyKit.Embedded` will have zero impact on your coverage measurements, code metrics, analyzer diagnostic output, and debugging experience.
 
-### Features
+## Features
 
 PolyKit provides support for the following features across all [compatible target frameworks](#target-frameworks):
 
