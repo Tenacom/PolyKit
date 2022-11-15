@@ -113,7 +113,7 @@ public class PolyfillGenerator : IIncrementalGenerator
                         var indentation = match.Groups[1].Captures[0].Value;
                         var modifier = match.Groups[2].Captures[0].Value;
 
-                        // Additional polyfill lines contain attributes that are not valid on enums
+                        // Additional polyfill lines contain attributes that are not valid on enums and interfaces
                         var replacementLines = modifier == "-"
                             ? PolyfillLines
                             : AdditionalPolyfillLines.Concat(PolyfillLines);

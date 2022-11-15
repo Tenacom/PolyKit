@@ -23,7 +23,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - [`RequiresPreviewFeatures` attribute](https://github.com/dotnet/designs/blob/main/accepted/2021/preview-features/preview-features.md);
   - [`UnmanagedCallersOnly` attribute](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/proposals/csharp-9.0/function-pointers#systemruntimeinteropservicesunmanagedcallersonlyattribute);
   - [`ConstantExpected` attribute](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.codeanalysis.constantexpectedattribute);
-  - [`StringSyntax` attribute](https://github.com/dotnet/runtime/issues/62505).
+  - [`StringSyntax` attribute](https://github.com/dotnet/runtime/issues/62505);
+  - [`ISpanFormattable` interface](https://learn.microsoft.com/en-us/dotnet/api/system.ispanformattable) (note that the polyfill does NOT add `ISpanFormattable` support to .NET Runtime types).
 
 ### Changes to existing features
 
