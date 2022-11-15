@@ -1,8 +1,9 @@
 # ![PolyKit - C# polyfills, your way](graphics/Readme.png)
 
-[![License](https://img.shields.io/github/license/Tenacom/PolyKit.svg)](https://github.com/Tenacom/PolyKit/blob/main/LICENSE)
-[![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/Tenacom/PolyKit?include_prereleases)](https://github.com/Tenacom/PolyKit/releases)
-[![Changelog](https://img.shields.io/badge/changelog-Keep%20a%20Changelog%20v1.0.0-%23E05735)](https://github.com/Tenacom/PolyKit/blob/main/CHANGELOG.md)
+[![License](https://badgen.net/badge/license/MIT/blue)](https://github.com/Tenacom/PolyKit/blob/main/LICENSE)
+[![Latest release](https://badgen.net/github/release/Tenacom/PolyKit?label=latest)](https://github.com/Tenacom/PolyKit/releases)
+[![Latest stable release](https://badgen.net/github/release/Tenacom/PolyKit/stable?label=stable)](https://github.com/Tenacom/PolyKit/releases)
+[![Changelog](https://badgen.net/badge/changelog/Keep%20a%20Changelog%20v1.0.0/orange)](https://github.com/Tenacom/PolyKit/blob/main/CHANGELOG.md)
 
 [![Build, test, and pack](https://github.com/Tenacom/PolyKit/actions/workflows/build-test-pack.yml/badge.svg)](https://github.com/Tenacom/PolyKit/actions/workflows/build-test-pack.yml)
 [![CodeQL](https://github.com/Tenacom/PolyKit/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/Tenacom/PolyKit/actions/workflows/codeql-analysis.yml)
@@ -11,8 +12,8 @@
 
 | Latest packages | NuGet | MyGet |
 |-----------------|-------|-------|
-| PolyKit            | [![PolyKit @ NuGet](https://img.shields.io/nuget/v/PolyKit?label=&color=009900)](https://nuget.org/packages/PolyKit) | [![PolyKit @ MyGet](https://img.shields.io/myget/tenacom-preview/vpre/PolyKit?label=&color=orange)](https://www.myget.org/feed/tenacom-preview/package/nuget/PolyKit) |
-| PolyKit.Embedded | [![PolyKit.Embedded @ NuGet](https://img.shields.io/nuget/v/PolyKit.Embedded?label=&color=009900)](https://nuget.org/packages/PolyKit.Embedded) | [![PolyKit.Embedded @ MyGet](https://img.shields.io/myget/tenacom-preview/vpre/PolyKit.Embedded?label=&color=orange)](https://www.myget.org/feed/tenacom-preview/package/nuget/PolyKit.Embedded) |
+| PolyKit | [![PolyKit @ NuGet](https://badgen.net/nuget/v/PolyKit?icon=nuget&label=)](https://nuget.org/packages/PolyKit) | [![PolyKit @ MyGet](https://img.shields.io/myget/tenacom-preview/vpre/PolyKit?label=&color=orange)](https://www.myget.org/feed/tenacom-preview/package/nuget/PolyKit) |
+| PolyKit.Embedded | [![PolyKit.Embedded @ NuGet](https://badgen.net/nuget/v/PolyKit.Embedded?icon=nuget&label=)](https://nuget.org/packages/PolyKit.Embedded) | [![PolyKit.Embedded @ MyGet](https://img.shields.io/myget/tenacom-preview/vpre/PolyKit.Embedded?label=&color=orange)](https://www.myget.org/feed/tenacom-preview/package/nuget/PolyKit.Embedded) |
 
 ---
 
