@@ -42,6 +42,7 @@ public // polyfill!
 static class PolyKitStackTraceExtensions
 {
     private const string StackTraceHiddenFullName = "System.Diagnostics.StackTraceHiddenAttribute";
+    private const string AsyncIteratorStateMachineAttributeFullName = "System.Runtime.CompilerServices.AsyncIteratorStateMachineAttribute";
 
     // https://github.com/dotnet/runtime/blob/v6.0.4/src/libraries/System.Private.CoreLib/src/System/Diagnostics/StackTrace.cs#L178
 
@@ -332,7 +333,7 @@ static class PolyKitStackTraceExtensions
                 // AsyncIteratorStateMachineAttribute is not present in .NET Standard 2.0,
                 // but we could well be running in a .NET 6 application,
                 // so we need to recognize the attribute someway.
-                foundIteratorAttribute |= asma is IteratorStateMachineAttribute || asma.GetType().FullName == "System.Runtime.CompilerServices.AsyncIteratorStateMachineAttribute";
+                foundIteratorAttribute |= asma is IteratorStateMachineAttribute || asma.GetType().FullName == AsyncIteratorStateMachineAttributeFullName;
             }
 
             if (foundAttribute)
