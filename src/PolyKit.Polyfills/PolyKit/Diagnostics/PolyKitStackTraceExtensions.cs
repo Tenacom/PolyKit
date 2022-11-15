@@ -314,6 +314,7 @@ static class PolyKitStackTraceExtensions
             return false;
         }
 
+        var localDeclaringType = declaringType;
         foreach (var candidateMethod in methods)
         {
             var attributes = candidateMethod.GetCustomAttributes<StateMachineAttribute>(inherit: false);
@@ -324,17 +325,14 @@ static class PolyKitStackTraceExtensions
 
             var foundAttribute = false;
             var foundIteratorAttribute = false;
-            foreach (var asma in attributes)
+            foreach (var asma in attributes.Where(a => a.StateMachineType == localDeclaringType))
             {
-                if (asma.StateMachineType == declaringType)
-                {
-                    foundAttribute = true;
+                foundAttribute = true;
 
-                    // AsyncIteratorStateMachineAttribute is not present in .NET Standard 2.0,
-                    // but we could well be running in a .NET 6 application,
-                    // so we need to recognize the attribute someway.
-                    foundIteratorAttribute |= asma is IteratorStateMachineAttribute || asma.GetType().FullName == "System.Runtime.CompilerServices.AsyncIteratorStateMachineAttribute";
-                }
+                // AsyncIteratorStateMachineAttribute is not present in .NET Standard 2.0,
+                // but we could well be running in a .NET 6 application,
+                // so we need to recognize the attribute someway.
+                foundIteratorAttribute |= asma is IteratorStateMachineAttribute || asma.GetType().FullName == "System.Runtime.CompilerServices.AsyncIteratorStateMachineAttribute";
             }
 
             if (foundAttribute)
