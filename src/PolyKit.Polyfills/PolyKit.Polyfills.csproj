@@ -16,16 +16,15 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
-  <!-- Suppress some Code Analysis warnings, due to the peculiarity of this project -->
+  <!-- Suppress all code style analyzers: code copied from dotnet/runtime raises too many warnings to even care. -->
+  <PropertyGroup>
+    <AnalysisModeStyle>None</AnalysisModeStyle>
+    <UseStyleCopAnalyzers>false</UseStyleCopAnalyzers>
+  </PropertyGroup>
+
+  <!-- Suppress some compiler warnings, due to peculiarities of this project. -->
   <PropertyGroup>
     <NoWarn>$(NoWarn);CA1812</NoWarn> <!-- Avoid uninstantiated internal classes - This project's whole point is to build internal polyfills -->
-    <NoWarn>$(NoWarn);SA1133</NoWarn> <!-- Each attribute should be placed in its own set of square brackets
-                                           - ExcludeFromCodeCoverage and DebuggerNonUserCode are easier to add to each polyfill type if they are on a single line -->
-     <!-- Suppress all ordering rules except for usings -->
-     <NoWarn>$(NoWarn);SA1201;SA1202;SA1203;SA1204;SA1206;SA1207;SA1212;SA1213;SA1214</NoWarn>
-     <!-- Suppress all layout rules except those dealing with blank lines -->
-     <NoWarn>$(NoWarn);SA1500;SA1501;SA1502;SA1503;SA1504;SA1519;SA1520</NoWarn>
-    <NoWarn>$(NoWarn);SA1633</NoWarn> <!-- File should have header - File headers will be added by PolyKit.Generator -->
   </PropertyGroup>
 
   <!-- Reference all necessary packages to enable all polyfill features -->
