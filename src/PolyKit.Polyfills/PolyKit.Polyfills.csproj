@@ -4,8 +4,8 @@
     This project's only purpose is to ensure that polyfill sources build correctly.
     Target frameworks are included based on their support status at the time of writing
     (excluding extended support) according to relevant documentation:
-    https://docs.microsoft.com/en-us/lifecycle/products/microsoft-net-framework
-    https://docs.microsoft.com/en-us/lifecycle/products/microsoft-net-and-net-core
+    https://learn.microsoft.com/en-us/lifecycle/products/microsoft-net-framework
+    https://learn.microsoft.com/en-us/lifecycle/products/microsoft-net-and-net-core
 
     Both .NET Framework 4.6.2 and 4.7 are present because v4.7 does not require a dependency on System.ValueTuple.
   -->
