@@ -121,10 +121,10 @@ All this ensures that using `PolyKit.Embedded` will have zero impact on your cov
 
 PolyKit provides support for the following features across all [compatible target frameworks](#target-frameworks):
 
-- [nullable reference types](https://docs.microsoft.com/en-us/dotnet/csharp/nullable-references), including null state analysis;
-- [indices and ranges](https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-8#indices-and-ranges) (see note #1);
-- [`init` accessor on properties and indexers](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/init);
-- [caller argument expressions](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/attributes/caller-information#argument-expressions);
+- [nullable reference types](https://learn.microsoft.com/en-us/dotnet/csharp/nullable-references), including null state analysis;
+- [indices and ranges](https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-8#indices-and-ranges) (see note #1);
+- [`init` accessor on properties and indexers](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/init);
+- [caller argument expressions](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/attributes/caller-information#argument-expressions);
 - [required members](https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-11#required-members);
 - [`scoped` modifier](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/proposals/csharp-11.0/low-level-struct-improvements) (including the `UnscopedRef` attribute);
 - [`AsyncMethodBuilder` attribute](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/attributes/general#asyncmethodbuilder-attribute);
@@ -137,12 +137,13 @@ PolyKit provides support for the following features across all [compatible targe
 - [`UnmanagedCallersOnly` attribute](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/proposals/csharp-9.0/function-pointers#systemruntimeinteropservicesunmanagedcallersonlyattribute);
 - [`ConstantExpected` attribute](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.codeanalysis.constantexpectedattribute);
 - [`StringSyntax` attribute](https://github.com/dotnet/runtime/issues/62505);
-- [`System.HashCode` struct](https://docs.microsoft.com/en-us/dotnet/api/system.hashcode) (see note #2);
-- [`ValidatedNotNull` attribute](https://docs.microsoft.com/en-us/dotnet/api/microsoft.validatednotnullattribute) (see note #3);
-- [`StackTraceHidden` attribute](https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.stacktracehiddenattribute) (see note #4);
-- support for writing [custom string interpolation handlers](https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/tutorials/interpolated-string-handler);
+- [`System.HashCode` struct](https://learn.microsoft.com/en-us/dotnet/api/system.hashcode) (see note #2);
+- [`ValidatedNotNull` attribute](https://learn.microsoft.com/en-us/dotnet/api/microsoft.validatednotnullattribute) (see note #3);
+- [`StackTraceHidden` attribute](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.stacktracehiddenattribute) (see note #4);
+- support for writing [custom string interpolation handlers](https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/tutorials/interpolated-string-handler);
 - [`Enumerable.TryGetNonEnumeratedCount<TSource>` method](https://learn.microsoft.com/en-us/dotnet/api/system.linq.enumerable.trygetnonenumeratedcount) (see note #5);
-- [`ISpanFormattable` interface](https://learn.microsoft.com/en-us/dotnet/api/system.ispanformattable) (see note #6).
+- [`ISpanFormattable` interface](https://learn.microsoft.com/en-us/dotnet/api/system.ispanformattable) (see note #6);
+- [`DateOnly`](https://learn.microsoft.com/en-us/dotnet/api/system.dateonly) and [`TimeOnly`](https://learn.microsoft.com/en-us/dotnet/api/system.timeonly) structs (see note #7).
 
 **Note #1:** This feature depends on `System.ValueTuple`, which is not present in .NET Framework versions prior to 4.7. If you reference the `PolyKit.Embedded` package in a project targeting .NET Framework 4.6.2 or 4.6.3, you must also add a package reference to [`System.ValueTuple`](https://www.nuget.org/packages/System.ValueTuple); otherwise, compilation will not fail, but features dependent on ValueTuple will not be present in the compiled assembly.
 
@@ -157,6 +158,8 @@ Be aware, though, of the following limitations: the output of the "retrofitted" 
 **Note #5:** Obviously PolyKit cannot extend `System.Linq.Enumerable`, so we'll have to meet halfway on it. Add `PolyKit.Linq` to your `using` clauses and use the `TryGetCountWithoutEnumerating<TSource>` method: it will just call `TryGetNonEnumeratedCount<TSource>`on .NET 6.0+ and replicate most of its functionality (except where it requires access to runtime internal types) on older frameworks.
 
 **Note #6:** PolyKit does not (and can not) add `ISpanFormattable` support to .NET Runtime types: `intVar is ISpanFormattable` will still be `false` except on .NET 6.0 and later versions. You can, however, implement `ISpanFormattable` in a type exposed by a multi-target library, no `#if` needed: it will behave just as you expect on .NET 6.0+, and still have a `TryFormat` method on older platforms (unless you used an explicit implementation). Also note that, in projects referencing `PolyKit.Embedded` and targeting .NET Framework or .NET Standard 2.0,  `ISpanFormattable` will only be compiled if package [`System.Memory`](https://www.nuget.org/packages/System.Memory) is also referenced.
+
+**Note #7:** Polyfills for `DateOnly` and `TimeOnly`, unlike their .NET Runtime counterparts, do not support the [`IParsable`](https://learn.microsoft.com/en-us/dotnet/api/system.iparsable) and [`ISpanParsable<TSelf>`](https://learn.microsoft.com/en-us/dotnet/api/system.ispanparsable-1) interfaces because they contain [static virtual members](https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/tutorials/static-virtual-interface-members), a feature of C# 11.0 that requires .NET 7 and cannot be just polyfilled. The methods are there, you can use them (for instance you can call `DateOnly.Parse(str)`), but they are just public methods of the individual types, not associated with any interface.
 
 ## Quick start
 

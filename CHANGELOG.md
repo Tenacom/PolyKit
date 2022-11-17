@@ -24,7 +24,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - [`UnmanagedCallersOnly` attribute](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/proposals/csharp-9.0/function-pointers#systemruntimeinteropservicesunmanagedcallersonlyattribute);
   - [`ConstantExpected` attribute](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.codeanalysis.constantexpectedattribute);
   - [`StringSyntax` attribute](https://github.com/dotnet/runtime/issues/62505);
-  - [`ISpanFormattable` interface](https://learn.microsoft.com/en-us/dotnet/api/system.ispanformattable) (note that the polyfill does NOT add `ISpanFormattable` support to .NET Runtime types).
+  - [`ISpanFormattable` interface](https://learn.microsoft.com/en-us/dotnet/api/system.ispanformattable) (note that the polyfill does NOT add `ISpanFormattable` support to .NET Runtime types);
+  - [`DateOnly`](https://learn.microsoft.com/en-us/dotnet/api/system.dateonly) and [`TimeOnly`](https://learn.microsoft.com/en-us/dotnet/api/system.timeonly) structs (not that the polyfills do NOT implement [`IParsable`](https://learn.microsoft.com/en-us/dotnet/api/system.iparsable) and [`ISpanParsable<TSelf>`](https://learn.microsoft.com/en-us/dotnet/api/system.ispanparsable-1), although the methods are there and can be used as public methods of the individual types).
 
 ### Changes to existing features
 
