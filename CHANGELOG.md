@@ -9,6 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### New features
 
+### Changes to existing features
+
+### Bugs fixed in this release
+
+### Known problems introduced by this release
+
+## [2.0.24](https://github.com/Tenacom/PolyKit/releases/tag/2.0.24) (2022-11-23)
+
+### New features
+
 - .NET 7 was added as a target platform.
 - Features that were introduced with .NET 7 are not polyfilled by PolyKit.Embedded when compiling with .NET SDK 6.0. This avoids giving the user the false impression that, for example, `UnscopedRefAttribute` is supported, when the compiler doesn't actually support it.
 - PolyKit now provides a quasi-polyfill for [`Enumerable.TryGetNonEnumeratedCount<TSource>`](https://learn.microsoft.com/en-us/dotnet/api/system.linq.enumerable.trygetnonenumeratedcount). Since extending the `Enumerable` class is not possible, PolyKit adds (in the `PolyKit.Linq` namespace) a `TryGetCountWithoutEnumerating<TSource>` extension method that calls `TryGetNonEnumeratedCount<TSource>` on .NET6.0+ and polyfills as much functionality as possible on older frameworks.
@@ -31,10 +41,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **BREAKING CHANGE:** Following .NET's [Library support for older frameworks](https://learn.microsoft.com/en-us/dotnet/core/compatibility/core-libraries/7.0/old-framework-support) policy, support for .NET Core 3.1 has been removed.
 - All types provideed by PolyKit are now flagged with the necessary attributes to be ignored by code analyzers, debuggers, code coverage tools, code metrics, etc. See [this blog post](https://riccar.do/posts/2022/2022-05-30-well-behaved-guest-code.html) for more information about the attributes added to types and the rationale behind each of them.
-
-### Bugs fixed in this release
-
-### Known problems introduced by this release
 
 ## [1.0.16](https://github.com/Tenacom/PolyKit/releases/tag/1.0.16) (2022-11-01)
 
