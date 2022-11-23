@@ -114,6 +114,47 @@ static bool TryGetRepositoryInfo(this ICakeContext context, out (string Remote, 
 static bool GitTagExists(this ICakeContext context, string tag) => context.Exec("git", "tag").Any(s => string.Equals(tag, s, StringComparison.Ordinal));
 
 /*
+ * Summary : Gets the latest version and the latest stable version in commit history.
+ * Params  : context - The Cake context.
+ * Returns : A tuple of the latest version and the latest stable version;
+ * Remarks : - If no version tag is found in commit history, this method returns a tuple of two nulls.
+ *           - If no stable version tag is found in commit history, this method returns a tuple of the latest version and null.
+ */
+static (SemanticVersion? Latest, SemanticVersion? LatestStable) GitGetLatestVersions(this ICakeContext context)
+{
+    context.Verbose("Looking for latest stable version tag in Git commit history...");
+    var output = context.Exec("git", "log --pretty=format:%D");
+    var versions = output.Where(static x => !string.IsNullOrEmpty(x))
+                         .SelectMany(static x => x.Split(", "))
+                         .Where(static x => x.StartsWith("tag: "))
+                         .Select(static x => x.Substring(5))
+                         .Select(static x => {
+                            SemanticVersion? version = null;
+                            var result = SemanticVersion.TryParse(x, out version);
+                            return version;
+                         })
+                         .Where(static x => x != null);
+
+    SemanticVersion? latest = null;
+    SemanticVersion? latestStable = null;
+    foreach (var version in versions)
+    {
+        if (latest == null)
+        {
+            latest = version;
+        }
+
+        if (!version.IsPrerelease)
+        {
+            latestStable = version;
+            break;
+        }
+    }
+
+    return (latest, latestStable);
+}
+
+/*
  * Summary : Sets Git user name and email.
  * Params  : context - The Cake context.
  *           name    - The name of the user.

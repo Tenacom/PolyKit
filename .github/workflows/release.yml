@@ -7,8 +7,8 @@ concurrency:
 on:
   workflow_dispatch:
     inputs:
-      versionAdvance:
-        description: 'Version advance'
+      versionSpecChange:
+        description: 'Version spec change'
         required: true
         type: choice
         default: 'None'
@@ -50,7 +50,7 @@ jobs:
       PRERELEASE_NUGET_KEY: ${{ secrets.MYGET_DEPLOYMENT_KEY }}
       RELEASE_NUGET_SOURCE: 'https://api.nuget.org/v3/index.json'
       RELEASE_NUGET_KEY: ${{ secrets.NUGET_DEPLOYMENT_KEY }}
-      VERSION_ADVANCE: ${{ inputs.versionAdvance }}
+      VERSION_SPEC_CHANGE: ${{ inputs.versionSpecChange }}
       CHECK_PUBLIC_API: ${{ inputs.checkPublicApi }}
       CHECK_CHANGELOG: ${{ inputs.checkChangelog }}
       CAKE_VERBOSITY: ${{ inputs.cakeVerbosity }}
@@ -58,10 +58,10 @@ jobs:
     - name: Log workflow inputs
       shell: cmd
       run: |
-        echo Version advance  : %VERSION_ADVANCE%
-        echo Check public API : %CHECK_PUBLIC_API%
-        echo Check changelog  : %CHECK_CHANGELOG%
-        echo Cake verbosity   : %CAKE_VERBOSITY%
+        echo Version spec change : %VERSION_SPEC_CHANGE%
+        echo Check public API    : %CHECK_PUBLIC_API%
+        echo Check changelog     : %CHECK_CHANGELOG%
+        echo Cake verbosity      : %CAKE_VERBOSITY%
     - name: Checkout repository with full history
       uses: actions/checkout@v3
       with:
@@ -76,8 +76,16 @@ jobs:
       shell: cmd
       run: dotnet tool restore
     - name: Run build script
+      id: build
       shell: cmd
       run: |
         if [%CAKE_VERBOSITY%]==[] set CAKE_VERBOSITY=Normal
         if [%RUNNER_DEBUG%]==[1] set CAKE_VERBOSITY=Diagnostic
         dotnet cake --target Release --verbosity %CAKE_VERBOSITY%
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        working-directory: ./TestResults/
+        files: Cobertura.xml
+        name: v${{ steps.build.outputs.version }}
+        verbose: true

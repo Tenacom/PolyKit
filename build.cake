@@ -15,7 +15,7 @@
 #load "./build/process.cake"
 #load "./build/public-api.cake"
 #load "./build/setup-teardown.cake"
-#load "./build/version.cake"
+#load "./build/versioning.cake"
 #load "./build/workspace.cake"
 
 #nullable enable
@@ -59,7 +59,7 @@ Task("Build")
 Task("Test")
     .Description("Build all projects and run tests")
     .IsDependentOn("Build")
-    .Does<BuildData>((context, data) => context.TestSolution(data, false, false));
+    .Does<BuildData>((context, data) => context.TestSolution(data, false, false, true));
 
 Task("Pack")
     .Description("Build all projects, run tests, and prepare build artifacts")
@@ -70,9 +70,16 @@ Task("Release")
     .Description("Publish a new public release (CI only)")
     .Does<BuildData>(async (context, data) => {
 
-        // Preliminary checks
+        // Perform some preliminary checks
         Ensure(data.IsCI, "The Release target cannot run on a local system.");
         Ensure(data.IsPublicRelease, "Cannot create a release from the current branch.");
+
+        // Compute the version spec change to apply, if any
+        // This implies more checks and possibly throws, so do it as early as possible
+        var versionSpecChange = context.ComputeVersionSpecChange(
+            currentVersion: data.Version,
+            requestedChange: context.GetOption<VersionSpecChange>("versionSpecChange", VersionSpecChange.None),
+            checkPublicApi: context.GetOption<bool>("checkPublicApi", true));
 
         // Identify Git user for later push if needed
         context.GitSetUserIdentity("Buildvana", "buildvana@tenacom.it");
@@ -83,36 +90,18 @@ Task("Release")
         var committed = false;
         try
         {
-            // Advance version if requested.
-            var versionAdvance = context.GetOption<VersionAdvance>("versionAdvance", VersionAdvance.None);
-            if (context.GetOption<bool>("checkPublicApi", true))
+            // Modify version if required.
+            if (versionSpecChange != VersionSpecChange.None)
             {
-                var requiredVersionAdvance = context.GetMaxPublicApiRequiredVersionAdvance();
-                Ensure(versionAdvance >= requiredVersionAdvance, $"Changes to public API require a minimum version advance of {requiredVersionAdvance}.");
-            }
-
-            if (versionAdvance != VersionAdvance.None)
-            {
-                context.Information($"Version advance requested: {versionAdvance}.");
                 var versionFile = VersionFile.Load();
-                var previousVersionSpec = versionFile.VersionSpec;
-                if (versionFile.AdvanceVersion(versionAdvance))
+                if (versionFile.ApplyVersionSpecChange(context, versionSpecChange))
                 {
-                    context.Information($"Version advanced from {previousVersionSpec} to {versionFile.VersionSpec}.");
                     versionFile.Save();
                     UpdateRepo(versionFile.Path);
                 }
-                else
-                {
-                    context.Information("Version not changed.");
-                }
-            }
-            else
-            {
-                context.Information("No version advance requested.");
             }
 
-            // Update public API files only on non-prerelease
+            // Update public API files only when releasing a stable version
             if (!data.IsPrerelease)
             {
                 var modified = context.TransferAllPublicApiToShipped().ToArray();
@@ -160,12 +149,12 @@ Task("Release")
             // Ensure that the release tag doesn't already exist.
             // This assumes that full repo history has been checked out;
             // however, that is already a prerequisite for using Nerdbank.GitVersioning.
-            Ensure(!context.GitTagExists(data.Version), $"Tag {data.Version} already exists in repository.");
+            Ensure(!context.GitTagExists(data.VersionStr), $"Tag {data.VersionStr} already exists in repository.");
             dupeTagChecked = true;
 
             context.RestoreSolution(data);
             context.BuildSolution(data, false);
-            context.TestSolution(data, false, false);
+            context.TestSolution(data, false, false, false);
             context.PackSolution(data, false, false);
 
             if (!data.IsPrerelease)
@@ -215,11 +204,17 @@ Task("Release")
 
             // Last but not least, publish the release.
             await context.PublishReleaseAsync(data, releaseId);
+
+            // Set outputs for subsequent steps in GitHub Actions
+            if (data.IsGitHubAction)
+            {
+                context.SetActionsStepOutput("version", data.VersionStr);
+            }
         }
         catch (Exception e)
         {
             context.Error(e is CakeException ? e.Message : $"{e.GetType().Name}: {e.Message}");
-            await context.DeleteReleaseAsync(data, releaseId, dupeTagChecked ? data.Version : null);
+            await context.DeleteReleaseAsync(data, releaseId, dupeTagChecked ? data.VersionStr : null);
             throw;
         }
 
@@ -247,6 +242,7 @@ Task("Release")
 
             // The commit changed the Git height, so update build data
             // and amend the commit adding the right version.
+            // Amending a commit does not further change the Git height.
             data.Update(context);
             _ = context.Exec(
                 "git",
@@ -254,7 +250,7 @@ Task("Release")
                     .Append("commit")
                     .Append("--amend")
                     .Append("-m")
-                    .AppendQuoted($"Prepare release {data.Version} [skip ci]"));
+                    .AppendQuoted($"Prepare release {data.VersionStr} [skip ci]"));
 
             committed = true;
         }

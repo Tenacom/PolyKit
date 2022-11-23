@@ -13,6 +13,8 @@
 using System.Threading.Tasks;
 using Octokit;
 
+using SysFile = System.IO.File;
+
 /*
  * Summary : Asynchronously creates a new draft release on the GitHub repository.
  * Params  : context - The Cake context.
@@ -21,7 +23,7 @@ using Octokit;
  */
 static async Task<int> CreateDraftReleaseAsync(this ICakeContext context, BuildData data)
 {
-    var tag = data.Version;
+    var tag = data.VersionStr;
     var client = context.CreateGitHubClient();
     context.Information($"Creating a provisional draft release...");
     var newRelease = new NewRelease(tag)
@@ -45,7 +47,7 @@ static async Task<int> CreateDraftReleaseAsync(this ICakeContext context, BuildD
  */
 static async Task PublishReleaseAsync(this ICakeContext context, BuildData data, int id)
 {
-    var tag = data.Version;
+    var tag = data.VersionStr;
     var client = context.CreateGitHubClient();
     context.Information($"Generating release notes for {tag}...");
     var releaseNotesRequest = new GenerateReleaseNotesRequest(tag)
@@ -126,6 +128,19 @@ static async Task DispatchWorkflow(this ICakeContext context, BuildData data, st
         .EnsureSuccessStatusCode(true);
 
     _ = await context.HttpPostAsync($"https://api.github.com/repos/{data.RepositoryOwner}/{data.RepositoryName}/actions/workflows/{filename}/dispatches", httpSettings);
+}
+
+/*
+ * Summary : Sets a GitHub Actions step output.
+ * Params  : context  - The Cake context.
+ *           name     - The output name.
+ *           value    - The output value.
+ */
+static void SetActionsStepOutput(this ICakeContext context, string name, string value)
+{
+    var outputFile = context.EnvironmentVariable("GITHUB_OUTPUT");
+    Ensure(!string.IsNullOrEmpty(outputFile), "Cannot set Actions step output: GITHUB_OUTPUT not set.");
+    SysFile.AppendAllLines(outputFile, new[] { $"{name}={value}" }, Encoding.UTF8);
 }
 
 static GitHubClient CreateGitHubClient(this ICakeContext context)

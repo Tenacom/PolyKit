@@ -3,6 +3,8 @@
 
 #nullable enable
 
+using NuGet.Versioning;
+
 // ---------------------------------------------------------------------------------------------
 // BuildData: a record to hold build configuration data
 // ---------------------------------------------------------------------------------------------
@@ -24,6 +26,7 @@ sealed class BuildData
         var solution = context.ParseSolution(solutionPath);
         var configuration = context.Argument("configuration", "Release");
         var artifactsPath = new DirectoryPath("artifacts").Combine(configuration);
+        var testResultsPath = new DirectoryPath("TestResults");
         var isGitHubAction = context.EnvironmentVariable<bool>("GITHUB_ACTIONS", false);
         var isCI = isGitHubAction
             || context.EnvironmentVariable<bool>("CI", false)
@@ -36,7 +39,8 @@ sealed class BuildData
             || context.HasEnvironmentVariable("TEAMCITY_VERSION")
             || context.HasEnvironmentVariable("JENKINS_URL");
 
-        var (version, @ref, isPublicRelease, isPrerelease) = context.GetVersionInformation();
+        var (versionStr, @ref, isPublicRelease, isPrerelease) = context.GetVersionInformation();
+        var version = SemanticVersion.Parse(versionStr);
         var branch = context.GetCurrentGitBranch();
         var msBuildSettings = new DotNetMSBuildSettings {
             MaxCpuCount = 1,
@@ -51,10 +55,12 @@ sealed class BuildData
         Ref = @ref;
         Branch = branch;
         ArtifactsPath = artifactsPath;
+        TestResultsPath = testResultsPath;
         ChangelogPath = changelogPath;
         SolutionPath = solutionPath;
         Solution = solution;
         Configuration = configuration;
+        VersionStr = versionStr;
         Version = version;
         IsPublicRelease = isPublicRelease;
         IsPrerelease = isPrerelease;
@@ -111,6 +117,11 @@ sealed class BuildData
     public DirectoryPath ArtifactsPath { get; }
 
     /*
+     * Summary : Gets the path of the directory where test results and coverage reports are stored.
+     */
+    public DirectoryPath TestResultsPath { get; }
+
+    /*
      * Summary : Gets the path of the CHANGELOG.md file.
      */
     public FilePath ChangelogPath { get; }
@@ -131,9 +142,14 @@ sealed class BuildData
     public string Configuration { get; }
 
     /*
-     * Summary : Gets the version to build, as computed by Nerdbank.GitVersioning.
+     * Summary : Gets the version to build, as a string computed by Nerdbank.GitVersioning.
      */
-    public string Version { get; private set; }
+    public string VersionStr { get; private set; }
+
+    /*
+     * Summary : Gets the version to build, as a SemanticVersion object.
+     */
+    public SemanticVersion Version { get; private set; }
 
     /*
      * Summary : Gets a value that indicates whether a public release can be built.
@@ -168,7 +184,8 @@ sealed class BuildData
      */
     public void Update(ICakeContext context)
     {
-        (Version, Ref, IsPublicRelease, IsPrerelease) = context.GetVersionInformation();
+        (VersionStr, Ref, IsPublicRelease, IsPrerelease) = context.GetVersionInformation();
+        Version = SemanticVersion.Parse(VersionStr);
         context.Information("Updated build configuration data:");
         context.Information($"Git reference  : {Ref}");
         context.Information($"Version        : {Version}");

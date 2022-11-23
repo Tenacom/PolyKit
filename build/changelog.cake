@@ -262,5 +262,5 @@ static void UpdateChangelogNewSectionTitle(this ICakeContext context, BuildData 
 
 static string MakeChangelogSectionTitle(BuildData data)
 {
-    return $"[{data.Version}](https://github.com/{data.RepositoryOwner}/{data.RepositoryName}/releases/tag/{data.Version}) ({DateTime.Now:yyyy-MM-dd})";
+    return $"[{data.VersionStr}](https://github.com/{data.RepositoryOwner}/{data.RepositoryName}/releases/tag/{data.VersionStr}) ({DateTime.Now:yyyy-MM-dd})";
 }

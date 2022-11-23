@@ -14,29 +14,52 @@ using System.Text;
 using SysFile = System.IO.File;
 
 /*
- * Summary : Gets the maximum required version advance, according to the presence of new public APIs
+ * Summary : Specifies the kind of changes public APIs have undergone between an older and a newer version.
+ * Remarks : The values of this enum are sorted in ascending order of importance,
+ *           so that they may be compared.
+ */
+enum ApiChangeKind
+{
+    /*
+     * Summary : Public APIs have not changed between two versions.
+     */
+    None,
+
+    /*
+     * Summary : A newer version has only added public APIs with respect to an older version.
+     */
+    Additive,
+
+    /*
+     * Summary : A newer version's public APIs have undergone breaking changes since an older version was published.
+     */
+    Breaking,
+}
+
+/*
+ * Summary : Gets the kind of change public APIs underwent, according to the presence of new public APIs
  *           and/or the removal of existing public APIs in all PublicAPI.Unshipped.txt files
  *           of the repository.
  * Params  : context - The Cake context.
- * Returns : If at least one public API was removed, VersionAdvance.Major;
- *           if no public API was removed, but at least one was added, VersionAdvance.Minor;
- *           if no public API was removed nor added, VersionAdvance.None.
+ * Returns : If at least one public API was removed, ApiChangeKind.Breaking;
+ *           if no public API was removed, but at least one was added, ApiChangeKind.Additive;
+ *           if no public API was removed nor added, ApiChangeKind.None.
  */
-static VersionAdvance GetMaxPublicApiRequiredVersionAdvance(this ICakeContext context)
+static ApiChangeKind GetPublicApiChangeKind(this ICakeContext context)
 {
-    context.Information("Computing required version advance according to unshipped public API files...");
-    var result = VersionAdvance.None;
+    context.Information("Computing API change kind according to unshipped public API files...");
+    var result = ApiChangeKind.None;
     foreach (var unshippedPath in context.GetAllPublicApiFilePairs().Select(pair => pair.UnshippedPath))
     {
-        var advance = context.GetPublicApiRequiredVersionAdvance(unshippedPath);
-        context.Verbose($"{unshippedPath} -> {advance}");
-        if (advance == VersionAdvance.Major)
+        var fileResult = context.GetPublicApiChangeKind(unshippedPath);
+        context.Verbose($"{unshippedPath} -> {fileResult}");
+        if (fileResult == ApiChangeKind.Breaking)
         {
-            return VersionAdvance.Major;
+            return ApiChangeKind.Breaking;
         }
-        else if (advance > result)
+        else if (fileResult > result)
         {
-            result = advance;
+            result = fileResult;
         }
     }
 
@@ -84,15 +107,15 @@ static IEnumerable<(FilePath UnshippedPath, FilePath ShippedPath)> GetAllPublicA
 }
 
 /*
- * Summary : Gets the required version advance, according to the presence of new public APIs
+ * Summary : Gets the kind of change public APIs underwent, according to the presence of new public APIs
  *           and/or the removal of existing public APIs.
  * Params  : context       - The Cake context.
  *           unshippedPath - The FilePath of PublicAPI.Unshipped.txt
- * Returns : If at least one public API was removed, VersionAdvance.Major;
- *           if no public API was removed, but at least one was added, VersionAdvance.Minor;
- *           if no public API was removed nor added, VersionAdvance.None.
+ * Returns : If at least one public API was removed, ApiChangeKind.Breaking;
+ *           if no public API was removed, but at least one was added, ApiChangeKind.Additive;
+ *           if no public API was removed nor added, ApiChangeKind.None.
  */
-static VersionAdvance GetPublicApiRequiredVersionAdvance(this ICakeContext context, FilePath unshippedPath)
+static ApiChangeKind GetPublicApiChangeKind(this ICakeContext context, FilePath unshippedPath)
 {
     var unshippedLines = SysFile.ReadAllLines(unshippedPath.FullPath, Encoding.UTF8);
     static bool IsEmptyOrStartsWithHash(string s) => s.Length == 0 || s[0] == '#';
@@ -103,13 +126,13 @@ static VersionAdvance GetPublicApiRequiredVersionAdvance(this ICakeContext conte
     {
         if (line.StartsWith(RemovedPrefix, StringComparison.Ordinal))
         {
-            return VersionAdvance.Major;
+            return ApiChangeKind.Breaking;
         }
 
         newApiPresent = true;
     }
 
-    return newApiPresent ? VersionAdvance.Minor : VersionAdvance.None;
+    return newApiPresent ? ApiChangeKind.Additive : ApiChangeKind.None;
 }
 
 /*

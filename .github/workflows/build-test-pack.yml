@@ -32,3 +32,9 @@ jobs:
         if [%CAKE_VERBOSITY%]==[] set CAKE_VERBOSITY=Normal
         if [%RUNNER_DEBUG%]==[1] set CAKE_VERBOSITY=Diagnostic
         dotnet cake --target Pack --verbosity %CAKE_VERBOSITY%
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        working-directory: ./TestResults/
+        files: Cobertura.xml
+        verbose: true

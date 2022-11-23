@@ -7,8 +7,8 @@ logs/
 # Cake build
 tools/
 
-# Folders created by CI
-.coverage/
+# Testing
+TestResults/
 
 # Visual Studio
 **/bin/

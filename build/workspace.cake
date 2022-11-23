@@ -18,6 +18,7 @@ static void CleanAll(this ICakeContext context, BuildData data)
     context.DeleteDirectoryIfExists("_ReSharper.Caches");
     context.DeleteDirectoryIfExists("artifacts");
     context.DeleteDirectoryIfExists("logs");
+    context.DeleteDirectoryIfExists("TestResults");
     foreach (var project in data.Solution.Projects)
     {
         var projectDirectory = project.Path.GetDirectory();
