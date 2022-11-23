@@ -71,7 +71,7 @@ static void TestSolution(this ICakeContext context, BuildData data, bool restore
     // Merge coverage reports only if there are any
     if (collect)
     {
-        if (!context.GetSubDirectories(data.TestResultsPath).Any())
+        if (!context.FileSystem.Exist(data.TestResultsPath) || !context.GetSubDirectories(data.TestResultsPath).Any())
         {
             context.Information("No coverage reports were generated.");
         }
