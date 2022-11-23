@@ -7,6 +7,18 @@
       "commands": [
         "dotnet-cake"
       ]
+    },
+    "nbgv": {
+      "version": "3.5.119",
+      "commands": [
+        "nbgv"
+      ]
+    },
+    "dotnet-reportgenerator-globaltool": {
+      "version": "5.1.11",
+      "commands": [
+        "reportgenerator"
+      ]
     }
   }
 }
