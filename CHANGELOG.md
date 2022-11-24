@@ -13,9 +13,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bugs fixed in this release
 
-- The polyfills for [`DateOnly`](https://learn.microsoft.com/en-us/dotnet/api/system.dateonly) and [`TimeOnly`](https://learn.microsoft.com/en-us/dotnet/api/system.timeonly) only worked when either the target platform supported spans, or the [`System.Memory`](https://www.nuget.org/packages/System.Memory) package was referenced.
-
 ### Known problems introduced by this release
+
+## [2.0.26](https://github.com/Tenacom/PolyKit/releases/tag/2.0.26) (2022-11-24)
+
+### Bugs fixed in this release
+
+- The polyfills for [`DateOnly`](https://learn.microsoft.com/en-us/dotnet/api/system.dateonly) and [`TimeOnly`](https://learn.microsoft.com/en-us/dotnet/api/system.timeonly) only worked when either the target platform supported spans, or the [`System.Memory`](https://www.nuget.org/packages/System.Memory) package was referenced.
 
 ## [2.0.24](https://github.com/Tenacom/PolyKit/releases/tag/2.0.24) (2022-11-23)
 
