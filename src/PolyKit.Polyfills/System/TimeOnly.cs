@@ -26,8 +26,10 @@ namespace System
     readonly struct TimeOnly
         : IComparable,
           IComparable<TimeOnly>,
-          IEquatable<TimeOnly>,
-          ISpanFormattable
+          IEquatable<TimeOnly>
+#if POLYKIT_USE_SPAN
+          , ISpanFormattable
+#endif
     {
         // represent the number of ticks map to the time of the day. 1 ticks = 100-nanosecond in time measurements.
         private readonly long _ticks;

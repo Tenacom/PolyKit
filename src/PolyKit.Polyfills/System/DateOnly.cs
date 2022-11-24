@@ -27,8 +27,10 @@ namespace System
     readonly struct DateOnly
         : IComparable,
           IComparable<DateOnly>,
-          IEquatable<DateOnly>,
-          ISpanFormattable
+          IEquatable<DateOnly>
+#if POLYKIT_USE_SPAN
+          , ISpanFormattable
+#endif
     {
         private readonly int _dayNumber;
 
