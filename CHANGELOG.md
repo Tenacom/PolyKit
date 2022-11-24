@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bugs fixed in this release
 
+- The polyfill for [`TimeOnly`](https://learn.microsoft.com/en-us/dotnet/api/system.timeonly), when compiled without span support, generated two `CS1503` errors because of a missing preprocessor conditional.
+
 ### Known problems introduced by this release
 
 ## [2.0.26](https://github.com/Tenacom/PolyKit/releases/tag/2.0.26) (2022-11-24)

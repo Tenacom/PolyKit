@@ -983,6 +983,8 @@ namespace System
         /// <returns><see langword="true"/> if s was successfully parsed; otherwise, <see langword="false"/>.</returns>
         public static bool TryParse([NotNullWhen(true)] string? s, IFormatProvider? provider, out TimeOnly result) => TryParse(s, provider, DateTimeStyles.None, out result);
 
+#if POLYKIT_USE_SPAN
+
         //
         // ISpanParsable
         //
@@ -1006,6 +1008,8 @@ namespace System
         /// or an undefined value on failure.</param>
         /// <returns><see langword="true"/> if s was successfully parsed; otherwise, <see langword="false"/>.</returns>
         public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out TimeOnly result) => TryParse(s, provider, DateTimeStyles.None, out result);
+
+#endif
 
 // Internal constants ported from DateTime
 // https://github.com/dotnet/runtime/blob/v7.0.0/src/libraries/System.Private.CoreLib/src/System/DateTime.cs#L57
