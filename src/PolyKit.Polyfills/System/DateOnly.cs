@@ -1052,7 +1052,7 @@ namespace System
 
 #else
 
-        private static bool IsValidCustomDateFormat(string? format, bool throwOnError)
+        private static bool IsValidCustomDateFormat(string format, bool throwOnError)
         {
             int i = 0;
 
