@@ -1,7 +1,9 @@
-# Remove the line below if you want to inherit .editorconfig settings from higher directories
+# IMPORTANT: Always keep EOL settings in sync with .editorconfig
+
+# DO NOT remove the line below. Settings have to be consistent wherever the repo is checked out.
 root = true
 
-# Default settings.
+# Default settings
 [*]
 charset = utf-8
 indent_style = space
@@ -10,17 +12,28 @@ end_of_line = lf
 insert_final_newline = true
 trim_trailing_whitespace = true
 
+# Solution files
+[*.sln]
+end_of_line = crlf
+charset = utf-8-bom
+indent_style = tab
+indent_size = 8
+
 # Code files
-[*.{cs,csx,vb,vbx}]
+[*.{cs,csx,vb,vbx,cake}]
 end_of_line = crlf
 charset = utf-8-bom
 
-# Xml project files
+# XML project files
 [*.{csproj,vbproj,vcxproj,vcxproj.filters,proj,projitems,shproj,props,targets}]
 indent_size = 2
 
-# Xml config files
+# XML config files
 [*.{ruleset,config,nuspec,resx,vsixmanifest,vsct,runsettings}]
+indent_size = 2
+
+# Other XML files
+[*.{xml,svg}]
 indent_size = 2
 
 # JSON files
@@ -32,7 +45,7 @@ indent_size = 2
 indent_size = 2
 
 # Shell scripts
-[*.sh]
+[*.{in,sh}]
 indent_size = 2
 
 # Windows batch files

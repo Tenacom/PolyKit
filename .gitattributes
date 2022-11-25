@@ -1,8 +1,70 @@
-*.pdf   -text
-*.doc   -text
-*.docx  -text
-*.sh     eol=lf
-*.md     eol=lf
-*.cs     eol=crlf
-*.vb     eol=crlf
-*        text=auto
+# IMPORTANT: Always keep EOL settings in sync with .editorconfig
+
+# Default settings
+* text=auto
+
+# Solution files
+*.sln text eol=crlf
+
+# Code files
+*.cake text eol=crlf diff=csharp
+*.cs   text eol=crlf diff=csharp
+*.vb   text eol=crlf
+
+# XML project files
+*.csproj          text eol=lf
+*.vbproj          text eol=lf
+*.vcxproj         text eol=lf
+*.vcxproj.filters text eol=lf
+*.proj            text eol=lf
+*.projitems       text eol=lf
+*.shproj          text eol=lf
+*.props           text eol=lf
+*.targets         text eol=lf
+
+# XML config files
+*.ruleset      text eol=lf
+*.config       text eol=lf
+*.nuspec       text eol=lf
+*.resx         text eol=lf
+*.vsixmanifest text eol=lf
+*.vsct         text eol=lf
+*.runsettings  text eol=lf
+
+# Other XML files
+*.xml text eol=lf
+*.svg text eol=lf
+
+# JSON files
+*.json text eol=lf
+
+# YAML files
+*.yml  text eol=lf
+*.yaml text eol=lf
+
+# Shell scripts
+*.in text eol=lf diff=bash
+*.sh text eol=lf diff=bash
+
+# Windows batch files
+*.bat text eol=crlf
+*.BAT text eol=crlf
+*.cmd text eol=crlf
+*.CMD text eol=crlf
+
+# Markdown files
+*.md text eol=lf diff=markdown
+
+# InnoSetup files
+*.iss text eol=crlf
+
+# Image files
+*.jpg binary
+*.png binary
+*.gif binary
+
+# Document files
+*.pdf binary diff=astextplain
+*.PDF binary diff=astextplain
+*.rtf binary diff=astextplain
+*.RTF binary diff=astextplain
