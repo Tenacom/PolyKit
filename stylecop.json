@@ -39,7 +39,7 @@
 
     "documentationRules": {
       "companyName": "Tenacom",
-      "copyrightText": "Copyright (C) {companyName} and Contributors. Licensed under the MIT license.\r\nSee the LICENSE file in the project root for full license information.",
+      "copyrightText": "Copyright (C) {companyName} and contributors. Licensed under the MIT license.\r\nSee the LICENSE file in the project root for full license information.",
       "xmlHeader": false,
       "documentInterfaces": true,
       "documentExposedElements": true,
