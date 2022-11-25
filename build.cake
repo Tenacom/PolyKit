@@ -120,8 +120,9 @@ Task("Release")
                 context.Information("Public API update skipped: not needed on prerelease.");
             }
 
-            // Update changelog only on non-prerelease
-            if (!data.IsPrerelease)
+            // Update changelog only on non-prerelease, unless forced
+            var changelogUpdated = false;
+            if (!data.IsPrerelease || context.GetOption<bool>("forceUpdateChangelog", false))
             {
                 if (context.GetOption<bool>("checkChangelog", true))
                 {
@@ -140,6 +141,7 @@ Task("Release")
                 // This ensures that the Git height is up to date when computing a version for the build artifacts.
                 context.PrepareChangelogForRelease(data);
                 UpdateRepo(data.ChangelogPath);
+                changelogUpdated = true;
             }
             else
             {
@@ -157,7 +159,7 @@ Task("Release")
             context.TestSolution(data, false, false, false);
             context.PackSolution(data, false, false);
 
-            if (!data.IsPrerelease)
+            if (changelogUpdated)
             {
                 // Change the new section's title in the changelog to reflect the actual version.
                 context.UpdateChangelogNewSectionTitle(data);
@@ -165,7 +167,7 @@ Task("Release")
             }
             else
             {
-                context.Information("Changelog section title update skipped: not needed on prerelease.");
+                context.Information("Changelog section title update skipped: changelog has not been updated.");
             }
 
             if (committed)

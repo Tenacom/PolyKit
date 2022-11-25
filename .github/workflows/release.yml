@@ -19,12 +19,17 @@ on:
         - Minor
         - Major
       checkPublicApi:
-        description: 'Check public API'
+        description: 'Check public API files'
         required: false
         default: true
         type: boolean
+      forceUpdateChangelog:
+        description: 'Update changelog on preview'
+        required: false
+        default: false
+        type: boolean
       checkChangelog:
-        description: 'Check changelog'
+        description: 'Check changelog before update'
         required: false
         default: true
         type: boolean
@@ -52,16 +57,18 @@ jobs:
       RELEASE_NUGET_KEY: ${{ secrets.NUGET_DEPLOYMENT_KEY }}
       VERSION_SPEC_CHANGE: ${{ inputs.versionSpecChange }}
       CHECK_PUBLIC_API: ${{ inputs.checkPublicApi }}
+      FORCE_UPDATE_CHANGELOG: ${{ inputs.forceUpdateChangelog }}
       CHECK_CHANGELOG: ${{ inputs.checkChangelog }}
       CAKE_VERBOSITY: ${{ inputs.cakeVerbosity }}
     steps:
     - name: Log workflow inputs
       shell: cmd
       run: |
-        echo Version spec change : %VERSION_SPEC_CHANGE%
-        echo Check public API    : %CHECK_PUBLIC_API%
-        echo Check changelog     : %CHECK_CHANGELOG%
-        echo Cake verbosity      : %CAKE_VERBOSITY%
+        echo Version spec change           : %VERSION_SPEC_CHANGE%
+        echo Check public API files        : %CHECK_PUBLIC_API%
+        echo Update changelog on preview   : %FORCE_UPDATE_CHANGELOG%
+        echo Check changelog before update : %CHECK_CHANGELOG%
+        echo Cake verbosity                : %CAKE_VERBOSITY%
     - name: Checkout repository with full history
       uses: actions/checkout@v3
       with:
