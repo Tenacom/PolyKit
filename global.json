@@ -6,6 +6,6 @@
   },
   "msbuild-sdks": {
     "Buildvana.Sdk": "1.0.13-preview",
-    "Microsoft.Build.NoTargets": "3.6.0"
+    "Microsoft.Build.NoTargets": "3.7.0"
   }
 }
