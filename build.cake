@@ -181,23 +181,28 @@ Task("Release")
             }
 
             // Publish NuGet packages
-            context.NuGetPushAll(data);
+            await context.NuGetPushAllAsync(data);
 
             // If this is not a prerelease and we are releasing from the main branch,
             // dispatch a separate workflow to publish documentation.
-            // Unless, of course, there is no documentation workflow.
+            // Unless, of course, there is no documentation to publish, or no workflow to do it.
+            FilePath docFxJsonPath = "docs/docfx.json";
             FilePath pagesDeploymentWorkflow = ".github/workflows/deploy-pages.yml";
-            if (!SysFile.Exists(pagesDeploymentWorkflow.FullPath))
-            {
-                context.Information($"Documentation update skipped: there is no documentation workflow.");
-            }
-            else if (data.IsPrerelease)
+            if (data.IsPrerelease)
             {
                 context.Information("Documentation update skipped: not needed on prerelease.");
             }
             else if (data.Branch != "main")
             {
                 context.Information($"Documentation update skipped: releasing from '{data.Branch}', not 'main'.");
+            }
+            else if (!SysFile.Exists(pagesDeploymentWorkflow.FullPath))
+            {
+                context.Information($"Documentation update skipped: {docFxJsonPath} not present.");
+            }
+            else if (!SysFile.Exists(pagesDeploymentWorkflow.FullPath))
+            {
+                context.Warning($"Documentation update skipped: there is no documentation workflow.");
             }
             else
             {

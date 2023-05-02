@@ -1,8 +1,8 @@
 // Copyright (C) Tenacom and contributors. Licensed under the MIT license.
 // See LICENSE file in the project root for full license information.
 
-#addin nuget:?package=Cake.Http&version=2.0.0
-#addin nuget:?package=Octokit&version=3.0.1
+#addin nuget:?package=Cake.Http&version=3.0.2
+#addin nuget:?package=Octokit&version=5.1.0
 
 #nullable enable
 
@@ -14,6 +14,20 @@ using System.Threading.Tasks;
 using Octokit;
 
 using SysFile = System.IO.File;
+
+/*
+ * Summary : Asynchronously gets the visibility of the current repository.
+ * Params  : context - The Cake context.
+ *           data    - Build configuration data.
+ * Returns : A Task that represents the ongoing operation.
+ */
+static async Task<bool> IsPrivateRepositoryAsync(this ICakeContext context, BuildData data)
+{
+    context.Information("Fetching repository information...");
+    var client = context.CreateGitHubClient();
+    var repository = await client.Repository.Get(data.RepositoryOwner, data.RepositoryName).ConfigureAwait(false);
+    return repository.Private;
+}
 
 /*
  * Summary : Asynchronously creates a new draft release on the GitHub repository.

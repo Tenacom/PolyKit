@@ -106,7 +106,7 @@ static void PackSolution(this ICakeContext context, BuildData data, bool restore
 }
 
 /*
- * Summary : Push all produced NuGet packages to the appropriate NuGet server.
+ * Summary : Asynchronously pushes all produced NuGet packages to the appropriate NuGet server.
  * Params  : context - The Cake context.
  *           data    - Build configuration data.
  * Remarks : - This method uses the following environment variables:
@@ -116,7 +116,7 @@ static void PackSolution(this ICakeContext context, BuildData data, bool restore
  *             * RELEASE_NUGET_KEY       - API key for RELEASE_NUGET_SOURCE
  *           - If there are no .nupkg files in the designated artifacts directory, this method does nothing.
  */
-static void NuGetPushAll(this ICakeContext context, BuildData data)
+static async Task NuGetPushAllAsync(this ICakeContext context, BuildData data)
 {
     const string nupkgMask = "*.nupkg";
     if (!SysDirectory.EnumerateFiles(data.ArtifactsPath.FullPath, nupkgMask).Any())
@@ -125,8 +125,9 @@ static void NuGetPushAll(this ICakeContext context, BuildData data)
         return;
     }
 
-    var nugetSource = context.GetOptionOrFail<string>(data.IsPrerelease ? "prereleaseNugetSource" : "releaseNugetSource");
-    var nugetApiKey = context.GetOptionOrFail<string>(data.IsPrerelease ? "prereleaseNugetKey" : "releaseNugetKey");
+    var isPrivate = await context.IsPrivateRepositoryAsync(data);
+    var nugetSource = context.GetOptionOrFail<string>(isPrivate ? "privateNugetSource" : data.IsPrerelease ? "prereleaseNugetSource" : "releaseNugetSource");
+    var nugetApiKey = context.GetOptionOrFail<string>(isPrivate ? "privateNugetKey" : data.IsPrerelease ? "prereleaseNugetKey" : "releaseNugetKey");
     var nugetPushSettings = new DotNetNuGetPushSettings {
         ForceEnglishOutput = true,
         Source = nugetSource,
