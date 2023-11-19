@@ -140,6 +140,7 @@ PolyKit provides support for the following features across all [compatible targe
 - [`System.HashCode` struct](https://learn.microsoft.com/en-us/dotnet/api/system.hashcode) (see note #2);
 - [`ValidatedNotNull` attribute](https://learn.microsoft.com/en-us/dotnet/api/microsoft.validatednotnullattribute) (see note #3);
 - [`StackTraceHidden` attribute](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.stacktracehiddenattribute) (see note #4);
+- [`Experimental`](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.codeanalysis.experimentalattribute);
 - support for writing [custom string interpolation handlers](https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/tutorials/interpolated-string-handler);
 - [`Enumerable.TryGetNonEnumeratedCount<TSource>` method](https://learn.microsoft.com/en-us/dotnet/api/system.linq.enumerable.trygetnonenumeratedcount) (see note #5);
 - [`ISpanFormattable` interface](https://learn.microsoft.com/en-us/dotnet/api/system.ispanformattable) (see note #6);
