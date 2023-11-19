@@ -74,7 +74,7 @@ The same goes for `public` polyfills created by `PolyKit.Embedded`. In this case
 
 The solution is simple: when using `PolyKit.Embedded` to add `public` polyfills to a library, set your `TargetFrameworks` property so that you generate all possible sets of polyfills.
 
-The optimal set of target frameworks for `public` polyfills is equal to the target frameworks of the `PolyKit` package. At the time of writing it is `net462;net47;netstandard2.0;netstandard2.1;net6.0;net7.0`, but you may refer to [this NuGet page](https://www.nuget.org/packages/PolyKit#supportedframeworks-body-tab) at any time to find out which frameworks are targeted by the latest version of `PolyKit`.
+The optimal set of target frameworks for `public` polyfills is equal to the target frameworks of the `PolyKit` package. At the time of writing it is `net462;net47;netstandard2.0;netstandard2.1;net6.0;net7.0;net8.0`, but you may refer to [this NuGet page](https://www.nuget.org/packages/PolyKit#supportedframeworks-body-tab) at any time to find out which frameworks are targeted by the latest version of `PolyKit`.
 
 ### Compatibility
 
