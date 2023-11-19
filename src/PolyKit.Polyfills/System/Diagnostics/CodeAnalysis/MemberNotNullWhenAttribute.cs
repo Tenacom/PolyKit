@@ -10,7 +10,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 namespace System.Diagnostics.CodeAnalysis;
 
-// https://github.com/dotnet/runtime/blob/v6.0.4/src/libraries/System.Private.CoreLib/src/System/Diagnostics/CodeAnalysis/NullableAttributes.cs#L156
+// https://github.com/dotnet/runtime/blob/v8.0.0/src/libraries/System.Private.CoreLib/src/System/Diagnostics/CodeAnalysis/NullableAttributes.cs#L155
 
 /// <summary>
 /// Specifies that the method or property will ensure that the listed field and property members

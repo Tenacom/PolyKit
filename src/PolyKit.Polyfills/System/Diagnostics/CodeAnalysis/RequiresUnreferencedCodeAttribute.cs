@@ -10,7 +10,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 namespace System.Diagnostics.CodeAnalysis;
 
-// https://github.com/dotnet/runtime/blob/v7.0.0/src/libraries/System.Private.CoreLib/src/System/Diagnostics/CodeAnalysis/RequiresUnreferencedCodeAttribute.cs
+// https://github.com/dotnet/runtime/blob/v8.0.0/src/libraries/System.Private.CoreLib/src/System/Diagnostics/CodeAnalysis/RequiresUnreferencedCodeAttribute.cs
 
 /// <summary>
 /// Indicates that the specified method requires dynamic access to code that is not referenced

@@ -11,6 +11,8 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 namespace System.Runtime.CompilerServices;
 
+// https://github.com/dotnet/runtime/blob/v8.0.0/src/libraries/System.Private.CoreLib/src/System/Runtime/CompilerServices/CompilerFeatureRequiredAttribute.cs
+
 /// <summary>
 /// Indicates that compiler support for a particular feature is required for the location where this attribute is applied.
 /// </summary>

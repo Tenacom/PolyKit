@@ -10,7 +10,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 namespace System.Runtime.Versioning;
 
-// https://github.com/dotnet/runtime/blob/v7.0.0/src/libraries/System.Private.CoreLib/src/System/Runtime/Versioning/RequiresPreviewFeaturesAttribute.cs
+// https://github.com/dotnet/runtime/blob/v8.0.0/src/libraries/System.Private.CoreLib/src/System/Runtime/Versioning/RequiresPreviewFeaturesAttribute.cs
 
 /// <summary>
 /// <para>Indicates that an API is in preview.</para>

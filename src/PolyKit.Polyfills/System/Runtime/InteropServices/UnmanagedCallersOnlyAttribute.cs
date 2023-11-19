@@ -6,14 +6,15 @@
 
 #else
 
-#pragma warning disable CS0649 // Field is never assigned to
-#pragma warning disable SA1401 // Fields should be private
+#pragma warning disable CA1051 // Do not declare visible instance fields - Consistency with original source.
+#pragma warning disable CS0649 // Field is never assigned to - Consistency with original source.
+#pragma warning disable SA1401 // Fields should be private - Consistency with original source.
 
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 namespace System.Runtime.InteropServices;
 
-// https://github.com/dotnet/runtime/blob/v7.0.0/src/libraries/System.Private.CoreLib/src/System/Runtime/InteropServices/UnmanagedCallersOnlyAttribute.cs
+// https://github.com/dotnet/runtime/blob/v8.0.0/src/libraries/System.Private.CoreLib/src/System/Runtime/InteropServices/UnmanagedCallersOnlyAttribute.cs
 
 /// <summary>
 /// <para>Any method marked with this attribute can be directly called from native code.

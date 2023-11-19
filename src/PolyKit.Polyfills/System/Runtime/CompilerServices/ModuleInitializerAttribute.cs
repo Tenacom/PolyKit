@@ -10,7 +10,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 namespace System.Runtime.CompilerServices;
 
-// https://github.com/dotnet/runtime/blob/v7.0.0/src/libraries/System.Private.CoreLib/src/System/Runtime/CompilerServices/ModuleInitializerAttribute.cs
+// https://github.com/dotnet/runtime/blob/v8.0.0/src/libraries/System.Private.CoreLib/src/System/Runtime/CompilerServices/ModuleInitializerAttribute.cs
 
 /// <summary>
 /// Used to indicate to the compiler that a method should be called

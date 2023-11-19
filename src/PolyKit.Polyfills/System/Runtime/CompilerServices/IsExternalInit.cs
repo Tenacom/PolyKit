@@ -12,7 +12,7 @@ using System.ComponentModel;
 
 namespace System.Runtime.CompilerServices;
 
-// https://github.com/dotnet/runtime/blob/v5.0.16/src/libraries/System.Private.CoreLib/src/System/Runtime/CompilerServices/IsExternalInit.cs
+// https://github.com/dotnet/runtime/blob/v8.0.0/src/libraries/System.Private.CoreLib/src/System/Runtime/CompilerServices/IsExternalInit.cs
 
 /// <summary>
 /// Reserved to be used by the compiler for tracking metadata.

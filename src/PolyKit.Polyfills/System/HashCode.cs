@@ -9,11 +9,15 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
-/* Adapted from System.HashCode in .NET 6.0.4
- * https://github.com/dotnet/runtime/blob/v6.0.4/src/libraries/System.Private.CoreLib/src/System/HashCode.cs
+/* Adapted from System.HashCode in .NET 8.0.0
+ * https://github.com/dotnet/runtime/blob/v8.0.0/src/libraries/System.Private.CoreLib/src/System/HashCode.cs
+ * except the AddBytes method is the less optimized version from .NET v6.0
+ * https://github.com/dotnet/runtime/blob/v6.0.25/src/libraries/System.Private.CoreLib/src/System/HashCode.cs#L316
+ * because the better method introduced in .NET 7.0 uses some BCL methods that are unavailable
+ * in some target platforms.
  *
  * RotateLeft method adapted from System.Numerics.BitOperations.RotateLeft(uint, int)
- * https://github.com/dotnet/runtime/blob/v6.0.4/src/libraries/System.Private.CoreLib/src/System/Numerics/BitOperations.cs#L528
+ * https://github.com/dotnet/runtime/blob/v8.0.0/src/libraries/System.Private.CoreLib/src/System/Numerics/BitOperations.cs#L692
  */
 
 /*
