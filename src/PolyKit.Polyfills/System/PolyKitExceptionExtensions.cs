@@ -1,8 +1,6 @@
 ﻿#if NET6_0_OR_GREATER
 
-using System;
-
-namespace PolyKit.Diagnostics;
+namespace System;
 
 /// <summary>
 /// Provides extension methods for exceptions to support polyfilled features.
@@ -23,11 +21,9 @@ static class PolyKitExceptionExtensions
 
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
-using System;
 using System.Diagnostics;
-using PolyKit.Diagnostics.Internal;
 
-namespace PolyKit.Diagnostics;
+namespace System;
 
 /// <summary>
 /// Provides extension methods for exceptions to support polyfilled features.
@@ -50,13 +46,12 @@ static class PolyKitExceptionExtensions
     /// <item><description>external exception stack trace boundaries ("End of stack trace from previous location" lines) are missing from the returned string.</description></item>
     /// </list>
     /// </remarks>
-    /* Adapted from System.Exception.GetStackTrace() in .NET 6.0.4
-     * https://github.com/dotnet/runtime/blob/v6.0.4/src/libraries/System.Private.CoreLib/src/System/Exception.cs#L223
+    /* Adapted from System.Exception.GetStackTrace() in .NET 8.0.0
+     * https://github.com/dotnet/runtime/blob/v8.0.0/src/libraries/System.Private.CoreLib/src/System/Exception.cs#L229
      */
     // Do not include a trailing newline for backwards compatibility
     public static string GetStackTraceHidingFrames(this Exception @this)
-        => new StackTrace(@this, fNeedFileInfo: true)
-           .ToStringHidingFrames(TraceFormat.Normal);
+        => new StackTrace(@this, fNeedFileInfo: true).ToStringHidingFrames(TraceFormat.Normal);
 }
 
 #endif

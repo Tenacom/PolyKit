@@ -1,8 +1,6 @@
 ﻿#if NET6_0_OR_GREATER
 
-using System.Diagnostics;
-
-namespace PolyKit.Diagnostics;
+namespace System.Diagnostics;
 
 /// <summary>
 /// Provides extension methods for instances of <see cref="StackTrace"/> to support polyfilled features.
@@ -23,17 +21,15 @@ static class PolyKitStackTraceExtensions
 
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
-using System;
 using System.Collections;
-using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
-using PolyKit.Diagnostics.Internal;
 
-namespace PolyKit.Diagnostics;
+namespace System.Diagnostics;
 
 /// <summary>
 /// Provides extension methods for instances of <see cref="StackTrace"/> to support polyfilled features.
@@ -44,7 +40,7 @@ static class PolyKitStackTraceExtensions
     private const string StackTraceHiddenFullName = "System.Diagnostics.StackTraceHiddenAttribute";
     private const string AsyncIteratorStateMachineAttributeFullName = "System.Runtime.CompilerServices.AsyncIteratorStateMachineAttribute";
 
-    // https://github.com/dotnet/runtime/blob/v6.0.4/src/libraries/System.Private.CoreLib/src/System/Diagnostics/StackTrace.cs#L178
+    // https://github.com/dotnet/runtime/blob/v8.0.0/src/libraries/System.Private.CoreLib/src/System/Diagnostics/StackTrace.cs#L180
 
     /// <summary>
     /// <para>Builds a readable representation of a stack trace, hiding stack frames marked with <see cref="StackTraceHiddenAttribute"/>.</para>
@@ -63,7 +59,7 @@ static class PolyKitStackTraceExtensions
     // Include a trailing newline for backwards compatibility
     public static string ToStringHidingFrames(this StackTrace @this) => @this.ToStringHidingFrames(TraceFormat.TrailingNewLine);
 
-    // https://github.com/dotnet/runtime/blob/v6.0.4/src/libraries/System.Private.CoreLib/src/System/Diagnostics/StackTrace.cs#L198
+    // https://github.com/dotnet/runtime/blob/v8.0.0/src/libraries/System.Private.CoreLib/src/System/Diagnostics/StackTrace.cs#L200
     internal static string ToStringHidingFrames(this StackTrace @this, TraceFormat traceFormat)
     {
         var sb = new StringBuilder(256);
@@ -71,7 +67,9 @@ static class PolyKitStackTraceExtensions
         return sb.ToString();
     }
 
-    // https://github.com/dotnet/runtime/blob/v6.0.4/src/libraries/System.Private.CoreLib/src/System/Diagnostics/StackTrace.cs#L206
+    // https://github.com/dotnet/runtime/blob/v8.0.0/src/libraries/System.Private.CoreLib/src/System/Diagnostics/StackTrace.cs#L208
+    [UnconditionalSuppressMessage("ReflectionAnalysis", "IL2026:RequiresUnreferencedCode",
+        Justification = "ToString is best effort when it comes to available information.")]
     internal static void ToStringHidingFrames(this StackTrace @this, TraceFormat traceFormat, StringBuilder sb)
     {
         var firstFrame = true;
@@ -223,13 +221,14 @@ static class PolyKitStackTraceExtensions
                 // TODO @rdeago 2022-08-09: It would be nice to know the value of IsLastFrameFromForeignExceptionStackTrace.
                 // The only way seems to use reflection on internal members:
                 //
-                //   - .NET 6.0.4 has a StackFrame.IsLastFrameFromForeignExceptionStackTrace internal property
-                //     https://github.com/dotnet/runtime/blob/v6.0.4/src/libraries/System.Private.CoreLib/src/System/Diagnostics/StackFrame.cs#L134
+                //   - .NET 6.0 - 8.0 has a StackFrame.IsLastFrameFromForeignExceptionStackTrace internal property
+                //     https://github.com/dotnet/runtime/blob/v6.0.25/src/libraries/System.Private.CoreLib/src/System/Diagnostics/StackFrame.cs#L134
+                //     https://github.com/dotnet/runtime/blob/v7.0.14/src/libraries/System.Private.CoreLib/src/System/Diagnostics/StackFrame.cs#L135
+                //     https://github.com/dotnet/runtime/blob/v8.0.0/src/libraries/System.Private.CoreLib/src/System/Diagnostics/StackFrame.cs#L135
                 //
-                //   - .NET Framework 4.8 has a StackFrame.GetIsLastFrameFromForeignExceptionStackTrace() internal method
+                //   - .NET Framework 4.6.2 - 4.8 has a StackFrame.GetIsLastFrameFromForeignExceptionStackTrace() internal method
+                //     https://github.com/microsoft/referencesource/blob/4.6.2/mscorlib/system/diagnostics/stackframe.cs#L167
                 //     https://referencesource.microsoft.com/#mscorlib/system/diagnostics/stackframe.cs,167
-                //
-                //   - ...???
                 /*
                 // Skip EDI boundary for async
                 if (sf.IsLastFrameFromForeignExceptionStackTrace && !isAsync)
@@ -248,7 +247,7 @@ static class PolyKitStackTraceExtensions
         }
     }
 
-    // https://github.com/dotnet/runtime/blob/v6.0.4/src/libraries/System.Private.CoreLib/src/System/Diagnostics/StackTrace.cs#L360
+    // https://github.com/dotnet/runtime/blob/v8.0.0/src/libraries/System.Private.CoreLib/src/System/Diagnostics/StackTrace.cs#L367
     private static bool ShowInStackTrace(MethodBase mb)
     {
         if ((mb.MethodImplementationFlags & MethodImplAttributes.AggressiveInlining) != 0)
@@ -294,7 +293,7 @@ static class PolyKitStackTraceExtensions
             => member.GetCustomAttributes(false).Any(attr => attr.GetType().FullName == StackTraceHiddenFullName);
     }
 
-    // https://github.com/dotnet/runtime/blob/v6.0.4/src/libraries/System.Private.CoreLib/src/System/Diagnostics/StackTrace.cs#L400
+    // https://github.com/dotnet/runtime/blob/v8.0.0/src/libraries/System.Private.CoreLib/src/System/Diagnostics/StackTrace.cs#L407
     private static bool TryResolveStateMachineMethod(ref MethodBase method, out Type declaringType)
     {
         declaringType = method.DeclaringType!;
@@ -306,6 +305,9 @@ static class PolyKitStackTraceExtensions
             return false;
         }
 
+        [UnconditionalSuppressMessage("ReflectionAnalysis", "IL2070:UnrecognizedReflectionPattern",
+            Justification = "Using Reflection to find the state machine's corresponding method is safe because the corresponding method is the only " +
+                "caller of the state machine. If the state machine is present, the corresponding method will be, too.")]
         static MethodInfo[]? GetDeclaredMethods(Type type)
             => type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance | BindingFlags.DeclaredOnly);
 
