@@ -21,7 +21,7 @@ namespace System;
 #pragma warning disable SA1623 // Property summary documentation should match accessors - Copied from dotnet/runtime.
 #pragma warning disable SA1642 // Constructor summary documentation should begin with standard text - Copied from dotnet/runtime.
 
-// https://github.com/dotnet/runtime/blob/v6.0.4/src/libraries/System.Private.CoreLib/src/System/Index.cs
+// https://github.com/dotnet/runtime/blob/v8.0.0/src/libraries/System.Private.CoreLib/src/System/Index.cs
 
 /// <summary>
 /// Represent a type can be used to index a collection either from the start or the end.
@@ -52,7 +52,7 @@ readonly struct Index : IEquatable<Index>
     {
         if (value < 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(value), "Non-negative number required.");
+            ThrowValueArgumentOutOfRange_NeedNonNegNumException();
         }
 
         _value = fromEnd ? ~value : value;
@@ -85,7 +85,7 @@ readonly struct Index : IEquatable<Index>
     {
         if (value < 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(value), "Non-negative number required.");
+            ThrowValueArgumentOutOfRange_NeedNonNegNumException();
         }
 
         return new Index(value);
@@ -102,7 +102,7 @@ readonly struct Index : IEquatable<Index>
     {
         if (value < 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(value), "Non-negative number required.");
+            ThrowValueArgumentOutOfRange_NeedNonNegNumException();
         }
 
         return new Index(~value);
@@ -176,6 +176,11 @@ readonly struct Index : IEquatable<Index>
     public override string ToString() => IsFromEnd
         ? '^' + Value.ToString()
         : ((uint)Value).ToString();
+
+    private static void ThrowValueArgumentOutOfRange_NeedNonNegNumException()
+    {
+        throw new ArgumentOutOfRangeException("value", "Non-negative number required.");
+    }
 }
 
 #endif

@@ -20,7 +20,7 @@ namespace System;
 #pragma warning disable SA1623 // Property summary documentation should match accessors - Copied from dotnet/runtime.
 #pragma warning disable SA1642 // Constructor summary documentation should begin with standard text - Copied from dotnet/runtime.
 
-// https://github.com/dotnet/runtime/blob/v6.0.4/src/libraries/System.Private.CoreLib/src/System/Range.cs
+// https://github.com/dotnet/runtime/blob/v8.0.0/src/libraries/System.Private.CoreLib/src/System/Range.cs
 
 /// <summary>
 /// Represent a range that has start and end indexes.
@@ -115,16 +115,19 @@ readonly struct Range : IEquatable<Range>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public (int Offset, int Length) GetOffsetAndLength(int length)
     {
-        var startIndex = Start;
-        var start = startIndex.IsFromEnd ? length - startIndex.Value : startIndex.Value;
-        var endIndex = End;
-        var end = endIndex.IsFromEnd ? length - endIndex.Value : endIndex.Value;
+        var start = Start.GetOffset(length);
+        var end = End.GetOffset(length);
         if ((uint)end > (uint)length || (uint)start > (uint)end)
         {
-            throw new ArgumentOutOfRangeException(nameof(length));
+            ThrowArgumentOutOfRangeException();
         }
 
         return (start, end - start);
+    }
+
+    private static void ThrowArgumentOutOfRangeException()
+    {
+        throw new ArgumentOutOfRangeException("length");
     }
 }
 
