@@ -11,6 +11,7 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
@@ -213,6 +214,60 @@ namespace System
         /// <returns><see langword="true"/> if <paramref name="left"/> is the same as or earlier than <paramref name="right"/>;
         /// otherwise, <see langword="false"/>.</returns>
         public static bool operator <=(DateOnly left, DateOnly right) => left._dayNumber <= right._dayNumber;
+
+        /// <summary>
+        /// Deconstructs <see cref="DateOnly"/> by <see cref="Year"/>, <see cref="Month"/> and <see cref="Day"/>.
+        /// </summary>
+        /// <param name="year">Deconstructed parameter for <see cref="Year"/>.</param>
+        /// <param name="month">Deconstructed parameter for <see cref="Month"/>.</param>
+        /// <param name="day">Deconstructed parameter for <see cref="Day"/>.</param>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public void Deconstruct(out int year, out int month, out int day)
+        {
+            // Code adapted from DateTime.GetDate method
+            // https://github.com/dotnet/runtime/blob/v8.0.0/src/libraries/System.Private.CoreLib/src/System/DateTime.cs#L1379
+            // Not using var for consistency with BCL code, and to take a bit of guesswork away
+            ulong ticks = (ulong)(_dayNumber * TimeSpan.TicksPerDay);
+
+            // Implementation based on article https://arxiv.org/pdf/2102.06959.pdf
+            //   Cassio Neri, Lorenz Schneider - Euclidean Affine Functions and Applications to Calendar Algorithms - 2021
+
+            // Constants copied from private DateTime constants
+            const ulong TicksPer6Hours = TimeSpan.TicksPerHour * 6;
+            const int DaysPerYear = 365;
+            const int DaysPer4Years = DaysPerYear * 4 + 1;       // 1461
+            const int DaysPer100Years = DaysPer4Years * 25 - 1;  // 36524
+            const int DaysPer400Years = DaysPer100Years * 4 + 1; // 146097
+            const int March1BasedDayOfNewYear = 306; // Days between March 1 and January 1
+
+            // Euclidean Affine Functions Algorithm (EAF) constants
+            // Constants used for fast calculation of following subexpressions
+            //      x / DaysPer4Years
+            //      x % DaysPer4Years / 4
+            const uint EafMultiplier = (uint)(((1UL << 32) + DaysPer4Years - 1) / DaysPer4Years);   // 2,939,745
+            const uint EafDivider = EafMultiplier * 4;                                              // 11,758,980
+            
+            // y100 = number of whole 100-year periods since 3/1/0000
+            // r1 = (day number within 100-year period) * 4
+            uint dividend = ((uint)(ticks / TicksPer6Hours) | 3U) + 1224;
+            uint y100 = dividend / DaysPer400Years;
+            uint r1 = dividend - (y100 * DaysPer400Years);
+            ulong u2 = (ulong)Math.BigMul((int)EafMultiplier, (int)r1 | 3);
+            ushort daySinceMarch1 = (ushort)((uint)u2 / EafDivider);
+            int n3 = 2141 * daySinceMarch1 + 197913;
+            year = (int)(100 * y100 + (uint)(u2 >> 32));
+
+            // compute month and day
+            month = (ushort)(n3 >> 16);
+            day = (ushort)n3 / 2141 + 1;
+
+            // rollover December 31
+            if (daySinceMarch1 >= March1BasedDayOfNewYear)
+            {
+                ++year;
+                month -= 12;
+            }
+        }
 
         /// <summary>
         /// Returns a <see cref="DateTime"/> that is set to the date of this <see cref="DateOnly"/> instance and the time of specified input time.
