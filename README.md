@@ -82,8 +82,6 @@ The optimal set of target frameworks for `public` polyfills is equal to the targ
 
 `PolyKit` and `PolyKit.Embedded` require that you build dependent projects with .NET SDK version 6.0 or later.
 
-When using .NET SDK 6.0 with `PolyKit.Embedded`, types that were introduced with .NET 7 are not polyfilled, as they would not be supported anyway.
-
 #### Target frameworks
 
 Polyfills provided by `PolyKit` and `PolyKit.Embedded` are compatible with all flavors of .NET supported by Microsoft at the time of publishing, as well as all corresponding versions of .NET Standard:
@@ -100,67 +98,78 @@ A minimum of Visual Studio / Build Tools 2022 and/or .NET SDK 6.0 is required to
 
 C# language version 10.0 or greater is required to compile the polyfills provided by `PolyKit.Embedded`.
 
-It is recommended to set the `LangVersion` property to `latest` in projects that reference `PolyKit` or `PolyKit.Embedded`, in order to take advantage of all the polyfilled features (besides, of course, all other features introduced with new versions of the language).
+It is recommended to set the `LangVersion` property to `latest` in projects that reference `PolyKit` or `PolyKit.Embedded`, in order to take advantage of all the polyfilled features.
 
 #### Analyzers, code coverage, and other tools
 
-Hell is other people's code, right?
-
-By referencing `PolyKit.Embedded` you are inviting our code into your project, that may well have very different code style settings. Are you thus condemned to see dozens of warnings pollute your Error List window and/or your build log forever?
-
-Of course not! All code provided by `PolyKit.Embedded` is [well-behaved guest code](https://riccar.do/posts/2022/2022-05-30-well-behaved-guest-code.html):
+All code provided by `PolyKit.Embedded` is [well-behaved guest code](https://riccar.do/posts/2022/2022-05-30-well-behaved-guest-code.html):
 
 - all source files bear the "auto-generated" mark, so that code style analyzers will happily skip them;
 - every source file name ends in `.g` (e.g. `Index.g.cs`) so that it can be automatically excluded from code coverage;
 - all added types are marked with a [`GeneratedCode`](https://learn.microsoft.com/en-us/dotnet/api/system.codedom.compiler.generatedcodeattribute) attribute;
 - all added classes and structs are marked with [`ExcludeFromCodeCoverage`](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.codeanalysis.excludefromcodecoverageattribute) and [`DebuggerNonUserCode`](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.debuggernonusercodeattribute) attributes.
 
-All this ensures that using `PolyKit.Embedded` will have zero impact on your coverage measurements, code metrics, analyzer diagnostic output, and debugging experience.
+This ensures that using `PolyKit.Embedded` will have zero impact on your coverage measurements, code metrics, analyzer diagnostic output, and debugging experience.
 
 ## Features
 
-PolyKit provides support for the following features across all [compatible target frameworks](#target-frameworks):
+PolyKit provides support for the following features across all [compatible target frameworks](#target-frameworks).  
+Please note that some types will only be polyfilled when compiling with a .NET SDK version that actually supports them. 
 
-- [nullable reference types](https://learn.microsoft.com/en-us/dotnet/csharp/nullable-references), including null state analysis;
-- [indices and ranges](https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-8#indices-and-ranges) (see note #1);
-- [`init` accessor on properties and indexers](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/init);
-- [caller argument expressions](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/attributes/caller-information#argument-expressions);
-- [required members](https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-11#required-members);
-- [`scoped` modifier](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/proposals/csharp-11.0/low-level-struct-improvements) (including the `UnscopedRef` attribute);
-- [`AsyncMethodBuilder` attribute](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/attributes/general#asyncmethodbuilder-attribute);
-- [`ModuleInitializer` attribute](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/attributes/general#moduleinitializer-attribute);
-- [`SkipLocalsInit` attribute](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/proposals/csharp-9.0/skip-localsinit);
-- [trimming incompatibility attributes](https://learn.microsoft.com/en-us/dotnet/core/deploying/trimming/prepare-libraries-for-trimming#resolve-trim-warnings);
-- [`UnconditionalSuppressMessage` attribute](https://learn.microsoft.com/en-us/dotnet/core/deploying/trimming/prepare-libraries-for-trimming#unconditionalsuppressmessage);
-- [`CompilerFeatureRequired` attribute](https://github.com/dotnet/runtime/issues/66167);
-- [`RequiresPreviewFeatures` attribute](https://github.com/dotnet/designs/blob/main/accepted/2021/preview-features/preview-features.md);
-- [`UnmanagedCallersOnly` attribute](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/proposals/csharp-9.0/function-pointers#systemruntimeinteropservicesunmanagedcallersonlyattribute);
-- [`ConstantExpected` attribute](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.codeanalysis.constantexpectedattribute);
-- [`StringSyntax` attribute](https://github.com/dotnet/runtime/issues/62505);
-- [`System.HashCode` struct](https://learn.microsoft.com/en-us/dotnet/api/system.hashcode) (see note #2);
-- [`ValidatedNotNull` attribute](https://learn.microsoft.com/en-us/dotnet/api/microsoft.validatednotnullattribute) (see note #3);
-- [`StackTraceHidden` attribute](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.stacktracehiddenattribute) (see note #4);
-- [`Experimental`](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.codeanalysis.experimentalattribute);
-- support for writing [custom string interpolation handlers](https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/tutorials/interpolated-string-handler);
-- [`Enumerable.TryGetNonEnumeratedCount<TSource>` method](https://learn.microsoft.com/en-us/dotnet/api/system.linq.enumerable.trygetnonenumeratedcount) (see note #5);
-- [`ISpanFormattable` interface](https://learn.microsoft.com/en-us/dotnet/api/system.ispanformattable) (see note #6);
-- [`DateOnly`](https://learn.microsoft.com/en-us/dotnet/api/system.dateonly) and [`TimeOnly`](https://learn.microsoft.com/en-us/dotnet/api/system.timeonly) structs (see note #7).
+| Feature | Minimum .NET SDK version | Notes |
+|---------|:------------------------:|-------|
+| [nullable reference types](https://learn.microsoft.com/en-us/dotnet/csharp/nullable-references), including null state analysis | 6.0 | |
+| [indices and ranges](https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-8#indices-and-ranges) | 6.0 | Note #1 |
+| [`init` accessor on properties and indexers](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/init) | 6.0 | |
+| [`DateOnly` struct](https://learn.microsoft.com/en-us/dotnet/api/system.dateonly) | 6.0 | Note #2 |
+| [`TimeOnly` struct](https://learn.microsoft.com/en-us/dotnet/api/system.timeonly) | 6.0 | Note #2 |
+| [`HashCode` struct](https://learn.microsoft.com/en-us/dotnet/api/system.hashcode) | 6.0 | Note #3 |
+| [caller argument expressions](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/attributes/caller-information#argument-expressions) | 6.0 | |
+| [`AsyncMethodBuilder` attribute](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/attributes/general#asyncmethodbuilder-attribute) | 6.0 | |
+| [`ModuleInitializer` attribute](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/attributes/general#moduleinitializer-attribute) | 6.0 | |
+| [`SkipLocalsInit` attribute](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/proposals/csharp-9.0/skip-localsinit) | 6.0 | |
+| [`UnconditionalSuppressMessage` attribute](https://learn.microsoft.com/en-us/dotnet/core/deploying/trimming/prepare-libraries-for-trimming#unconditionalsuppressmessage) | 6.0 | |
+| [`RequiresPreviewFeatures` attribute](https://github.com/dotnet/designs/blob/main/accepted/2021/preview-features/preview-features.md) | 6.0 | |
+| [`UnmanagedCallersOnly` attribute](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/proposals/csharp-9.0/function-pointers#systemruntimeinteropservicesunmanagedcallersonlyattribute) | 6.0 | |
+| [`ValidatedNotNull` attribute](https://learn.microsoft.com/en-us/dotnet/api/microsoft.validatednotnullattribute) | 6.0 | Note #4 |
+| [`StackTraceHidden` attribute](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.stacktracehiddenattribute) | 6.0 | Note #5 |
+| support for writing [custom string interpolation handlers](https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/tutorials/interpolated-string-handler) | 6.0 | |
+| [`Enumerable.TryGetNonEnumeratedCount<TSource>` method](https://learn.microsoft.com/en-us/dotnet/api/system.linq.enumerable.trygetnonenumeratedcount) | 6.0 | Note #6 |
+| [`ISpanFormattable` interface](https://learn.microsoft.com/en-us/dotnet/api/system.ispanformattable) | 6.0 | Note #7 |
+| [trimming incompatibility attributes](https://learn.microsoft.com/en-us/dotnet/core/deploying/trimming/prepare-libraries-for-trimming#resolve-trim-warnings) | 6.0 / 7.0| Note #8 |
+| [required members](https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-11#required-members) | 7.0 | |
+| [`scoped` modifier](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/proposals/csharp-11.0/low-level-struct-improvements) (including the `UnscopedRef` attribute) | 7.0 | |
+| [`CompilerFeatureRequired` attribute](https://github.com/dotnet/runtime/issues/66167) | 7.0 | |
+| [`ConstantExpected` attribute](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.codeanalysis.constantexpectedattribute) | 7.0 | |
+| [`StringSyntax` attribute](https://github.com/dotnet/runtime/issues/62505) | 7.0 | |
+| [`Experimental` attribute](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.codeanalysis.experimentalattribute) | 8.0 | |
 
-**Note #1:** This feature depends on `System.ValueTuple`, which is not present in .NET Framework versions prior to 4.7. If you reference the `PolyKit.Embedded` package in a project targeting .NET Framework 4.6.2 or 4.6.3, you must also add a package reference to [`System.ValueTuple`](https://www.nuget.org/packages/System.ValueTuple); otherwise, compilation will not fail, but features dependent on ValueTuple will not be present in the compiled assembly.
+**Note #1:** This feature depends on `System.ValueTuple`, which is not present in .NET Framework versions prior to 4.7. If you reference the `PolyKit.Embedded` package in a project targeting .NET Framework 4.6.2, you must also add a package reference to [`System.ValueTuple`](https://www.nuget.org/packages/System.ValueTuple); otherwise, compilation will not fail, but features dependent on ValueTuple will not be present in the compiled assembly.
 
-**Note #2:** In projects referencing `PolyKit.Embedded` and targeting .NET Framework or .NET Standard 2.0, method `HashCode.AddBytes(ReadOnlySpan<byte>)` will only be compiled if package [`System.Memory`](https://www.nuget.org/packages/System.Memory) is also referenced.
+**Note #2:** Polyfills for `DateOnly` and `TimeOnly`, unlike their .NET Runtime counterparts, do not support the [`IParsable`](https://learn.microsoft.com/en-us/dotnet/api/system.iparsable) and [`ISpanParsable<TSelf>`](https://learn.microsoft.com/en-us/dotnet/api/system.ispanparsable-1) interfaces because they contain [static virtual members](https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/tutorials/static-virtual-interface-members), a feature of C# 11.0 that cannot be polyfilled.  
+The methods are there, you can use them (for instance you can call `DateOnly.Parse(str)`), but they are just public methods of the individual types, not associated with any interface.
 
-**Note #3:** This is not, strictly speaking, a polyfill, but it spares you the trouble of defining your own internal `ValidatedNotNullAttribute` or referencing Visual Studio SDK. The attribute provided by PolyKit is in the `PolyKit.Diagnostics.CodeAnalysis` namespace.
+**Note #3:** In projects referencing `PolyKit.Embedded` and targeting .NET Framework or .NET Standard 2.0, method `HashCode.AddBytes(ReadOnlySpan<byte>)` will only be compiled if package [`System.Memory`](https://www.nuget.org/packages/System.Memory) is also referenced.
 
-**Note #4:** Polyfilling `StackTraceHiddenAttribute` would be worthless without providing actual support for it.
-PolyKit cannot replace relevant code (`Exception.StackTrace` getter and `StackTrace.ToString()` method) in frameworks prior to .NET 6.0, but it provides the two extension methods `Exception.GetStackTraceHidingFrames()` and `StackTrace.ToStringHidingFrames()` that retrofit the behavior of `Exception.StackTrace` and `StackTrace.ToString()` respectively to frameworks prior to .NET 6, where `StackTraceHiddenAttribute` was first introduced, while being simply facades for the "real" code in .NET 6.0+.
-Be aware, though, of the following limitations: the output of the "retrofitted" extension methods is always in US English, regardless of any locale setting; external exception stack trace boundaries ("End of stack trace from previous location" lines) are missing from returned strings.
+**Note #4:** This is not, strictly speaking, a polyfill, but it spares you the trouble of defining your own internal `ValidatedNotNullAttribute` or referencing Visual Studio SDK.  
+The attribute provided by PolyKit is in the `PolyKit.Diagnostics.CodeAnalysis` namespace.
 
-**Note #5:** Obviously PolyKit cannot extend `System.Linq.Enumerable`, so we'll have to meet halfway on it. Add `PolyKit.Linq` to your `using` clauses and use the `TryGetCountWithoutEnumerating<TSource>` method: it will just call `TryGetNonEnumeratedCount<TSource>`on .NET 6.0+ and replicate most of its functionality (except where it requires access to runtime internal types) on older frameworks.
+**Note #5:** Polyfilling `StackTraceHiddenAttribute` would be worthless without providing actual support for it. PolyKit cannot replace relevant code (`Exception.StackTrace` getter and `StackTrace.ToString()` method) in frameworks prior to .NET 6.0.  
+PolyKit provides two extension methods, `Exception.GetStackTraceHidingFrames()` and `StackTrace.ToStringHidingFrames()`; these methods retrofit the behavior of `Exception.StackTrace` and `StackTrace.ToString()` respectively to frameworks prior to .NET 6, where `StackTraceHiddenAttribute` was first introduced.  
+When used on .NET 6.0+, the above extension methods are just façades for their BCL counterparts.
+Be aware of the following limitations:
 
-**Note #6:** PolyKit does not (and can not) add `ISpanFormattable` support to .NET Runtime types: `intVar is ISpanFormattable` will still be `false` except on .NET 6.0 and later versions. You can, however, implement `ISpanFormattable` in a type exposed by a multi-target library, no `#if` needed: it will behave just as you expect on .NET 6.0+, and still have a `TryFormat` method on older platforms (unless you used an explicit implementation). Also note that, in projects referencing `PolyKit.Embedded` and targeting .NET Framework or .NET Standard 2.0,  `ISpanFormattable` will only be compiled if package [`System.Memory`](https://www.nuget.org/packages/System.Memory) is also referenced.
+- the output of the "retrofitted" extension methods is always in US English, regardless of any locale setting;
+- external exception stack trace boundaries ("End of stack trace from previous location" lines) are missing from returned strings.
 
-**Note #7:** Polyfills for `DateOnly` and `TimeOnly`, unlike their .NET Runtime counterparts, do not support the [`IParsable`](https://learn.microsoft.com/en-us/dotnet/api/system.iparsable) and [`ISpanParsable<TSelf>`](https://learn.microsoft.com/en-us/dotnet/api/system.ispanparsable-1) interfaces because they contain [static virtual members](https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/tutorials/static-virtual-interface-members), a feature of C# 11.0 that requires .NET 7 and cannot be just polyfilled. The methods are there, you can use them (for instance you can call `DateOnly.Parse(str)`), but they are just public methods of the individual types, not associated with any interface.
+**Note #6:** Obviously PolyKit cannot extend `System.Linq.Enumerable`, so we'll have to meet halfway on this.  
+PolyKit adds a `System.Linq.PolyKitEnumerable` class, containing a `TryGetCountWithoutEnumerating<TSource>` method that will just call `TryGetNonEnumeratedCount<TSource>`on .NET 6.0+ and replicate most of its functionality (except where it requires access to runtime internal types) on older frameworks.
+
+**Note #7:** PolyKit does not (and can not) add `ISpanFormattable` support to .NET Runtime types: `intVar is ISpanFormattable` will still be `false` except on .NET 6.0 and later versions.  
+You can, however, implement `ISpanFormattable` in a type exposed by a multi-target library, no `#if` needed: it will behave just as you expect on .NET 6.0+, and still have a `TryFormat` method on older platforms (unless you used an explicit implementation).  
+Also note that, in projects referencing `PolyKit.Embedded` and targeting .NET Framework or .NET Standard 2.0, `ISpanFormattable` will only be compiled if package [`System.Memory`](https://www.nuget.org/packages/System.Memory) is also referenced.
+
+**Note #8:** [`RequiresDynamicCodeAttribute`](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.codeanalysis.requiresdynamiccodeattribute) was introduced with .NET 7.0 and requires .NET SDK 7.0 to be properly supported duting build.
 
 ## Quick start
 
