@@ -19,7 +19,7 @@ using System.Collections.Generic;
 static IEnumerable<string> Exec(this ICakeContext context, string command, ProcessArgumentBuilder arguments)
 {
     var exitCode = context.Exec(command, arguments, out var output);
-    Ensure(exitCode == 0, $"'{command} {arguments.RenderSafe()}' exited with code {exitCode}.");
+    context.Ensure(exitCode == 0, $"'{command} {arguments.RenderSafe()}' exited with code {exitCode}.");
     return output;
 }
 

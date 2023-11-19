@@ -129,11 +129,10 @@ static (SemanticVersion? Latest, SemanticVersion? LatestStable) GitGetLatestVers
                          .Where(static x => x.StartsWith("tag: "))
                          .Select(static x => x.Substring(5))
                          .Select(static x => {
-                            SemanticVersion? version = null;
-                            var result = SemanticVersion.TryParse(x, out version);
+                            _ = SemanticVersion.TryParse(x, out var version);
                             return version;
                          })
-                         .Where(static x => x != null);
+                         .WhereNotNull();
 
     SemanticVersion? latest = null;
     SemanticVersion? latestStable = null;

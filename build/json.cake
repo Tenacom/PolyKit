@@ -15,11 +15,12 @@ using SysFile = System.IO.File;
 
 /*
  * Summary : Parses a JSON object from a string. Fails the build if not successful.
- * Params  : str         - The string to parse.
+ * Params  : context     - The Cake context.
+ *           str         - The string to parse.
  *           description - A description of the string for exception messages.
  * Returns : The parsed object.
  */
-static JsonObject ParseJsonObject(string str, string description = "The provided string")
+static JsonObject ParseJsonObject(this ICakeContext context, string str, string description = "The provided string")
 {
     JsonNode? node;
     try
@@ -35,23 +36,24 @@ static JsonObject ParseJsonObject(string str, string description = "The provided
     }
     catch (JsonException)
     {
-        Fail($"{description} is not valid JSON.");
+        context.Fail($"{description} is not valid JSON.");
         throw null;
     }
 
     return node switch {
-        null => Fail<JsonObject>($"{description} was parsed as JSON null."),
+        null => context.Fail<JsonObject>($"{description} was parsed as JSON null."),
         JsonObject obj => obj,
-        object other => Fail<JsonObject>($"{description} was parsed as a {other.GetType().Name}, not a {nameof(JsonObject)}."),
+        object other => context.Fail<JsonObject>($"{description} was parsed as a {other.GetType().Name}, not a {nameof(JsonObject)}."),
     };
 }
 
 /*
  * Summary : Loads a JSON object from a file. Fails the build if not successful.
- * Params  : path - The path of the file to parse.
+ * Params  : context - The Cake context.
+ *           path    - The path of the file to parse.
  * Returns : The parsed object.
  */
-static JsonObject LoadJsonObject(FilePath path)
+static JsonObject LoadJsonObject(this ICakeContext context, FilePath path)
 {
     var fullPath = path.FullPath;
     JsonNode? node;
@@ -69,28 +71,29 @@ static JsonObject LoadJsonObject(FilePath path)
     }
     catch (IOException e)
     {
-        Fail($"Could not read from {fullPath}: {e.Message}");
+        context.Fail($"Could not read from {fullPath}: {e.Message}");
         throw null;
     }
     catch (JsonException)
     {
-        Fail($"{fullPath} does not contain valid JSON.");
+        context.Fail($"{fullPath} does not contain valid JSON.");
         throw null;
     }
 
     return node switch {
-        null => Fail<JsonObject>($"{fullPath} was parsed as JSON null."),
+        null => context.Fail<JsonObject>($"{fullPath} was parsed as JSON null."),
         JsonObject obj => obj,
-        object other => Fail<JsonObject>($"{fullPath} was parsed as a {other.GetType().Name}, not a {nameof(JsonObject)}."),
+        object other => context.Fail<JsonObject>($"{fullPath} was parsed as a {other.GetType().Name}, not a {nameof(JsonObject)}."),
     };
 }
 
 /*
  * Summary : Saves a JSON object to a file. Fails the build if not successful.
- * Params  : path - The path of the file to parse.
+ * Params  : context - The Cake context.
+ *           path    - The path of the file to parse.
  * Returns : The parsed object.
  */
-static void SaveJson(JsonNode json, FilePath path)
+static void SaveJson(this ICakeContext context, JsonNode json, FilePath path)
 {
     var fullPath = path.FullPath;
     try
@@ -108,7 +111,7 @@ static void SaveJson(JsonNode json, FilePath path)
     }
     catch (IOException e)
     {
-        Fail($"Could not write to {fullPath}: {e.Message}");
+        context.Fail($"Could not write to {fullPath}: {e.Message}");
         throw null;
     }
 }
@@ -116,22 +119,23 @@ static void SaveJson(JsonNode json, FilePath path)
 /*
  * Summary : Gets the value of a property from a JSON object. Fails the build if not successful.
  * Types   : T            - The desired type of the property value.
- * Params  : json         - The JSON object.
+ * Params  : context      - The Cake context.
+ *           json         - The JSON object.
  *           propertyName - The name of the property to get.
  *           description  - A description of the object for exception messages.
  * Returns : The value of the specified property.
  */
-static T GetJsonPropertyValue<T>(JsonObject json, string propertyName, string objectDescription = "JSON object")
+static T GetJsonPropertyValue<T>(this ICakeContext context, JsonObject json, string propertyName, string objectDescription = "JSON object")
 {
-    Ensure(json.TryGetPropertyValue(propertyName, out var property), $"Json property {propertyName} not found in {objectDescription}.");
+    context.Ensure(json.TryGetPropertyValue(propertyName, out var property), $"Json property {propertyName} not found in {objectDescription}.");
     switch (property)
     {
         case null:
-            return Fail<T>($"Json property {propertyName} in {objectDescription} is null.");
+            return context.Fail<T>($"Json property {propertyName} in {objectDescription} is null.");
         case JsonValue value:
-            Ensure(value.TryGetValue<T>(out var result), $"Json property {propertyName} in {objectDescription} cannot be converted to a {typeof(T).Name}.");
-            return result ?? Fail<T>($"Json property {propertyName} in {objectDescription} has a null value.");
+            context.Ensure(value.TryGetValue<T>(out var result), $"Json property {propertyName} in {objectDescription} cannot be converted to a {typeof(T).Name}.");
+            return result ?? context.Fail<T>($"Json property {propertyName} in {objectDescription} has a null value.");
         default:
-            return Fail<T>($"Json property {propertyName} in {objectDescription} is a {property.GetType().Name}, not a {nameof(JsonValue)}.");
+            return context.Fail<T>($"Json property {propertyName} in {objectDescription} is a {property.GetType().Name}, not a {nameof(JsonValue)}.");
     }
 }

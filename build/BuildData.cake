@@ -16,13 +16,12 @@ sealed class BuildData
 {
     /*
     * Summary : Initializes a new instance of the BuildData class.
-    * Params  : host - The Cake build script host.
+    * Params  : context - The Cake context.
     */
     public BuildData(ICakeContext context)
     {
-        Ensure(context.TryGetRepositoryInfo(out var repository), 255, "Cannot determine repository owner and name.");
-        var changelogPath = new FilePath("CHANGELOG.md");
-        var solutionPath = context.GetFiles("*.sln").FirstOrDefault() ?? Fail<FilePath>(255, "Cannot find a solution file.");
+        context.Ensure(context.TryGetRepositoryInfo(out var repository), 255, "Cannot determine repository owner and name.");
+        var solutionPath = context.GetFiles("*.sln").FirstOrDefault() ?? context.Fail<FilePath>(255, "Cannot find a solution file.");
         var solution = context.ParseSolution(solutionPath);
         var configuration = context.Argument("configuration", "Release");
         var artifactsPath = new DirectoryPath("artifacts").Combine(configuration);
@@ -48,6 +47,8 @@ sealed class BuildData
             NoLogo = true,
         };
 
+        (LatestVersion, LatestStableVersion) = context.GitGetLatestVersions();
+
         RepositoryHostUrl = repository.HostUrl;
         RepositoryOwner = repository.Owner;
         RepositoryName = repository.Name;
@@ -56,7 +57,6 @@ sealed class BuildData
         Branch = branch;
         ArtifactsPath = artifactsPath;
         TestResultsPath = testResultsPath;
-        ChangelogPath = changelogPath;
         SolutionPath = solutionPath;
         Solution = solution;
         Configuration = configuration;
@@ -69,15 +69,17 @@ sealed class BuildData
         MSBuildSettings = msBuildSettings;
 
         context.Information("Build configuration data:");
-        context.Information($"Repository        : {RepositoryHostUrl}/{RepositoryOwner}/{RepositoryName}");
-        context.Information($"Git remote name   : {Remote}");
-        context.Information($"Git reference     : {Ref}");
-        context.Information($"Branch            : {Branch}");
-        context.Information($"Build environment : {(IsCI ? "cloud" : "local")}");
-        context.Information($"Solution          : {SolutionPath.GetFilename()}");
-        context.Information($"Version           : {Version}");
-        context.Information($"Public release    : {(IsPublicRelease ? "yes" : "no")}");
-        context.Information($"Prerelease        : {(IsPrerelease ? "yes" : "no")}");
+        context.Information($"Repository            : {RepositoryHostUrl}/{RepositoryOwner}/{RepositoryName}");
+        context.Information($"Git remote name       : {Remote}");
+        context.Information($"Git reference         : {Ref}");
+        context.Information($"Branch                : {Branch}");
+        context.Information($"Build environment     : {(IsCI ? "cloud" : "local")}");
+        context.Information($"Solution              : {SolutionPath.GetFilename()}");
+        context.Information($"Version               : {Version}");
+        context.Information($"Public release        : {(IsPublicRelease ? "yes" : "no")}");
+        context.Information($"Prerelease            : {(IsPrerelease ? "yes" : "no")}");
+        context.Information($"Latest version        : {LatestVersion?.ToString() ?? "(none)"}");
+        context.Information($"Latest stable version : {LatestStableVersion?.ToString() ?? "(none)"}");
     }
 
     /*
@@ -122,11 +124,6 @@ sealed class BuildData
     public DirectoryPath TestResultsPath { get; }
 
     /*
-     * Summary : Gets the path of the CHANGELOG.md file.
-     */
-    public FilePath ChangelogPath { get; }
-
-    /*
      * Summary : Gets the path of the solution file.
      */
     public FilePath SolutionPath { get; }
@@ -150,6 +147,16 @@ sealed class BuildData
      * Summary : Gets the version to build, as a SemanticVersion object.
      */
     public SemanticVersion Version { get; private set; }
+
+    /*
+     * Summary : Gets the latest version published, if any, as a SemanticVersion object.
+     */
+    public SemanticVersion? LatestVersion { get; private set; }
+
+    /*
+     * Summary : Gets the latest stable version published, if any, as a SemanticVersion object.
+     */
+    public SemanticVersion? LatestStableVersion { get; private set; }
 
     /*
      * Summary : Gets a value that indicates whether a public release can be built.

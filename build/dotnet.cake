@@ -22,14 +22,14 @@ static void RestoreSolution(this ICakeContext context, BuildData data)
 {
     context.Information("Restoring NuGet packages for solution...");
     context.DotNetRestore(data.SolutionPath.FullPath, new() {
+        MSBuildSettings = data.MSBuildSettings,
         DisableParallel = true,
         Interactive = false,
-        MSBuildSettings = data.MSBuildSettings,
     });
 }
 
 /*
- * Summary : Build all projects in teh solution.
+ * Summary : Build all projects in the solution.
  * Params  : context - The Cake context.
  *           data    - Build configuration data.
  *           restore - true to restore NuGet packages before building, false otherwise.
@@ -60,6 +60,7 @@ static void TestSolution(this ICakeContext context, BuildData data, bool restore
     context.Information($"Running tests (restore = {restore}, build = {build}, collect = {collect})...");
     context.DotNetTest(data.SolutionPath.FullPath, new() {
         Configuration = data.Configuration,
+        MSBuildSettings = data.MSBuildSettings,
         NoBuild = !build,
         NoLogo = true,
         NoRestore = !restore,

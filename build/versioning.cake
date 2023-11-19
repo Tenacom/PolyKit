@@ -192,10 +192,12 @@ sealed class VersionFile
     private const string VersionJsonPath = "version.json";
     private const string DefaultFirstUnstableTag = "preview";
 
+    private readonly ICakeContext _context;
     private readonly JsonNode _json;
 
-    private VersionFile(FilePath path, JsonNode json, VersionSpec versionSpec, string firstUnstableTag)
+    private VersionFile(ICakeContext context, FilePath path, JsonNode json, VersionSpec versionSpec, string firstUnstableTag)
     {
+        _context = context;
         Path = path;
         _json = json;
         VersionSpec = versionSpec;
@@ -223,12 +225,12 @@ sealed class VersionFile
      * Summary : Constructs a VersionFile instance by loading the repository's version.json file.
      * Returns : A newly-constructed instance of VersionFile, representing the loaded data.
      */
-    public static VersionFile Load()
+    public static VersionFile Load(ICakeContext context)
     {
         var path = new FilePath(VersionJsonPath);
-        var json = LoadJsonObject(path);
-        var versionStr = GetJsonPropertyValue<string>(json, "version", path + " file");
-        Ensure(VersionSpec.TryParse(versionStr, out var versionSpec), $"{VersionJsonPath} contains invalid version specification '{versionStr}'.");
+        var json = context.LoadJsonObject(path);
+        var versionStr = context.GetJsonPropertyValue<string>(json, "version", path + " file");
+        context.Ensure(VersionSpec.TryParse(versionStr, out var versionSpec), $"{VersionJsonPath} contains invalid version specification '{versionStr}'.");
         var firstUnstableTag = DefaultFirstUnstableTag;
         var release = json["release"];
         if (release is not null)
@@ -240,7 +242,7 @@ sealed class VersionFile
             }
         }
 
-        return new(path, json, versionSpec, firstUnstableTag);
+        return new(context, path, json, versionSpec, firstUnstableTag);
     }
 
     /*
@@ -273,40 +275,69 @@ sealed class VersionFile
     public void Save()
     {
         _json["version"] = JsonValue.Create(VersionSpec.ToString());
-        SaveJson(_json, Path);
+        _context.SaveJson(_json, Path);
+    }
+}
+
+/*
+ * Summary : Checks the consistency of current version with respect to latest versions.
+ * Params  : context             - The Cake context.
+ *           currentVersion      - The current version as computed by NBGV
+ *           latestVersion       - The latest published version, if any
+ *           latestStableVersion - The latest published stable version, if any
+ *           isFinalCheck        - true if this is the final check before publishing;
+ *                                 false if current version might still be incremented, for example by updating the changelog.
+ */
+static void CheckVersioningConsistency(
+    this ICakeContext context,
+    SemanticVersion currentVersion,
+    SemanticVersion? latestVersion,
+    SemanticVersion? latestStableVersion,
+    bool isFinalCheck)
+{
+    context.Ensure(
+        VersionComparer.Compare(latestVersion, latestStableVersion, VersionComparison.Version) >= 0,
+        $"Versioning anomaly detected: latest version ({latestVersion?.ToString() ?? "none"}) is lower than latest stable version ({latestStableVersion?.ToString() ?? "none"}).");
+    if (isFinalCheck)
+    {
+        context.Ensure(
+            VersionComparer.Compare(currentVersion, latestStableVersion, VersionComparison.Version) > 0,
+            $"Versioning anomaly detected: current version ({currentVersion}) is not higher than latest stable version ({latestStableVersion?.ToString() ?? "none"}).");
+        context.Ensure(
+            VersionComparer.Compare(currentVersion, latestVersion, VersionComparison.Version) > 0,
+            $"Versioning anomaly detected: current version ({currentVersion}) is not higher than latest version ({latestVersion?.ToString() ?? "none"}).");
+    }
+    else
+    {
+        context.Ensure(
+            VersionComparer.Compare(currentVersion, latestStableVersion, VersionComparison.Version) >= 0,
+            $"Versioning anomaly detected: current version ({currentVersion}) is lower than latest stable version ({latestStableVersion?.ToString() ?? "none"}).");
+        context.Ensure(
+            VersionComparer.Compare(currentVersion, latestVersion, VersionComparison.Version) >= 0,
+            $"Versioning anomaly detected: current version ({currentVersion}) is lower than latest version ({latestVersion?.ToString() ?? "none"}).");
     }
 }
 
 /*
  * Summary : Computes the VersionSpecChange to apply upon release.
- * Params  : context         - The Cake context.
- *           currentVersion  - The current version as computed by NBGV
- *           requestedChange - The version spec change requested by the user
- *           checkPublicApi  - If true, account for changes in public API files.
+ * Params  : context             - The Cake context.
+ *           currentVersion      - The current version as computed by NBGV
+ *           latestVersion       - The latest published version, if any
+ *           latestStableVersion - The latest published stable version, if any
+ *           requestedChange     - The version spec change requested by the user
+ *           checkPublicApi      - If true, account for changes in public API files.
  * Returns : The actual change to apply .
  */
 static VersionSpecChange ComputeVersionSpecChange(
     this ICakeContext context,
     SemanticVersion currentVersion,
+    SemanticVersion? latestVersion,
+    SemanticVersion? latestStableVersion,
     VersionSpecChange requestedChange,
     bool checkPublicApi)
 {
-    // Throw if versions are messed up
-    var (latestVersion, latestStableVersion) = context.GitGetLatestVersions();
-    context.Information($"Latest version is {latestVersion?.ToString() ?? "(none)"}");
-    context.Information($"Latest stable version is {latestStableVersion?.ToString() ?? "(none)"}");
-    Ensure(
-        VersionComparer.Compare(currentVersion, latestStableVersion, VersionComparison.Version) > 0,
-        $"Versioning anomaly detected: current version ({currentVersion}) is not higher than than latest stable version ({latestStableVersion?.ToString() ?? "none"}).");
-    Ensure(
-        VersionComparer.Compare(currentVersion, latestStableVersion, VersionComparison.Version) > 0,
-        $"Versioning anomaly detected: latest version ({latestVersion?.ToString() ?? "none"}) is not higher than than latest stable version ({latestStableVersion?.ToString() ?? "none"}).");
-    Ensure(
-        VersionComparer.Compare(currentVersion, latestVersion, VersionComparison.Version) > 0,
-        $"Versioning anomaly detected: current version ({currentVersion}) is not higher than than last stable version ({latestStableVersion?.ToString() ?? "none"}).");
-
     // Determine how we are currently already incrementing version
-    var currentVersionIncrement = latestStableVersion == null ? VersionIncrement.Major
+    var currentVersionIncrement = latestStableVersion == null ? VersionIncrement.None
                                 : currentVersion.Major > latestStableVersion.Major ? VersionIncrement.Major
                                 : currentVersion.Minor > latestStableVersion.Minor ? VersionIncrement.Minor
                                 : VersionIncrement.None;
@@ -317,10 +348,12 @@ static VersionSpecChange ComputeVersionSpecChange(
     context.Information($"Public API change kind: {publicApiChangeKind}{(checkPublicApi ? null : " (not checked)")}");
 
     // Determine the version increment required by SemVer rules
-    var isInitialDevelopmentPhase = latestStableVersion == null || latestStableVersion.Major == 0;
+    // When the major version is 0, "anything MAY change" according to SemVer;
+    // by convention, we increment the minor version for breaking changes (0.x -> 0.(x+1))
+    var isMajorVersionZero = latestStableVersion is { Major: 0 };
     var semanticVersionIncrement = publicApiChangeKind switch {
-        ApiChangeKind.Breaking => isInitialDevelopmentPhase ? VersionIncrement.Minor : VersionIncrement.Major,
-        ApiChangeKind.Additive => isInitialDevelopmentPhase ? VersionIncrement.None : VersionIncrement.Minor,
+        ApiChangeKind.Breaking => isMajorVersionZero ? VersionIncrement.Minor : VersionIncrement.Major,
+        ApiChangeKind.Additive => isMajorVersionZero ? VersionIncrement.None : VersionIncrement.Minor,
         _ => VersionIncrement.None,
     };
     context.Information($"Required version increment according to Semantic Versioning rules: {semanticVersionIncrement}");

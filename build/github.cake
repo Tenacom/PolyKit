@@ -2,7 +2,7 @@
 // See LICENSE file in the project root for full license information.
 
 #addin nuget:?package=Cake.Http&version=3.0.2
-#addin nuget:?package=Octokit&version=5.1.0
+#addin nuget:?package=Octokit&version=8.0.1
 
 #nullable enable
 
@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using Octokit;
 
 using SysFile = System.IO.File;
+using SysPath = System.IO.Path;
 
 /*
  * Summary : Asynchronously gets the visibility of the current repository.
@@ -33,9 +34,9 @@ static async Task<bool> IsPrivateRepositoryAsync(this ICakeContext context, Buil
  * Summary : Asynchronously creates a new draft release on the GitHub repository.
  * Params  : context - The Cake context.
  *           data    - Build configuration data.
- * Returns : A Task, representing the ongoing operation, whose value will be the ID of the newly created release.
+ * Returns : A Task, representing the ongoing operation, whose value will be an object representing the newly created release.
  */
-static async Task<int> CreateDraftReleaseAsync(this ICakeContext context, BuildData data)
+static async Task<Release> CreateDraftReleaseAsync(this ICakeContext context, BuildData data)
 {
     var tag = data.VersionStr;
     var client = context.CreateGitHubClient();
@@ -48,18 +49,59 @@ static async Task<int> CreateDraftReleaseAsync(this ICakeContext context, BuildD
         Draft = true,
     };
 
-    var createReleaseResponse = await client.Repository.Release.Create(data.RepositoryOwner, data.RepositoryName, newRelease).ConfigureAwait(false);
-    return createReleaseResponse.Id;
+    return await client.Repository.Release.Create(data.RepositoryOwner, data.RepositoryName, newRelease).ConfigureAwait(false);
+}
+
+/*
+ * Summary : Asynchronously uploads a release asset.
+ * Params  : context     - The Cake context.
+ *           data        - Build configuration data.
+ *           release     - An object representing the release.
+ *           path        - The full path of the asset file.
+ *           mimeType    - The MIME type of the asset.
+ *           description - A short textual description of the asset.
+ * Returns : A Task that represents the ongoing operation.
+ */
+static async Task UploadReleaseAssetAsync(this ICakeContext context, BuildData data, Release release, string path, string mimeType, string description)
+{
+    var tag = data.VersionStr;
+    var client = context.CreateGitHubClient();
+    context.Verbose($"Uploading asset {path}...");
+    ReleaseAsset asset;
+    await using (var assetContents = SysFile.OpenRead(path))
+    {
+        var upload = new ReleaseAssetUpload()
+        {
+            FileName = SysPath.GetFileName(path),
+            ContentType = mimeType,
+            RawData = assetContents,
+        };
+
+        asset = await client.Repository.Release.UploadAsset(release, upload).ConfigureAwait(false);
+    }
+
+    if (!string.IsNullOrEmpty(description))
+    {
+        context.Verbose("Updating asset label...");
+        var update = asset.ToUpdate();
+        update.Label = description;
+        _ = await client.Repository.Release.EditAsset(data.RepositoryOwner, data.RepositoryName, asset.Id, update).ConfigureAwait(false);
+    }
+    else
+    {
+        context.Verbose("Skipping label update: asset has no description.");
+    }
+
 }
 
 /*
  * Summary : Asynchronously publishes a draft release on the GitHub repository.
  * Params  : context - The Cake context.
  *           data    - Build configuration data.
- *           id      - The ID of the release.
+ *           release - An object representing the release.
  * Returns : A Task that represents the ongoing operation.
  */
-static async Task PublishReleaseAsync(this ICakeContext context, BuildData data, int id)
+static async Task PublishReleaseAsync(this ICakeContext context, BuildData data, Release release)
 {
     var tag = data.VersionStr;
     var client = context.CreateGitHubClient();
@@ -74,31 +116,29 @@ static async Task PublishReleaseAsync(this ICakeContext context, BuildData data,
              + generateNotesResponse.Body;
 
     context.Information($"Publishing the previously created release as {tag}...");
-    var update = new ReleaseUpdate
-    {
-        TagName = tag,
-        Name = tag,
-        Body = body,
-        Prerelease = data.IsPrerelease,
-        Draft = false,
-    };
+    var update = release.ToUpdate();
+    update.TagName = tag;
+    update.Name = tag;
+    update.Body = body;
+    update.Prerelease = data.IsPrerelease;
+    update.Draft = false;
 
-    _ = await client.Repository.Release.Edit(data.RepositoryOwner, data.RepositoryName, id, update).ConfigureAwait(false);
+    _ = await client.Repository.Release.Edit(data.RepositoryOwner, data.RepositoryName, release.Id, update).ConfigureAwait(false);
 }
 
 /*
  * Summary : Asynchronously deletes a release and, optionally, the corresponding tag on the GitHub repository.
  * Params  : context - The Cake context.
  *           data    - Build configuration data.
- *           id      - The ID of the release.
+ *           release - An object representing the release.
  *           tagName - The tag name, or null to not delete a tag.
  * Returns : A Task that represents the ongoing operation.
  */
-static async Task DeleteReleaseAsync(this ICakeContext context, BuildData data, int id, string? tagName)
+static async Task DeleteReleaseAsync(this ICakeContext context, BuildData data, Release release, string? tagName)
 {
     context.Information("Deleting the previously created release...");
     var client = context.CreateGitHubClient();
-    await client.Repository.Release.Delete(data.RepositoryOwner, data.RepositoryName, id).ConfigureAwait(false);
+    await client.Repository.Release.Delete(data.RepositoryOwner, data.RepositoryName, release.Id).ConfigureAwait(false);
     if (tagName != null)
     {
         var reference = "refs/tags/" + tagName;
@@ -153,7 +193,7 @@ static async Task DispatchWorkflow(this ICakeContext context, BuildData data, st
 static void SetActionsStepOutput(this ICakeContext context, string name, string value)
 {
     var outputFile = context.EnvironmentVariable("GITHUB_OUTPUT");
-    Ensure(!string.IsNullOrEmpty(outputFile), "Cannot set Actions step output: GITHUB_OUTPUT not set.");
+    context.Ensure(!string.IsNullOrEmpty(outputFile), "Cannot set Actions step output: GITHUB_OUTPUT not set.");
     SysFile.AppendAllLines(outputFile, new[] { $"{name}={value}" }, Encoding.UTF8);
 }
 

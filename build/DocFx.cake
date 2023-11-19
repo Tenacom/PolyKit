@@ -99,13 +99,13 @@ sealed class DocFx
         var (commandName, process) = Start(arguments);
         process.WaitForExit();
         var exitCode = process.GetExitCode();
-        Ensure(exitCode == 0, $"{commandName} exited with code {exitCode}.");
+        Context.Ensure(exitCode == 0, $"{commandName} exited with code {exitCode}.");
     }
 
     private (string commandName, IProcess Process) Start(ProcessArgumentBuilder arguments)
     {
         _docFxPath ??= Context.Tools.Resolve(ToolExeName);
-        Ensure(_docFxPath != null, $"Cannot find {ToolExeName}");
+        Context.Ensure(_docFxPath != null, $"Cannot find {ToolExeName}");
         FilePath command = _docFxPath;
         if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
