@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### New features
 
+- .NET 8 was added as a target platform.
+
 ### Changes to existing features
 
 ### Bugs fixed in this release

@@ -157,6 +157,7 @@
     -->
     <PropertyGroup>
       <DefineConstants Condition="$([MSBuild]::VersionGreaterThanOrEquals('$(NETCoreSdkVersion)', '7.0'))">$(DefineConstants);POLYKIT_NETSDK7_0_OR_GREATER</DefineConstants>
+      <DefineConstants Condition="$([MSBuild]::VersionGreaterThanOrEquals('$(NETCoreSdkVersion)', '8.0'))">$(DefineConstants);POLYKIT_NETSDK8_0_OR_GREATER</DefineConstants>
     </PropertyGroup>
 
   </Target>

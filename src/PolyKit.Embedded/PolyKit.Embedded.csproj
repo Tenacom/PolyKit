@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <Description>Embeds polyfills in your project, creating either internal or public types.</Description>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <DevelopmentDependency>true</DevelopmentDependency>
     <RootNamespace />
     <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
