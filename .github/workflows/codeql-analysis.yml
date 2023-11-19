@@ -27,7 +27,7 @@ jobs:
         language: [ 'csharp' ] # https://aka.ms/codeql-docs/language-support
     steps:
     - name: Checkout repository with full history
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         fetch-depth: 0 # Checkout with full history so nbgv can compute Git height correctly.
     - name: Initialize CodeQL
