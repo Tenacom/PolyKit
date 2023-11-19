@@ -6,7 +6,7 @@
 
 #else
 
-// https://github.com/dotnet/runtime/blob/v7.0.0/src/libraries/System.Private.CoreLib/src/System/TimeOnly.cs
+// https://github.com/dotnet/runtime/blob/v8.0.0/src/libraries/System.Private.CoreLib/src/System/TimeOnly.cs
 
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
@@ -16,6 +16,9 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Runtime.CompilerServices;
 using PolyKit.Diagnostics.CodeAnalysis;
+
+#pragma warning disable CA1305 // Specify IFormatProvider - Consistency with BCL code
+#pragma warning disable CA1725 // Parameter names should match base declaration - Consistency with BCL code
 
 namespace System
 {

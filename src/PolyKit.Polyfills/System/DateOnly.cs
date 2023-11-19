@@ -6,7 +6,7 @@
 
 #else
 
-// https://github.com/dotnet/runtime/blob/v7.0.0/src/libraries/System.Private.CoreLib/src/System/DateOnly.cs
+// https://github.com/dotnet/runtime/blob/v8.0.0/src/libraries/System.Private.CoreLib/src/System/DateOnly.cs
 
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
@@ -15,6 +15,9 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using PolyKit.Diagnostics.CodeAnalysis;
+
+#pragma warning disable CA1305 // Specify IFormatProvider - Consistency with BCL code
+#pragma warning disable CA1725 // Parameter names should match base declaration - Consistency with BCL code
 
 namespace System
 {
@@ -27,7 +30,7 @@ namespace System
           IComparable<DateOnly>,
           IEquatable<DateOnly>
 #if POLYKIT_USE_SPAN
-          , ISpanFormattable
+        , ISpanFormattable
 #endif
     {
         private readonly int _dayNumber;
@@ -844,7 +847,7 @@ namespace System
                 format = "d";
             }
 
-            EnsureValidCustomDateFormat(format);
+            EnsureValidCustomDateOnlyFormat(format);
             return GetEquivalentDateTime().ToString(format);
         }
 
@@ -868,7 +871,7 @@ namespace System
                 format = "d";
             }
 
-            EnsureValidCustomDateFormat(format);
+            EnsureValidCustomDateOnlyFormat(format);
             return GetEquivalentDateTime().ToString(format, provider);
         }
 
@@ -891,7 +894,7 @@ namespace System
                 format = "d";
             }
 
-            _ = IsValidCustomDateFormat(format, true);
+            _ = IsValidCustomDateOnlyFormat(format, true);
             return GetEquivalentDateTime().TryFormat(destination, out charsWritten, format, provider);
         }
 
@@ -908,7 +911,7 @@ namespace System
         public bool TryFormat(Span<char> destination, out int charsWritten, [StringSyntax(StringSyntaxAttribute.DateOnlyFormat)] ReadOnlySpan<char> format = default(ReadOnlySpan<char>), IFormatProvider? provider = null)
         {
             var formatStr = format.Length == 0 ? "d" : format.ToString();
-            _ = IsValidCustomDateFormat(formatStr, true);
+            _ = IsValidCustomDateOnlyFormat(formatStr, true);
             var str = GetEquivalentDateTime().ToString(formatStr, provider);
             charsWritten = str.Length;
             return str.AsSpan().TryCopyTo(destination);
@@ -974,13 +977,12 @@ namespace System
 
 // The following is an internal method of class System.Globalization.DateTimeFormat
 // https://github.com/dotnet/runtime/blob/v7.0.0/src/libraries/System.Private.CoreLib/src/System/Globalization/DateTimeFormat.cs#L1073
+// https://github.com/dotnet/runtime/blob/v8.0.0/src/libraries/System.Private.CoreLib/src/System/Globalization/DateTimeFormat.cs#L1176
 // The string version is just a copy+paste of the same method with the parameter type changed, for platforms with no Span support
 #if POLYKIT_USE_SPAN
-
-        private static bool IsValidCustomDateFormat(ReadOnlySpan<char> format, bool throwOnError)
+        internal static bool IsValidCustomDateOnlyFormat(ReadOnlySpan<char> format, bool throwOnError)
         {
-            int i = 0;
-
+            var i = 0;
             while (i < format.Length)
             {
                 switch (format[i])
@@ -1001,7 +1003,7 @@ namespace System
 
                     case '\'':
                     case '"':
-                        char quoteChar = format[i++];
+                        var quoteChar = format[i++];
                         while (i < format.Length && format[i] != quoteChar)
                         {
                             i++;
@@ -1047,15 +1049,14 @@ namespace System
             return true;
         }
 
-        private static bool IsValidCustomDateFormat(string format, bool throwOnError)
-            => IsValidCustomDateFormat(format.AsSpan(), throwOnError);
+        private static bool IsValidCustomDateOnlyFormat(string format, bool throwOnError)
+            => IsValidCustomDateOnlyFormat(format.AsSpan(), throwOnError);
 
 #else
 
-        private static bool IsValidCustomDateFormat(string format, bool throwOnError)
+        private static bool IsValidCustomDateOnlyFormat(string format, bool throwOnError)
         {
-            int i = 0;
-
+            var i = 0;
             while (i < format.Length)
             {
                 switch (format[i])
@@ -1076,7 +1077,7 @@ namespace System
 
                     case '\'':
                     case '"':
-                        char quoteChar = format[i++];
+                        var quoteChar = format[i++];
                         while (i < format.Length && format[i] != quoteChar)
                         {
                             i++;
@@ -1126,10 +1127,10 @@ namespace System
         [DoesNotReturn]
         private static void ThrowArgumentNullException(string name) => throw new ArgumentNullException(name);
 
-        private static void EnsureValidCustomDateFormat([ValidatedNotNull]string? format)
+        private static void EnsureValidCustomDateOnlyFormat([ValidatedNotNull]string? format)
         {
             if (format == null) ThrowArgumentNullException(nameof(format));
-            _ = IsValidCustomDateFormat(format, true);
+            _ = IsValidCustomDateOnlyFormat(format, true);
         }
     }
 }
