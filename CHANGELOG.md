@@ -9,6 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### New features
 
+### Changes to existing features
+
+### Bugs fixed in this release
+
+### Known problems introduced by this release
+
+## [3.0.4](https://github.com/Tenacom/PolyKit/releases/tag/3.0.4) (2023-11-20)
+
+### New features
+
 - .NET 8 was added as a target platform.
 - All polyfills were updated with modifications (if any) made to BCL types up to the release of .NET 8.0.0.
 - The polyfill for [`ExperimentalAttribute`](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.codeanalysis.experimentalattribute) has been added; however, this attribute is only polyfilled by PolyKit.Embedded when compiling with .NET SDK 8.0. This avoids giving the user the false impression that the attribute is supported, when the compiler doesn't actually support it.
@@ -22,10 +32,6 @@ Affected extension classes include:
   - `PolyKitEnumerable`, moved from `PolyKit.Linq` to `System.Linq`;
   - `PolyKitExceptionExtensions`, moved from `PolyKit.Diagnostics` to `System`;
   - `PolyKitStackTraceExtensions`, moved from `PolyKit.Diagnostics` to `System.Diagnostics`.
-
-### Bugs fixed in this release
-
-### Known problems introduced by this release
 
 ## [2.0.30](https://github.com/Tenacom/PolyKit/releases/tag/2.0.30) (2022-11-24)
 
