@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### New features
 
+This release updates some dependencies to their post-.NET 8.0 versions. No other modifications were made.
+
 ### Changes to existing features
 
 ### Bugs fixed in this release
