@@ -9,13 +9,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### New features
 
-This release updates some dependencies to their post-.NET 8.0 versions. No other modifications were made.
-
 ### Changes to existing features
 
 ### Bugs fixed in this release
 
 ### Known problems introduced by this release
+
+## [3.0.9](https://github.com/Tenacom/PolyKit/releases/tag/3.0.9) (2023-11-26)
+
+### New features
+
+This release updates some dependencies to their post-.NET 8.0 versions. No other modifications were made.
 
 ## [3.0.4](https://github.com/Tenacom/PolyKit/releases/tag/3.0.4) (2023-11-20)
 
