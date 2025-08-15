@@ -31,7 +31,7 @@ jobs:
       with:
         fetch-depth: 0 # Checkout with full history so nbgv can compute Git height correctly.
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@v2
+      uses: github/codeql-action/init@v3
       with:
         languages: ${{ matrix.language }}
         queries: security-and-quality
@@ -50,6 +50,6 @@ jobs:
         fi
         dotnet cake --target Build --verbosity $CAKE_VERBOSITY
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v2
+      uses: github/codeql-action/analyze@v3
       with:
         category: "/language:${{matrix.language}}"
