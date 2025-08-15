@@ -20,6 +20,7 @@ using PolyKit.Diagnostics.CodeAnalysis;
 
 #pragma warning disable CA1305 // Specify IFormatProvider - Consistency with BCL code
 #pragma warning disable CA1725 // Parameter names should match base declaration - Consistency with BCL code
+#pragma warning disable CA2225 // Provide a method named 'Subtract' as a friendly alternate for operator op_Subtraction - Consistency with BCL code
 
 namespace System
 {
