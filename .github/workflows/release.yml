@@ -84,7 +84,7 @@ jobs:
         token: ${{ secrets.RELEASE_TOKEN }}
         persist-credentials: true # We need auth set up in the Cake script
     - name: Setup .NET SDK
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v4
       with:
         global-json-file: global.json
     - name: Restore .NET tools
