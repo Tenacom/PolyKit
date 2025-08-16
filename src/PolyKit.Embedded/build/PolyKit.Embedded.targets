@@ -104,6 +104,29 @@
              Text="Polyfill types will be generated with internal access for target '$(TargetFramework)'." />
 
     <!--
+      Anything that depends on HashCode requires either implicit support from the target framework, or a reference to the Microsoft.Bcl.HashCode package.
+      Set PolyKit_UseHashCode to true in the project file if the HashCode type is provided by some other package.
+      Set PolyKit_UseHashCode to false in the project file to exclude from compilation polyfills that require the HashCode type.
+      In all other cases, just leave PolyKit_UseHashCode alone; just add a reference to the Microsoft.Bcl.HashCode package, if necessary,
+      to enable polyfills requiring HashCode.
+    -->
+    <PropertyGroup Condition="'$(PolyKit_UseHashCode)' == ''">
+      <PolyKit_UseHashCode Condition="'%(_ImplicitDefineConstant.Identity)' == 'NETCOREAPP3_0_OR_GREATER'">true</PolyKit_UseHashCode>
+      <PolyKit_UseHashCode Condition="'%(_ImplicitDefineConstant.Identity)' == 'NETSTANDARD2_1_OR_GREATER'">true</PolyKit_UseHashCode>
+      <PolyKit_UseHashCode Condition="'%(PackageReference.Identity)' == 'Microsoft.Bcl.HashCode'">true</PolyKit_UseHashCode>
+    </PropertyGroup>
+    <PropertyGroup>
+      <PolyKit_UseHashCode Condition="'$(PolyKit_UseHashCode)' != 'true'">false</PolyKit_UseHashCode>
+      <DefineConstants Condition="$(PolyKit_UseHashCode)">$(DefineConstants);POLYKIT_USE_HASHCODE</DefineConstants>
+    </PropertyGroup>
+    <Message Importance="$(PolyKit_MessageImportance)"
+             Condition="!$(PolyKit_Silent) And $(PolyKit_UseHashCode)"
+             Text="Polyfills requiring System.HashCode will be generated for target '$(TargetFramework)'." />
+    <Message Importance="$(PolyKit_MessageImportance)"
+             Condition="!$(PolyKit_Silent) And !$(PolyKit_UseHashCode)"
+             Text="Polyfills requiring System.HashCode will NOT be generated for target '$(TargetFramework)'." />
+
+    <!--
       Anything that depends on Span requires either implicit support from the target framework, or a reference to the System.Memory package.
       Set PolyKit_UseSpan to true in the project file if the Span type is provided by some other package.
       Set PolyKit_UseSpan to false in the project file to exclude from compilation polyfills that require the Span type.
