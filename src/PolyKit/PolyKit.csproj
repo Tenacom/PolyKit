@@ -13,6 +13,17 @@
   </PropertyGroup>
 
   <!--
+    Reference Microsoft.Bcl.HashCode to enable polyfills requiring System.HashCode;
+    do it only where necessary, to avoid useless transitive dependencies.
+  -->
+  <PropertyGroup>
+    <TargetFrameworksRequiringMicrosoftBclHashCode>netstandard2.0;net462;net47</TargetFrameworksRequiringMicrosoftBclHashCode>
+  </PropertyGroup>
+  <ItemGroup Condition="$(TargetFrameworksRequiringMicrosoftBclHashCode.Contains('$(TargetFramework)'))">
+    <PackageReference Include="Microsoft.Bcl.HashCode" />
+  </ItemGroup>
+
+  <!--
     Reference System.Memory to enable polyfills requiring System.Span;
     do it only where necessary, to avoid useless transitive dependencies.
   -->
