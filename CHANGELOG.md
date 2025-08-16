@@ -11,7 +11,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changes to existing features
 
+- The polyfill for `System.HashCode` has been removed in favor of the official polyfill: the [`Microsoft.Bcl.HashCode`](https://www.nuget.org/packages/Microsoft.Bcl.HashCode) package. Projects that need `System.HashCode` shall depend of `Microsoft.Bcl.HashCode`.
+- Since the polyfill for `System.Range` depends on `System.HashCode`, it will be included by `PolyKit.Embedded` only if the target platform provides `System.HashCode` natively (but then it would also provide `System.Range`) or the project has a dependency on `Microsoft.Bcl.HashCode`.
+
 ### Bugs fixed in this release
+
+- When using `PolyKit.Embedded` in a static analyzer project, Roslyn analyzers would raise error RS1035 ("The symbol 'Random' is banned for use by analyzers: Analyzers must be deterministic"). This was caused by the polyfill for `System.HashCode` using `System.Random` (in a way that would not compromise the determinism of the project's analyzers, by the way). This annoyance has been removed as a side effect of the removal of the "offending" polyfill.
 
 ### Known problems introduced by this release
 
