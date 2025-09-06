@@ -78,7 +78,7 @@ jobs:
         echo Check changelog before update : %CHECK_CHANGELOG%
         echo Cake verbosity                : %CAKE_VERBOSITY%
     - name: Checkout repository with full history
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         fetch-depth: 0 # Checkout with full history so nbgv can compute Git height correctly.
         token: ${{ secrets.RELEASE_TOKEN }}

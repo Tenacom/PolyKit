@@ -17,7 +17,7 @@ jobs:
       FEEDZ_IO_PRIVATE_TOKEN: ${{ secrets.FEEDZ_IO_PRIVATE_TOKEN }}
     steps:
     - name: Checkout repository with full history
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         fetch-depth: 0 # Checkout with full history so nbgv can compute Git height correctly.
     - name: Setup .NET SDK
